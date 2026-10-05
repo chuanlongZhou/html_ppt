@@ -1,0 +1,18 @@
+id: build.fly-in
+group: reveal
+title: 两侧飞入
+order: 7
+prompts: [飞入, 从两边飞进来, 左右飞入, 从屏幕外进入, fly in]
+use_when: 两个对立 / 对照的对象分别从两侧进入，最后给出结论
+avoid_when: 正式、克制的场合（用 fade-up 更稳）
+demo:
+  layout: title-body
+  objects:
+    title: { type: text, role: title, text: 两个对象从两侧飞入，结论最后弹出 }
+    left: { type: shape, fill: surface-2, frame: [120, 290, 780, 400], valign: middle, text: ["# 人工制作", "精细，但慢；难以批量修改"] }
+    right: { type: shape, fill: accent-soft, frame: [1020, 290, 780, 400], valign: middle, text: ["# AI + 结构化源文件", "快，且每次修改都可检查"] }
+    concl: { type: shape, geom: pill, fill: accent, color: "#FFFFFF", frame: [560, 760, 800, 110], align: center, valign: middle, weight: 700, text: 结论：让 AI 改源文件，而不是改像素 }
+  steps:
+    - { enter: left, effect: fly-in, from: left }
+    - { enter: right, effect: fly-in, from: right }
+    - { enter: concl, effect: pop }

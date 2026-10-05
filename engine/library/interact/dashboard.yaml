@@ -1,0 +1,42 @@
+id: interact.dashboard
+group: linked
+title: 数据面板
+order: 2
+prompts: [数据面板, 仪表盘, dashboard, 指标卡加图表, 可交互的数据看板, 数据大屏]
+use_when: 一页同时给出关键指标与可探索的明细：顶部指标卡，下方两张联动图表（可切换年份、点击高亮）
+avoid_when: 听众需要一步一步理解（拆成 interact.narrated 的多个 State）
+demo:
+  layout: free
+  objects:
+    title: { type: text, role: title, frame: [120, 60, 1680, 110], text: 城市排放数据面板 }
+    k1bg: { type: shape, fill: surface, shadow: true, frame: [120, 200, 540, 190] }
+    k1: { type: metric, frame: [160, 222, 460, 150], value: "1.47", unit: Gt, label: 2024 年总排放, delta: "+2.3%", tone: down, size: 76 }
+    k2bg: { type: shape, fill: surface, shadow: true, frame: [690, 200, 540, 190] }
+    k2: { type: metric, frame: [730, 222, 460, 150], value: "41", unit: "%", label: 电力部门占比, delta: "+5 pt", tone: neutral, size: 76, color: accent-2 }
+    k3bg: { type: shape, fill: surface, shadow: true, frame: [1260, 200, 540, 190] }
+    k3: { type: metric, frame: [1300, 222, 460, 150], value: "28", unit: 城市, label: 纳入统计的城市, size: 76, color: accent-3 }
+    bars:
+      type: chart
+      frame: [120, 430, 820, 570]
+      kind: bar
+      categories: [电力, 工业, 交通, 建筑]
+      series: { "2020": [480, 300, 200, 180], "2024": [600, 380, 280, 210] }
+      show: ["2024"]
+      switch: true
+      link: sector
+      unit: Mt
+      size: 22
+    lines:
+      type: chart
+      frame: [980, 430, 820, 570]
+      kind: line
+      categories: [2016, 2018, 2020, 2022, 2024]
+      series:
+        - { name: 电力, values: [420, 470, 480, 560, 600] }
+        - { name: 工业, values: [330, 345, 300, 360, 380] }
+        - { name: 交通, values: [210, 235, 200, 255, 280] }
+        - { name: 建筑, values: [170, 180, 180, 200, 210] }
+      detail: true
+      link: sector
+      unit: Mt
+      size: 22

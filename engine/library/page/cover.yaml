@@ -1,0 +1,17 @@
+id: page.cover
+group: structure
+title: 封面
+order: 1
+prompts: [封面, 标题页, 开场页, 第一页, cover slide]
+use_when: 演示的第一页：主题、副标题、作者与日期
+avoid_when: 章节之间的过渡页（用 page.section）
+demo:
+  layout: hero
+  objects:
+    kicker: { type: text, role: kicker, text: 项目介绍 · 2026 }
+    title: { type: text, role: title, text: "AI 原生的\n网页演示文稿" }
+    subtitle: { type: text, role: subtitle, text: 让 AI 像写代码一样制作、检查和维护演示 }
+    meta: { type: text, role: meta, text: 作者 · 日期 · 场合 }
+    deco1: { type: shape, geom: ellipse, fill: accent-soft, frame: [1180, 150, 600, 600] }
+    deco2: { type: shape, geom: ellipse, fill: accent, frame: [1530, 560, 270, 270] }
+    deco3: { type: shape, geom: roundRect, radius: 20, fill: accent-2, frame: [1260, 610, 150, 150] }

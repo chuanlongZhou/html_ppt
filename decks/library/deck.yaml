@@ -1,0 +1,9 @@
+# 效果库浏览 deck：自动包含 engine/library/ 下的全部条目（新增条目后无需修改本文件）
+deck:
+  title: html_ppt 效果库
+  story:
+    thesis: 所有可复用的页面设计与动画，每页附提示词
+    audience: 使用本项目制作演示的人与 AI
+
+scenes:
+  - library: "*"

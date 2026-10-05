@@ -1,0 +1,18 @@
+id: image.before-after
+group: compare
+title: 前后对比
+order: 1
+prompts: [前后对比, 处理前处理后, 对比两张图, 修图前后, before after 图片]
+use_when: 同一画面的两个版本（处理前后、改版前后、两个时间点），叠放后用擦除揭示差异
+avoid_when: 两张图构图不同（并排放：page.comparison）
+demo:
+  layout: free
+  objects:
+    title: { type: text, role: title, frame: [120, 70, 1680, 110], text: 同一画面，从左往右擦出新版本 }
+    before: { type: image, src: "@lib/sample-city.png", frame: [120, 230, 1120, 700], radius: 20, filter: "grayscale(1) brightness(.9)" }
+    after: { type: image, src: "@lib/sample-city.png", frame: [120, 230, 1120, 700], radius: 20 }
+    lb: { type: shape, geom: pill, fill: "rgba(0,0,0,.55)", color: "#FFFFFF", align: center, valign: middle, size: 26, weight: 700, frame: [150, 260, 160, 56], z: 3, text: 处理前 }
+    la: { type: shape, geom: pill, fill: accent, color: "#FFFFFF", align: center, valign: middle, size: 26, weight: 700, frame: [1050, 260, 160, 56], z: 3, text: 处理后 }
+    note: { type: text, role: body, frame: [1300, 230, 500, 700], text: ["# 叠放 + 擦除", "两张图同一个 frame；上面一张用 wipe 从左往右出现", "滤镜：filter: grayscale(1)"] }
+  steps:
+    - [{ enter: after, effect: wipe, from: left, duration: 1400 }, { enter: la, effect: fade, after: true }]

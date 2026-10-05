@@ -1,0 +1,15 @@
+id: page.full-bleed
+group: visual
+title: 全图背景
+order: 11
+prompts: [全屏图片, 背景图, 图片铺满, 大图配标题, full bleed]
+use_when: 用一张有冲击力的图片定调；文字压在图上
+avoid_when: 图片细节本身是要讲的内容（不要压字）
+demo:
+  layout: free
+  theme: dark
+  objects:
+    bg: { type: image, src: "@lib/landscape.svg", frame: [0, 0, 1920, 1080] }
+    shade: { type: shape, geom: rect, fill: "rgba(10,12,30,.35)", frame: [0, 0, 1920, 1080] }
+    title: { type: text, role: title, size: 96, color: "#FFFFFF", frame: [120, 560, 1300, 240], valign: bottom, text: 用一张图定调 }
+    sub: { type: text, role: subtitle, color: "rgba(255,255,255,.85)", frame: [120, 820, 1300, 80], text: 图片铺满舞台，叠一层半透明遮罩保证文字可读 }

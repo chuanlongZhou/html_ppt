@@ -1,0 +1,43 @@
+id: morph.chart-grow
+group: data
+title: 柱状图数值变化
+order: 5
+prompts: [数据变化, 柱子长高, 柱状图动画, 从去年到今年, 数值增长, chart animation]
+use_when: 同一组数据在两个时间点 / 两种情景之间的变化
+avoid_when: 数据点超过 8 个（等 M2 的图表组件）
+demo:
+  layout: free
+  objects:
+    title: { type: text, role: title, frame: [120, 84, 1300, 110], text: 各部门排放：2020 → 2024 }
+    year: { type: text, frame: [1400, 70, 400, 140], size: 120, weight: 800, font: display, color: accent, align: right, lineHeight: 1, text: "2020" }
+    base: { type: shape, geom: line, from: [200, 900], to: [1720, 900], stroke: line, strokeWidth: 3 }
+    b1: { type: shape, geom: roundRect, radius: 10, fill: accent-soft, frame: [260, 700, 180, 200] }
+    b2: { type: shape, geom: roundRect, radius: 10, fill: accent-soft, frame: [560, 640, 180, 260] }
+    b3: { type: shape, geom: roundRect, radius: 10, fill: accent-soft, frame: [860, 720, 180, 180] }
+    b4: { type: shape, geom: roundRect, radius: 10, fill: accent-soft, frame: [1160, 580, 180, 320] }
+    b5: { type: shape, geom: roundRect, radius: 10, fill: accent-soft, frame: [1460, 660, 180, 240] }
+    v1: { type: text, role: label, size: 30, color: ink, align: center, frame: [250, 640, 200, 50], text: "200" }
+    v2: { type: text, role: label, size: 30, color: ink, align: center, frame: [550, 580, 200, 50], text: "260" }
+    v3: { type: text, role: label, size: 30, color: ink, align: center, frame: [850, 660, 200, 50], text: "180" }
+    v4: { type: text, role: label, size: 30, color: ink, align: center, frame: [1150, 520, 200, 50], text: "320" }
+    v5: { type: text, role: label, size: 30, color: ink, align: center, frame: [1450, 600, 200, 50], text: "240" }
+    x1: { type: text, role: label, size: 28, align: center, frame: [250, 920, 200, 50], text: 交通 }
+    x2: { type: text, role: label, size: 28, align: center, frame: [550, 920, 200, 50], text: 工业 }
+    x3: { type: text, role: label, size: 28, align: center, frame: [850, 920, 200, 50], text: 建筑 }
+    x4: { type: text, role: label, size: 28, align: center, frame: [1150, 920, 200, 50], text: 电力 }
+    x5: { type: text, role: label, size: 28, align: center, frame: [1450, 920, 200, 50], text: 其他 }
+  states:
+    - {}
+    - transition: { duration: 1000, stagger: 60 }
+      override:
+        year: { text: "2024" }
+        b1: { frame: [260, 620, 180, 280] }
+        b2: { frame: [560, 520, 180, 380] }
+        b3: { frame: [860, 690, 180, 210] }
+        b4: { frame: [1160, 300, 180, 600], fill: accent-2 }
+        b5: { frame: [1460, 560, 180, 340] }
+        v1: { frame: [250, 560, 200, 50], text: "280" }
+        v2: { frame: [550, 460, 200, 50], text: "380" }
+        v3: { frame: [850, 630, 200, 50], text: "210" }
+        v4: { frame: [1150, 240, 200, 50], text: "600", color: accent-2 }
+        v5: { frame: [1450, 500, 200, 50], text: "340" }

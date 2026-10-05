@@ -1,0 +1,207 @@
+# 项目介绍 deck —— 本身就是用 html_ppt 制作的。
+# 大部分页面通过 `use:` 继承效果库条目，只覆盖文字；页角显示本页用到的条目（showPatterns）。
+deck:
+  title: html_ppt · 项目介绍
+  subtitle: AI 原生的网页演示文稿
+  showPatterns: true
+  story:
+    thesis: 把演示文稿变成 AI 可以编译、检查、修改的源代码；效果库让常用设计一句话即可调用
+    audience: 项目参与者、使用 Claude Code / Codex 等 AI 工具制作演示的人
+    duration: 15min
+    goal: 理解核心模型、工作流和效果库的用法
+
+scenes:
+  - id: cover
+    use: page.cover
+    purpose: 开场，给出项目定位
+    patterns: [page.cover]
+    objects:
+      kicker: { text: 项目介绍 · M0 }
+      title: { text: "html_ppt\nAI 原生的网页演示" }
+      subtitle: { text: 把演示文稿变成 AI 可以编译、检查、修改的源代码 }
+      meta: { text: 2026-10 · 这份演示本身就是用本项目生成的 }
+
+  - id: problem
+    use: build.cards-stagger
+    purpose: 说明现有 AI 做 PPT 的结构性问题
+    patterns: [page.cards-3, build.cards-stagger]
+    objects:
+      title: { text: AI 做 PPT，卡在三个结构性问题上 }
+      c1: { text: ["# GUI 对象模型", "PPTX 为人工拖拽设计，AI 只能操作零散的文本框和形状"] }
+      c2: { text: ["# 动画难以程序化", "Morph、跨页对象关系、多步叙事几乎无法稳定生成"] }
+      c3: { text: ["# 无法维护", "不能 diff、不能测试；改一处，往往要整套重新生成"] }
+
+  - id: thesis
+    use: page.statement
+    purpose: 给出核心主张
+    patterns: [page.statement]
+    objects:
+      main: { text: "演示文稿是 ==结构化程序==，\n不是页面图片。" }
+      caption: { text: AI 改源文件；排版、动画参数、检查都交给引擎 }
+
+  - id: part-model
+    use: page.section
+    purpose: 进入第一部分：核心模型
+    patterns: [page.section]
+    objects:
+      kicker: { text: 第 01 部分 }
+      title: { text: 核心模型 }
+      subtitle: { text: Scene · State · Object }
+      num: { text: "01" }
+
+  - id: scene-model
+    use: morph.overview-to-detail
+    purpose: 用 morph 本身解释 Scene 模型
+    patterns: [morph.overview-to-detail]
+    notes: 先停在概念卡片上，点击后卡片移到左侧、细节进场——这就是一个两 State 的 Scene。
+
+  - id: two-levels
+    purpose: 说明两级动画，以及与 PowerPoint 的对应关系
+    layout: split
+    patterns: [page.comparison, build.bullets-one-by-one]
+    objects:
+      title: { type: text, role: title, text: 两级动画，正好对应 PowerPoint 的两种动画 }
+      l: { type: shape, slot: left, fill: surface, shadow: true, text: ["# State 内：steps", "一次次点击，让对象出现、强调、退出", "编译为 Reveal **fragments**"] }
+      r: { type: shape, slot: right, fill: accent-soft, text: ["# State 间：morph", "同一 key 的对象在两个 State 之间平滑插值", "编译为 Reveal **Auto-Animate**"] }
+      lp: { type: text, role: callout, slot: left, text: ≈ PowerPoint「自定义动画」 }
+      rp: { type: text, role: callout, slot: right, text: ≈ PowerPoint「平滑」切换 }
+    steps:
+      - { enter: lp, effect: fade-up }
+      - { enter: rp, effect: fade-up }
+
+  - id: pipeline
+    purpose: 展示引擎的确定性编译流程
+    layout: title-body
+    patterns: [build.diagram-flow]
+    objects:
+      title: { type: text, role: title, text: 引擎：五个确定性的阶段 }
+      b1: { type: shape, fill: surface, shadow: true, frame: [120, 400, 280, 240], align: center, valign: middle, padding: 24, size: 28, text: ["# 解析", "YAML + 校验"] }
+      b2: { type: shape, fill: surface, shadow: true, frame: [470, 400, 280, 240], align: center, valign: middle, padding: 24, size: 28, text: ["# 规范化", "→ IR"] }
+      b3: { type: shape, fill: surface, shadow: true, frame: [820, 400, 280, 240], align: center, valign: middle, padding: 24, size: 28, text: ["# 动画编译", "steps · morph"] }
+      b4: { type: shape, fill: surface, shadow: true, frame: [1170, 400, 280, 240], align: center, valign: middle, padding: 24, size: 28, text: ["# 渲染", "Reveal 网页"] }
+      b5: { type: shape, fill: accent, color: "#FFFFFF", shadow: true, frame: [1520, 400, 280, 240], align: center, valign: middle, padding: 24, size: 28, text: ["# QA", "截图 + 检查"] }
+      a1: { type: shape, geom: line, from: [408, 520], to: [462, 520], arrow: end, stroke: muted, strokeWidth: 4 }
+      a2: { type: shape, geom: line, from: [758, 520], to: [812, 520], arrow: end, stroke: muted, strokeWidth: 4 }
+      a3: { type: shape, geom: line, from: [1108, 520], to: [1162, 520], arrow: end, stroke: muted, strokeWidth: 4 }
+      a4: { type: shape, geom: line, from: [1458, 520], to: [1512, 520], arrow: end, stroke: muted, strokeWidth: 4 }
+      note: { type: text, role: caption, frame: [120, 720, 1680, 100], align: center, text: "LLM 决定 **what / why**，代码决定 **how**：坐标、ID、fragment 序号、动画参数全部由引擎计算" }
+    steps:
+      - { enter: b1, effect: pop }
+      - [{ enter: a1, effect: draw, duration: 400 }, { enter: b2, effect: pop, after: true }]
+      - [{ enter: a2, effect: draw, duration: 400 }, { enter: b3, effect: pop, after: true }]
+      - [{ enter: a3, effect: draw, duration: 400 }, { enter: b4, effect: pop, after: true }]
+      - [{ enter: a4, effect: draw, duration: 400 }, { enter: b5, effect: pop, after: true }]
+
+  - id: source
+    use: page.code
+    purpose: 展示源文件长什么样
+    patterns: [page.code]
+
+  - id: part-workflow
+    use: page.section
+    purpose: 进入第二部分：AI 工作流
+    patterns: [page.section]
+    objects:
+      kicker: { text: 第 02 部分 }
+      title: { text: AI 工作流 }
+      subtitle: { text: Brief → Build → Check → Review }
+      num: { text: "02" }
+
+  - id: workflow
+    use: build.dim-past
+    purpose: 讲解四步工作流，讲到哪步亮哪步
+    patterns: [build.dim-past]
+    objects:
+      title: { text: 工作流：只有一个人工检查点 }
+      s1: { text: ["# ① Brief", "目标、受众、时长 → 写出大纲，**由你确认**"] }
+      s2: { text: ["# ② Build + Check", "写 deck.yaml → npm run check → 按报告自动修复"] }
+      s3: { text: ["# ③ Review", "独立评审看截图，给出 critical / major / minor"] }
+
+  - id: check
+    use: build.bullets-one-by-one
+    purpose: 说明 check 命令做了什么
+    patterns: [build.bullets-one-by-one]
+    objects:
+      title: { text: npm run check 做了什么 }
+      points:
+        text:
+          - "**编译**：schema 校验，报错带 deck.yaml 行号和修复提示"
+          - "**截图**：每个 State、每次点击各一张，外加总览图"
+          - "**检查**：文字溢出、越界、重叠、图片缺失、动画对象"
+          - "**输出**：report.json 给 AI，30 行摘要给人"
+
+  - id: tools
+    purpose: 说明如何兼容 Claude Code 以外的 AI 工具
+    layout: free
+    patterns: [build.diagram-flow]
+    objects:
+      title: { type: text, role: title, frame: [120, 84, 1680, 110], text: 兼容一般 AI 工具：一份规则，多处使用 }
+      hub: { type: shape, fill: accent, color: "#FFFFFF", shadow: true, frame: [510, 230, 900, 240], align: center, valign: middle, text: ["# AGENTS.md + agents/", "纯 Markdown 唯一来源 · 接口是 npm 命令"] }
+      t1: { type: shape, fill: surface, shadow: true, frame: [120, 640, 520, 330], valign: middle, size: 34, text: ["# Claude Code", "CLAUDE.md 引用 AGENTS.md；.claude/ 由 agents:sync 生成"] }
+      t2: { type: shape, fill: surface, shadow: true, frame: [700, 640, 520, 330], valign: middle, size: 34, text: ["# Codex", "原生读取 AGENTS.md，按路由表加载 skill"] }
+      t3: { type: shape, fill: surface, shadow: true, frame: [1280, 640, 520, 330], valign: middle, size: 34, text: ["# 其他工具", "能读文件、能跑命令即可；看不了图就读 report.json"] }
+      l1: { type: shape, geom: line, from: [840, 480], to: [400, 630], arrow: end, stroke: muted, strokeWidth: 4 }
+      l2: { type: shape, geom: line, from: [960, 480], to: [960, 630], arrow: end, stroke: muted, strokeWidth: 4 }
+      l3: { type: shape, geom: line, from: [1080, 480], to: [1520, 630], arrow: end, stroke: muted, strokeWidth: 4 }
+    steps:
+      - { enter: hub, effect: pop }
+      - [{ enter: [l1, l2, l3], effect: draw, stagger: 120, duration: 500 }, { enter: [t1, t2, t3], effect: fade-up, stagger: 120, after: true }]
+
+  - id: part-library
+    use: page.section
+    purpose: 进入第三部分：效果库
+    patterns: [page.section]
+    objects:
+      kicker: { text: 第 03 部分 }
+      title: { text: 效果库 }
+      subtitle: { text: 场景 / 效果 ↔ 提示词 }
+      num: { text: "03" }
+
+  - id: library-how
+    use: build.cards-stagger
+    purpose: 说明效果库如何被调用与维护
+    patterns: [page.cards-3, build.cards-stagger]
+    objects:
+      title: { text: 一句话找到一个可复用的设计 }
+      c1: { text: ["# 提示词", "你说「逐条出现」「放大其中一项」，AI 在 INDEX.md 中查到条目"] }
+      c2: { text: ["# 条目", "engine/library/ 下一个 YAML：提示词 + 适用场景 + 可用的 scene"] }
+      c3: { text: ["# 调用", "use: build.bullets-one-by-one，只改文字；或复制片段再改"] }
+
+  - id: library-cats
+    purpose: 说明效果库的五个类别
+    layout: { type: grid, cols: 5, cellHeight: 340 }
+    patterns: [build.cards-stagger]
+    objects:
+      title: { type: text, role: title, text: 五个类别，按「要做什么」来找 }
+      k1: { type: shape, fill: surface, shadow: true, size: 30, text: ["# 页面版式", "结构页、文字页、图文与对比、数据页"] }
+      k2: { type: shape, fill: surface, shadow: true, size: 30, text: ["# 页内动画", "出现、强调、结构搭建"] }
+      k3: { type: shape, fill: surface, shadow: true, size: 30, text: ["# 状态切换", "版面变化、聚焦、数据与进度"] }
+      k4: { type: shape, fill: accent, color: "#FFFFFF", shadow: true, size: 30, text: ["# 交互数据", "可悬停、点击、切换、联动的图表与数据面板"] }
+      k5: { type: shape, fill: accent-2, color: "#FFFFFF", shadow: true, size: 30, text: ["# 位图操作", "截图 / 照片的局部放大、标注、聚光、对比"] }
+    steps:
+      - { enter: [k1, k2, k3, k4, k5], effect: fade-up, stagger: 120 }
+
+  - id: library-note
+    use: page.statement
+    purpose: 引出后面的效果演示页
+    patterns: [page.statement]
+    objects:
+      main: { size: 72, text: "接下来每一页都是一个条目，\n底部写着它的 ==提示词==。" }
+      caption: { text: 效果库会随着后续工作持续扩充：新条目自动出现在这里与 decks/library 中 }
+
+  - library: "*"
+
+  - id: roadmap
+    use: morph.timeline-progress
+    purpose: 路线图，每次点击推进一个里程碑
+    patterns: [morph.timeline-progress]
+    objects:
+      title: { text: 路线图：现在在 M0 }
+
+  - id: closing
+    use: page.closing
+    purpose: 结尾与下一步
+    patterns: [page.closing]
+    objects:
+      subtitle: { text: 下一步：M1 —— 用一份带动画的 PPT 验收复刻 }
+      meta: { text: 本 deck 源文件：decks/intro/deck.yaml }

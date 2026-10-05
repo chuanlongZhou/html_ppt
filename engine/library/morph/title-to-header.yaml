@@ -1,0 +1,21 @@
+id: morph.title-to-header
+group: layout
+title: 标题上移，内容进场
+order: 1
+prompts: [标题上移, 标题缩小到顶部, 从标题过渡到内容, magic move 标题]
+use_when: 先用大标题抛出问题，再让标题退到页眉、内容进场
+avoid_when: 每页都这样做（会显得拖沓）
+demo:
+  layout: free
+  objects:
+    title: { type: text, role: title, size: 104, align: center, frame: [160, 360, 1600, 150], text: 什么是 Scene？ }
+    sub: { type: text, role: subtitle, align: center, frame: [160, 540, 1600, 70], text: 同一个画面，在几个状态之间连续变化 }
+    c1: { type: shape, fill: surface, shadow: true, frame: [120, 300, 520, 520], text: ["# 对象池", "每个对象定义一次，key 就是它的身份"] }
+    c2: { type: shape, fill: surface, shadow: true, frame: [700, 300, 520, 520], text: ["# State", "可见对象 + 属性覆盖"] }
+    c3: { type: shape, fill: accent, color: "#FFFFFF", shadow: true, frame: [1280, 300, 520, 520], text: ["# Morph", "同一 key 在 State 之间自动插值"] }
+  states:
+    - show: [title, sub]
+    - show: [title, c1, c2, c3]
+      override:
+        title: { size: 64, frame: [160, 84, 1600, 110] }
+      transition: { duration: 900 }

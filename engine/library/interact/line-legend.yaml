@@ -1,0 +1,23 @@
+id: interact.line-legend
+group: chart
+title: 折线图 + 图例开关
+order: 2
+prompts: [折线图, 趋势图, 图例开关, 显示隐藏某条线, 多条趋势对比, interactive line chart]
+use_when: 多条时间趋势放在一起：点击图例开关某条线，点击线条高亮它，悬停看具体年份的数值
+avoid_when: 线条超过 6 条（先筛选，或拆成小多图）
+demo:
+  layout: title-body
+  objects:
+    title: { type: text, role: title, text: 点击图例开关折线，点击线条高亮 }
+    chart:
+      type: chart
+      kind: line
+      categories: [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024]
+      series:
+        - { name: 电力, values: [420, 440, 470, 500, 480, 520, 560, 580, 600] }
+        - { name: 工业, values: [330, 335, 345, 350, 300, 340, 360, 370, 380] }
+        - { name: 交通, values: [210, 220, 235, 245, 200, 230, 255, 268, 280] }
+        - { name: 建筑, values: [170, 175, 180, 185, 180, 190, 200, 205, 210] }
+      detail: true
+      unit: Mt
+      source: 示例数据

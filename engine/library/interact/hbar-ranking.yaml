@@ -1,0 +1,19 @@
+id: interact.hbar-ranking
+group: chart
+title: 排行榜条形图
+order: 3
+prompts: [排行榜, 横向条形图, 排名, 前十名, top 10, ranking]
+use_when: 名称较长、需要排序比较的一组数值（城市、产品、部门）；可预设高亮其中一项
+avoid_when: 有时间维度（用 interact.line-legend）
+demo:
+  layout: title-body
+  objects:
+    title: { type: text, role: title, text: 排行榜：名称长也能读清 }
+    chart:
+      type: chart
+      kind: hbar
+      categories: [城市 A, 城市 B, 城市 C, 城市 D, 城市 E, 城市 F, 城市 G]
+      series: { 排放量: [612, 540, 498, 430, 377, 301, 254] }
+      highlight: 城市 C
+      unit: Mt
+      source: 示例数据 · 点击条形切换高亮

@@ -1,0 +1,12 @@
+id: page.quote
+group: text
+title: 引用
+order: 9
+prompts: [引用, 名言, 用户原话, 引述, quote]
+use_when: 引用专家、用户或文献的原话，增加可信度
+avoid_when: 引文超过三行（摘要后再引用）
+demo:
+  layout: center
+  objects:
+    q: { type: text, role: quote, align: center, text: "演示文稿不是页面图片，\n而是一段可以被理解和修改的结构化程序。" }
+    caption: { type: text, role: caption, text: —— 项目设计原则 }

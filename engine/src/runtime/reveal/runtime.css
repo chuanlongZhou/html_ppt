@@ -1,0 +1,65 @@
+/* 基础舞台与对象结构（与风格无关）。风格相关的视觉写在 engine/styles/<name>/style.css。 */
+
+.reveal { font-family: var(--font-body); color: var(--c-ink); -webkit-font-smoothing: antialiased; }
+.reveal .slides { text-align: left; }
+.reveal .slides > section.sc { padding: 0; height: 100%; box-sizing: border-box; color: var(--c-ink); }
+.reveal .stage { position: relative; width: 100%; height: 100%; overflow: clip; }
+
+/* slot：由引擎算好矩形，内容纵向堆叠 */
+.reveal .slot { position: absolute; display: flex; flex-direction: column; gap: var(--slot-gap, 28px); min-width: 0; box-sizing: border-box; }
+.reveal .slot.j-start { justify-content: flex-start; }
+.reveal .slot.j-center { justify-content: safe center; }
+.reveal .slot.j-end { justify-content: safe flex-end; }
+.reveal .slot.a-center { align-items: center; text-align: center; }
+.reveal .slot > * { flex: 0 0 auto; min-height: 0; }
+.reveal .slot > .fill { flex: 1 1 auto; }
+.reveal .slot.a-center > * { max-width: 100%; }
+.reveal .slot-title { gap: 12px; }
+
+/* 对象 */
+.reveal .obj { box-sizing: border-box; position: relative; min-width: 0; }
+.reveal .obj.ghost { pointer-events: none; }
+.reveal .fx { box-sizing: border-box; display: flex; flex-direction: column; }
+.reveal .fx > .obj, .reveal .fx > .fx { flex: 1 1 auto; width: 100%; min-height: 0; }
+
+.reveal .o-text, .reveal .o-shape { display: flex; flex-direction: column; justify-content: flex-start; }
+.reveal .va-top { justify-content: flex-start; }
+.reveal .va-middle { justify-content: safe center; }
+.reveal .va-bottom { justify-content: safe flex-end; }
+.reveal .tx { min-width: 0; }
+.reveal .tx > * + * { margin-top: var(--para-gap, .45em); }
+
+.reveal .o-shape.g-line { overflow: visible; }
+.reveal .shape-svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.reveal .shape-svg .stroke { fill: none; stroke-linecap: round; }
+
+.reveal .o-image { overflow: hidden; min-height: 80px; }
+.reveal .o-image img { display: block; width: 100%; height: 100%; margin: 0; max-width: none; max-height: none; }
+
+.reveal .o-metric { display: flex; flex-direction: column; line-height: 1; }
+.reveal .o-metric.al-center { align-items: center; text-align: center; }
+.reveal .o-metric.al-right { align-items: flex-end; text-align: right; }
+
+/* 效果库说明条 / 本页效果标签 */
+.reveal .lib-caption, .reveal .pat-chips { position: absolute; z-index: 60; display: flex; align-items: center; box-sizing: border-box; white-space: nowrap; overflow: hidden; }
+
+/* QA 截图模式：关掉所有过渡，拍"最终状态" */
+html.qa .reveal *, html.qa .reveal *::before, html.qa .reveal *::after { transition: none !important; animation: none !important; }
+
+/* 已知尺寸的图片：引擎算好矩形，img 绝对定位（zoom 可在 State 间插值） */
+.reveal .o-image.geom img.img-z { position: absolute; max-width: none; max-height: none; }
+.reveal .o-shape.g-spotlight { background: transparent; pointer-events: none; }
+
+/* 交互图表（结构）：工具条 + 绘图区 + 来源；视觉见风格的 style.css */
+.reveal .o-chart { display: flex; flex-direction: column; font-size: var(--ch-size, 24px); }
+.reveal .o-chart .ch-bar { height: 64px; flex: 0 0 64px; display: flex; align-items: center; gap: 10px; flex-wrap: nowrap; overflow: hidden; }
+.reveal .o-chart .ch-plot { position: relative; flex: 0 0 auto; }
+.reveal .o-chart .ch-svg { display: block; overflow: visible; }
+.reveal .o-chart .ch-source { height: 44px; flex: 0 0 44px; display: flex; align-items: flex-end; }
+.reveal .o-chart .ch-tip, .reveal .o-chart .ch-detail { position: absolute; pointer-events: none; opacity: 0; transition: opacity .15s; }
+.reveal .o-chart .ch-tip.on, .reveal .o-chart .ch-detail.on { opacity: 1; }
+.reveal .o-chart .m { transition: x .7s var(--ch-ease), y .7s var(--ch-ease), width .7s var(--ch-ease), height .7s var(--ch-ease), d .7s var(--ch-ease), cx .7s var(--ch-ease), cy .7s var(--ch-ease), r .25s, opacity .45s, transform .7s var(--ch-ease), fill .45s, stroke-width .25s; --ch-ease: cubic-bezier(.45,0,.2,1); }
+.reveal .o-chart.ch-still .m { transition: none !important; }
+.reveal .o-chart.interactive .ch-rect, .reveal .o-chart.interactive .ch-dot, .reveal .o-chart.interactive .ch-line, .reveal .o-chart.interactive .ch-cat { cursor: pointer; }
+.reveal .o-chart .ch-line { fill: none; stroke-linejoin: round; stroke-linecap: round; }
+.reveal .o-chart .ch-val, .reveal .o-chart .ch-tick, .reveal .o-chart .ch-grid, .reveal .o-chart .ch-base { pointer-events: none; }

@@ -1,0 +1,21 @@
+id: interact.bar-explore
+group: chart
+title: 可交互柱状图
+order: 1
+prompts: [交互图表, 可交互柱状图, 悬停看数值, 点击高亮, 切换年份, interactive bar chart]
+use_when: 讲完一组数据后，让听众或演讲者自己探索：悬停看数值、点击某一柱高亮并显示读数、按钮切换年份
+avoid_when: 只需要传达一个结论（用 page.big-number）
+demo:
+  layout: title-body
+  objects:
+    title: { type: text, role: title, text: 悬停看数值，点击高亮，按钮切换年份 }
+    chart:
+      type: chart
+      kind: bar
+      categories: [交通, 工业, 建筑, 电力, 其他]
+      series: { "2020": [200, 260, 180, 320, 240], "2024": [280, 380, 210, 600, 340] }
+      show: ["2024"]
+      switch: true
+      detail: true
+      unit: Mt
+      source: 示例数据

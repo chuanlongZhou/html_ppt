@@ -1,0 +1,66 @@
+/* 点击构建 preset（与 engine/src/motion.ts 的 PRESETS 一一对应）。
+   每个效果是一层 .fx.fragment.custom 包装；Reveal 在点击时给它加 .visible。
+   时长/延迟/缓动由引擎写入 --fx-dur / --fx-delay / --fx-ease。 */
+
+.reveal .fx.fragment {
+  transition-property: opacity, transform, clip-path, filter, visibility;
+  transition-duration: var(--fx-dur, 500ms);
+  transition-timing-function: var(--fx-ease, ease);
+  transition-delay: 0ms;
+  will-change: auto;
+}
+.reveal .fx.fragment.visible { transition-delay: var(--fx-delay, 0ms); }
+
+/* ---- 进入：未点击时隐藏 ---- */
+.reveal .fx.fx-appear:not(.visible),
+.reveal .fx.fx-fade:not(.visible),
+.reveal .fx.fx-fade-up:not(.visible),
+.reveal .fx.fx-fade-down:not(.visible),
+.reveal .fx.fx-fade-left:not(.visible),
+.reveal .fx.fx-fade-right:not(.visible),
+.reveal .fx.fx-zoom-in:not(.visible),
+.reveal .fx.fx-pop:not(.visible),
+.reveal .fx.fx-blur-in:not(.visible) { opacity: 0; visibility: hidden; }
+.reveal .fx.fx-appear { transition-duration: 0ms; }
+.reveal .fx.fx-fade-up:not(.visible) { transform: translateY(48px); }
+.reveal .fx.fx-fade-down:not(.visible) { transform: translateY(-48px); }
+.reveal .fx.fx-fade-left:not(.visible) { transform: translateX(48px); }
+.reveal .fx.fx-fade-right:not(.visible) { transform: translateX(-48px); }
+.reveal .fx.fx-zoom-in:not(.visible) { transform: scale(.6); }
+.reveal .fx.fx-pop:not(.visible) { transform: scale(.8); }
+.reveal .fx.fx-blur-in:not(.visible) { filter: blur(18px); transform: scale(1.04); }
+
+.reveal .fx.fx-fly-in:not(.visible) { transform: translate(var(--fly-x, 0px), var(--fly-y, 0px)); visibility: hidden; }
+
+.reveal .fx.fx-wipe { clip-path: inset(-40px -40px -40px -40px); }
+.reveal .fx.fx-wipe.d-left:not(.visible) { clip-path: inset(-40px calc(100% + 40px) -40px -40px); }
+.reveal .fx.fx-wipe.d-right:not(.visible) { clip-path: inset(-40px -40px -40px calc(100% + 40px)); }
+.reveal .fx.fx-wipe.d-top:not(.visible) { clip-path: inset(-40px -40px calc(100% + 40px) -40px); }
+.reveal .fx.fx-wipe.d-bottom:not(.visible) { clip-path: inset(calc(100% + 40px) -40px -40px -40px); }
+
+/* draw：线条沿路径画出，箭头在最后出现 */
+.reveal .fx.fx-draw .stroke { stroke-dasharray: 1 1; stroke-dashoffset: 1; transition: stroke-dashoffset var(--fx-dur) var(--fx-ease) 0ms; }
+.reveal .fx.fx-draw.visible .stroke { stroke-dashoffset: 0; transition-delay: var(--fx-delay); }
+.reveal .fx.fx-draw .head { opacity: 0; transition: opacity 160ms linear 0ms; }
+.reveal .fx.fx-draw.visible .head { opacity: 1; transition-delay: calc(var(--fx-delay) + var(--fx-dur) * .85); }
+
+/* ---- 强调：点击前正常显示 ---- */
+.reveal .fx.fx-pulse.visible { animation: fx-pulse var(--fx-dur) var(--fx-ease) var(--fx-delay) both; }
+@keyframes fx-pulse { 0%, 100% { transform: scale(1); } 45% { transform: scale(1.08); } }
+.reveal .fx.fx-grow.visible { transform: scale(1.08); }
+.reveal .fx.fx-dim.visible { opacity: .25; }
+.reveal .fx.fx-highlight { position: relative; isolation: isolate; }
+.reveal .fx.fx-highlight::before {
+  content: ''; position: absolute; inset: -10px -18px; z-index: -1; border-radius: 14px;
+  background: var(--c-accent-soft); transform: scaleX(0); transform-origin: left center;
+  transition: transform var(--fx-dur) var(--fx-ease) 0ms;
+}
+.reveal .fx.fx-highlight.visible::before { transform: scaleX(1); transition-delay: var(--fx-delay); }
+
+/* ---- 退出：点击后隐藏 ---- */
+.reveal .fx.fx-fade-out.visible { opacity: 0; visibility: hidden; }
+.reveal .fx.fx-fly-out.visible { transform: translate(var(--fly-x, 0px), var(--fly-y, 0px)); visibility: hidden; }
+.reveal .fx.fx-zoom-out.visible { opacity: 0; transform: scale(.6); visibility: hidden; }
+
+/* 段落级 fragment（逐条出现）沿用同一套类名；段落是块级元素，transform 可直接生效 */
+.reveal .tx > .fx.fragment { display: block; }

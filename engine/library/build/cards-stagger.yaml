@@ -1,0 +1,16 @@
+id: build.cards-stagger
+group: reveal
+title: 卡片依次浮现
+order: 2
+prompts: [卡片依次出现, 依次浮现, 错开出现, 一个接一个, stagger]
+use_when: 一次点击让一组并列对象有节奏地出现
+avoid_when: 每个对象都需要单独讲解（每个一次点击更好）
+demo:
+  layout: { type: grid, cols: 3, cellHeight: 460 }
+  objects:
+    title: { type: text, role: title, text: 一次点击，三张卡片错开 150ms 浮现 }
+    c1: { type: shape, fill: surface, shadow: true, text: ["# 01 解析", "YAML → 校验 → 行号"] }
+    c2: { type: shape, fill: surface, shadow: true, text: ["# 02 编译", "布局、动画参数由代码算出"] }
+    c3: { type: shape, fill: surface, shadow: true, text: ["# 03 检查", "截图、溢出、动画一致性"] }
+  steps:
+    - { enter: [c1, c2, c3], effect: fade-up, stagger: 150 }

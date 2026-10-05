@@ -1,0 +1,30 @@
+id: interact.narrated
+group: narrative
+title: 讲述驱动 + 自由探索
+order: 1
+prompts: [边讲边变的图表, 讲述驱动图表, 一步步讲数据, 讲完再探索, 数据故事, narrated chart]
+use_when: 先按讲述顺序推进图表（换年份 → 高亮重点），讲完后听众可自由点击探索；翻回本页时自动复位到讲述状态
+avoid_when: 数据没有先后的叙事顺序（直接用 interact.bar-explore）
+demo:
+  layout: free
+  objects:
+    title: { type: text, role: title, frame: [120, 70, 1680, 110], text: 排放增长主要来自电力 }
+    chart:
+      type: chart
+      frame: [120, 220, 1180, 770]
+      kind: bar
+      categories: [交通, 工业, 建筑, 电力, 其他]
+      series: { "2020": [200, 260, 180, 320, 240], "2024": [280, 380, 210, 600, 340] }
+      show: ["2020"]
+      switch: true
+      detail: true
+      unit: Mt
+    note: { type: text, role: body, frame: [1360, 290, 440, 640], text: ["# ① 2020 年", "五个部门大致相当"] }
+  states:
+    - {}
+    - override:
+        chart: { show: ["2024"] }
+        note: { text: ["# ② 2024 年", "所有部门都在增长，柱子平滑长高"] }
+    - override:
+        chart: { highlight: 电力 }
+        note: { text: ["# ③ 重点：电力", "从 320 到 600，几乎翻倍", "讲完后可以点击、切换年份自由探索；翻回本页会复位"] }

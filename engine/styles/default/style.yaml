@@ -1,0 +1,66 @@
+# 默认风格：清爽浅色、编辑感排版。token 名可直接在 deck.yaml 中当颜色使用（fill: accent、color: muted …）
+label: 默认（清爽浅色）
+
+colors:
+  light:
+    bg: "#F6F5F1"
+    surface: "#FFFFFF"
+    surface-2: "#ECEAE4"
+    ink: "#16181D"
+    muted: "#5E6571"
+    line: "#D9D6CE"
+    accent: "#2F5BEA"
+    accent-soft: "#DEE6FF"
+    accent-2: "#EE6A2C"
+    accent-2-soft: "#FFE3D4"
+    accent-3: "#0F9F78"
+    accent-3-soft: "#D2F2E7"
+    accent-4: "#7C5CE0"
+    accent-4-soft: "#E7E0FB"
+    success: "#0F9F78"
+    danger: "#D83A3A"
+    code-bg: "#16181D"
+    code-ink: "#E9E7E0"
+  dark:
+    bg: "#101216"
+    surface: "#1A1D23"
+    surface-2: "#252932"
+    ink: "#F3F2EE"
+    muted: "#A1A8B3"
+    line: "#353A45"
+    accent: "#7D98FF"
+    accent-soft: "#26315A"
+    accent-2: "#FF8A50"
+    accent-2-soft: "#4A2A1C"
+    accent-3: "#3CCB9F"
+    accent-3-soft: "#163E33"
+    accent-4: "#A890FF"
+    accent-4-soft: "#2F2650"
+    code-bg: "#1A1D23"
+
+fonts:
+  display: '"Segoe UI Variable Display", "Segoe UI", "Microsoft YaHei UI", "Microsoft YaHei", "PingFang SC", "Noto Sans SC", sans-serif'
+  body: '"Segoe UI Variable Text", "Segoe UI", "Microsoft YaHei UI", "Microsoft YaHei", "PingFang SC", "Noto Sans SC", sans-serif'
+  mono: '"Cascadia Code", "JetBrains Mono", Consolas, "Microsoft YaHei UI", monospace'
+
+# px，以 1920×1080 舞台计
+sizes:
+  hero: 120
+  title: 72
+  heading: 46
+  quote: 60
+  subtitle: 40
+  body: 38
+  small: 30
+  label: 26
+  code: 28
+
+radius: 24
+shadow: "0 1px 2px rgba(20,22,30,.06), 0 10px 30px rgba(20,22,30,.08)"
+
+# 设计约束：check 会据此给出 warning
+rules:
+  maxCharsPerState: 260
+  maxClicksPerState: 8
+  maxObjectsPerState: 20
+  minFontSize: 20

@@ -1,0 +1,18 @@
+id: build.dim-past
+group: emphasis
+title: 讲过的变暗
+order: 4
+prompts: [讲过的变暗, 当前项高亮, 逐项讲解, 聚焦当前这一条, dim previous]
+use_when: 按顺序讲解几个步骤，听众始终知道"现在讲到哪一条"
+avoid_when: 各项需要同时比较
+demo:
+  layout: title-body
+  objects:
+    title: { type: text, role: title, text: 讲到下一项时，上一项变暗 }
+    s1: { type: shape, fill: surface, shadow: true, frame: [120, 290, 1680, 180], valign: middle, text: ["# ① 理解需求", "目标、受众、时长、素材"] }
+    s2: { type: shape, fill: surface, shadow: true, frame: [120, 500, 1680, 180], valign: middle, text: ["# ② 编写 deck", "布局、组件、States 与 steps"] }
+    s3: { type: shape, fill: surface, shadow: true, frame: [120, 710, 1680, 180], valign: middle, text: ["# ③ 检查与评审", "截图 → 修复 → 独立评审"] }
+  steps:
+    - { enter: s1, effect: fade-up }
+    - [{ emphasis: s1, effect: dim }, { enter: s2, effect: fade-up }]
+    - [{ emphasis: s2, effect: dim }, { enter: s3, effect: fade-up }]

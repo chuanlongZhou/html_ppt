@@ -1,0 +1,20 @@
+id: page.title-bullets
+group: text
+title: 标题 + 要点
+order: 4
+prompts: [要点页, 列表页, 几条要点, bullet points, 标题加正文]
+use_when: 3–5 条并列要点；标题直接写结论
+avoid_when: 超过 6 条，或要点之间需要对比（用 page.comparison / page.cards-3）
+demo:
+  layout: title-body
+  objects:
+    title: { type: text, role: title, text: 标题写结论，而不是写主题 }
+    points:
+      type: text
+      role: bullets
+      text:
+        - 每条只讲一件事，控制在一行半以内
+        - 3–5 条最合适，再多就拆页
+        - 关键词用 ==强调色==，不要整句加粗
+        - "+ 子要点用 + 开头，会缩进并变浅"
+        - 段落前缀：- 要点，1. 编号，# 小标题

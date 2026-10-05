@@ -1,0 +1,26 @@
+id: image.spotlight
+group: focus
+title: 聚光灯
+order: 2
+prompts: [聚光灯, 只亮这一块, 其他区域变暗, 高亮截图某个区域, spotlight]
+use_when: 讲解截图或界面的各个区域：当前区域保持明亮，其他压暗；每次点击移到下一个区域
+avoid_when: 区域很小（用 image.circle-mark 圈出来更清楚）
+demo:
+  layout: free
+  objects:
+    title: { type: text, role: title, frame: [120, 70, 1680, 110], z: 5, text: 一次只看一个区域 }
+    shot: { type: image, src: "@lib/sample-ui.png", frame: [120, 230, 1120, 700], radius: 20 }
+    spot: { type: shape, geom: spotlight, radius: 16, stroke: "#FFFFFF", strokeWidth: 3, on: shot, box: [0.161, 0.1, 0.83, 0.16] }
+    note: { type: text, role: body, frame: [1300, 230, 500, 700], z: 5, text: ["# 整体界面", "先让听众看清整张截图"] }
+  states:
+    - show: [title, shot, note]
+    - add: [spot]
+      override:
+        title: { color: "#FFFFFF" }
+        note: { color: "#FFFFFF", text: ["# ① 核心指标", "顶部四张指标卡"] }
+    - override:
+        spot: { box: [0.161, 0.272, 0.535, 0.37] }
+        note: { text: ["# ② 趋势", "每日活跃用户持续上升"] }
+    - override:
+        spot: { box: [0.699, 0.272, 0.285, 0.37] }
+        note: { text: ["# ③ 渠道", "搜索贡献了将近一半"] }

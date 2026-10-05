@@ -1,0 +1,13 @@
+id: page.closing
+group: structure
+title: 结尾页
+order: 99
+prompts: [结尾, 谢谢, 结束页, Q&A, 联系方式, closing]
+use_when: 最后一页：致谢、联系方式、下一步行动
+avoid_when: 用"谢谢"代替总结（结尾前应先有一页 takeaway）
+demo:
+  layout: { type: hero, align: center }
+  objects:
+    title: { type: text, role: title, text: 谢谢 }
+    subtitle: { type: text, role: subtitle, text: 问题与讨论 }
+    meta: { type: text, role: meta, text: github.com/your/repo · you@example.com }

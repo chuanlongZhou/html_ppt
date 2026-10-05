@@ -1,0 +1,14 @@
+id: page.cards-3
+group: visual
+title: 三卡片
+order: 6
+prompts: [三个卡片, 三栏, 三个要点并列, 卡片布局, 三个特点, cards]
+use_when: 2–4 个并列、同等重要的概念或特点
+avoid_when: 有先后顺序（用 build.diagram-flow）或有主次（用 page.split）
+demo:
+  layout: { type: grid, cols: 3, cellHeight: 460 }
+  objects:
+    title: { type: text, role: title, text: 并列的概念用卡片 }
+    c1: { type: shape, fill: surface, shadow: true, text: ["# 结构化", "演示是 YAML 源文件：可以 diff、复用、测试"] }
+    c2: { type: shape, fill: surface, shadow: true, text: ["# 可动画", "同一对象跨 State 平滑变化，动画就是信息"] }
+    c3: { type: shape, fill: accent, color: "#FFFFFF", shadow: true, text: ["# 可检查", "每次改动后自动截图、查溢出、查动画"] }

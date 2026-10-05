@@ -1,0 +1,18 @@
+id: image.text-emphasis
+group: annotate
+title: 截图文字强调
+order: 3
+prompts: [强调截图里的文字, 荧光笔标出, 标出数字, 划出这段, 文字强调, mark text]
+use_when: 截图里的某个数字或某句话就是论点：先用荧光框标出它，再弹出放大的结论
+avoid_when: 截图文字太小、投影看不清（先用 image.zoom-region 放大）
+demo:
+  layout: free
+  objects:
+    title: { type: text, role: title, frame: [120, 70, 1680, 110], text: 把截图里的关键数字"拎出来" }
+    shot: { type: image, src: "@lib/sample-ui.png", frame: [120, 230, 1120, 700], radius: 20, shadow: true }
+    mark: { type: shape, geom: roundRect, radius: 8, fill: "rgba(238,106,44,.22)", stroke: accent-2, strokeWidth: 3, on: shot, box: [0.588, 0.2, 0.17, 0.05] }
+    big: { type: shape, geom: roundRect, fill: accent-2, color: "#FFFFFF", shadow: true, frame: [1300, 300, 500, 300], align: center, valign: middle, text: ["# +12.0%", "月收入环比"], size: 44 }
+    note: { type: text, role: caption, frame: [1300, 640, 500, 200], text: 荧光框用半透明填充 + 描边，wipe 擦出；结论卡片 pop 弹出 }
+  steps:
+    - { enter: mark, effect: wipe, from: left }
+    - { enter: big, effect: pop }

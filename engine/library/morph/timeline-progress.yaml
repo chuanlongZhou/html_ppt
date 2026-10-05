@@ -1,0 +1,46 @@
+id: morph.timeline-progress
+group: data
+title: 时间线推进
+order: 6
+prompts: [时间线, 路线图, 里程碑推进, 进度往前走, roadmap, timeline]
+use_when: 路线图、阶段计划、历史沿革：每次点击推进到下一个节点
+avoid_when: 节点超过 6 个（分段讲）
+demo:
+  layout: free
+  objects:
+    title: { type: text, role: title, frame: [120, 84, 1680, 110], text: 路线图 }
+    track: { type: shape, geom: rect, fill: line, frame: [200, 556, 1520, 8] }
+    prog: { type: shape, geom: rect, fill: accent, frame: [200, 556, 100, 8] }
+    d1: { type: shape, geom: ellipse, fill: accent, frame: [282, 542, 36, 36] }
+    d2: { type: shape, geom: ellipse, fill: line, frame: [722, 542, 36, 36] }
+    d3: { type: shape, geom: ellipse, fill: line, frame: [1162, 542, 36, 36] }
+    d4: { type: shape, geom: ellipse, fill: line, frame: [1602, 542, 36, 36] }
+    ring: { type: shape, geom: ellipse, fill: transparent, stroke: accent, strokeWidth: 4, frame: [264, 524, 72, 72] }
+    t1: { type: text, role: heading, align: center, frame: [120, 420, 360, 80], valign: bottom, text: M0 骨架 }
+    t2: { type: text, role: heading, align: center, color: muted, frame: [560, 420, 360, 80], valign: bottom, text: M1 复刻 PPT }
+    t3: { type: text, role: heading, align: center, color: muted, frame: [1000, 420, 360, 80], valign: bottom, text: M2 原生生成 }
+    t4: { type: text, role: heading, align: center, color: muted, frame: [1440, 420, 360, 80], valign: bottom, text: M3 交互 }
+    s1: { type: text, role: caption, align: center, frame: [120, 630, 360, 160], text: 编译器、效果库、截图 QA }
+    s2: { type: text, role: caption, align: center, frame: [560, 630, 360, 160], opacity: 0.45, text: PPTX 导入、逐步对比 }
+    s3: { type: text, role: caption, align: center, frame: [1000, 630, 360, 160], opacity: 0.45, text: 三套 deck 验证泛化 }
+    s4: { type: text, role: caption, align: center, frame: [1440, 630, 360, 160], opacity: 0.45, text: 状态驱动的交互图表 }
+  states:
+    - {}
+    - override:
+        prog: { frame: [200, 556, 540, 8] }
+        ring: { frame: [704, 524, 72, 72] }
+        d2: { fill: accent }
+        t2: { color: ink }
+        s2: { opacity: 1 }
+    - override:
+        prog: { frame: [200, 556, 980, 8] }
+        ring: { frame: [1144, 524, 72, 72] }
+        d3: { fill: accent }
+        t3: { color: ink }
+        s3: { opacity: 1 }
+    - override:
+        prog: { frame: [200, 556, 1420, 8] }
+        ring: { frame: [1584, 524, 72, 72] }
+        d4: { fill: accent }
+        t4: { color: ink }
+        s4: { opacity: 1 }

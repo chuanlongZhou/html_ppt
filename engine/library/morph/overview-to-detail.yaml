@@ -1,0 +1,25 @@
+id: morph.overview-to-detail
+group: layout
+title: 从概览到详情
+order: 2
+prompts: [从概览到详情, 移到一边展开, 对象移动腾出空间, 展开讲解, move aside]
+use_when: 先展示一个概念，再让它移到一侧、给细节腾出空间——听众始终看得到"在讲哪个"
+avoid_when: 概念与细节没有从属关系
+demo:
+  layout: free
+  objects:
+    card: { type: shape, fill: accent, color: "#FFFFFF", shadow: true, frame: [560, 290, 800, 440], align: center, valign: middle, size: 40, text: ["# Scene", "一组有连续性的 State"] }
+    head: { type: text, role: title, frame: [120, 84, 1680, 110], text: Scene 的三个要素 }
+    detail:
+      type: text
+      role: bullets
+      frame: [780, 270, 1020, 560]
+      text:
+        - "**objects**：对象池，key 即身份"
+        - "**states**：每个 State = 可见对象 + 属性覆盖"
+        - "**transition**：State 之间默认 morph"
+  states:
+    - show: [card]
+    - show: [card, head, detail]
+      override:
+        card: { frame: [120, 270, 560, 560], size: 34 }

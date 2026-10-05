@@ -1,0 +1,15 @@
+id: page.section
+group: structure
+title: 章节页
+order: 2
+prompts: [章节页, 过渡页, 分隔页, 第几部分, section divider]
+use_when: 进入新的部分；深色背景让听众意识到"换话题了"
+avoid_when: 每两三页就插一个（太碎）
+demo:
+  layout: hero
+  theme: dark
+  objects:
+    kicker: { type: text, role: kicker, text: 第 01 部分 }
+    title: { type: text, role: title, text: 核心模型 }
+    subtitle: { type: text, role: subtitle, text: Scene · State · Object }
+    num: { type: text, text: "01", frame: [1100, 120, 700, 760], size: 560, weight: 800, lineHeight: 1, color: accent, opacity: 0.22, align: right, valign: middle, font: display }

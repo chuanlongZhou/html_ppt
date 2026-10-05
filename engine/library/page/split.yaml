@@ -1,0 +1,21 @@
+id: page.split
+group: visual
+title: 左文右图
+order: 5
+prompts: [左文右图, 图文页, 左边文字右边图, 观点加证据, split]
+use_when: 一个结论 + 一张支撑它的图、截图或图表
+avoid_when: 图本身信息量很大（让图占满整页，用 page.full-bleed 或单独一页）
+demo:
+  layout: { type: split, ratio: 45 }
+  objects:
+    title: { type: text, role: title, text: 左边讲观点，右边给证据 }
+    claim: { type: text, role: heading, slot: left, text: 一句话结论放在最上面 }
+    body:
+      type: text
+      role: bullets
+      slot: left
+      text:
+        - 左栏：结论 + 2–3 条支撑
+        - 右栏：图、截图或图表
+        - 比例用 ratio 调整（默认 50）
+    visual: { type: image, src: "@lib/chart.svg", slot: right, fit: contain }

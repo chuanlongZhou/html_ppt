@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 640">
+  <rect width="800" height="640" rx="28" fill="#FFFFFF"/>
+  <text x="56" y="84" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="30" font-weight="700" fill="#16181D">示例图表</text>
+  <text x="56" y="124" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="20" fill="#5E6571">占位图：替换为你的图片 / SVG</text>
+  <g stroke="#D9D6CE" stroke-width="2">
+    <line x1="56" y1="540" x2="744" y2="540"/>
+    <line x1="56" y1="440" x2="744" y2="440" stroke-dasharray="6 8"/>
+    <line x1="56" y1="340" x2="744" y2="340" stroke-dasharray="6 8"/>
+    <line x1="56" y1="240" x2="744" y2="240" stroke-dasharray="6 8"/>
+  </g>
+  <g fill="#DEE6FF">
+    <rect x="96" y="380" width="72" height="160" rx="10"/>
+    <rect x="216" y="320" width="72" height="220" rx="10"/>
+    <rect x="336" y="350" width="72" height="190" rx="10"/>
+    <rect x="456" y="260" width="72" height="280" rx="10"/>
+  </g>
+  <rect x="576" y="190" width="72" height="350" rx="10" fill="#2F5BEA"/>
+  <polyline points="132,360 252,300 372,320 492,236 612,168" fill="none" stroke="#EE6A2C" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <g fill="#EE6A2C">
+    <circle cx="132" cy="360" r="9"/><circle cx="252" cy="300" r="9"/><circle cx="372" cy="320" r="9"/><circle cx="492" cy="236" r="9"/><circle cx="612" cy="168" r="11"/>
+  </g>
+</svg>
