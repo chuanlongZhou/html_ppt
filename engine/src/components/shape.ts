@@ -1,3 +1,4 @@
+/** shape 组件：几何形状（含 spotlight）、形状内文字与自适应内边距 */
 import { z } from 'zod';
 import { base, textStyle, TextContent, ROLES, Color, Point, textStyleCss, valignClass, autoPadding, type RenderCtx, type Rendered } from './common.ts';
 import { renderText } from './text.ts';

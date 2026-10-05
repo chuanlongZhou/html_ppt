@@ -1,3 +1,4 @@
+/** 仓库内各目录的绝对路径、相对路径显示，以及 CLI 用法错误类型 */
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import fs from 'node:fs';
