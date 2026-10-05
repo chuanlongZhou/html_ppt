@@ -43,7 +43,7 @@ export function renderDeck(ir: IRDeck, libBase = 'lib/'): { html: string; manife
       n++;
     });
   }
-  const config = { stage: ir.stage, slideNumber: ir.slideNumber };
+  const config = { stage: ir.stage, slideNumber: ir.slideNumber, chrome: ir.chrome, total: ir.scenes.length, meta: ir.meta };
   const html = `<!doctype html>
 <html lang="zh-CN">
 <head>
@@ -63,7 +63,7 @@ ${sections.join('\n')}
 <script src="${libBase}reveal/plugin/notes.js"></script>
 <script src="charts.js"></script>
 <script src="runtime.js"></script>
-<script>HtmlPpt.init(${JSON.stringify(config)});</script>
+<script>HtmlPpt.init(${JSON.stringify(config).replace(/</g, '\\u003c')});</script>
 </body>
 </html>
 `;
@@ -79,6 +79,11 @@ function renderState(ir: IRDeck, scene: IRScene, st: IRState, si: number, sectio
     'data-auto-animate-easing': st.transition.easing,
     'data-transition': si === 0 ? scene.transition : intent === 'none' ? 'none' : 'fade',
     'data-background-color': scene.background,
+    // 页面元素与"换主题预览"需要的信息：页码、章节、背景 token、是否隐藏 / 覆盖
+    'data-bg': scene.bgToken,
+    'data-n': scene.chrome.n,
+    'data-section': scene.chrome.section,
+    'data-chrome': scene.chrome.off ? 'off' : scene.chrome.override ? JSON.stringify(scene.chrome.override) : undefined,
     'data-scene': scene.id,
     'data-state': si,
   };

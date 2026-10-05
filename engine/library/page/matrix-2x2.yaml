@@ -1,0 +1,22 @@
+id: page.matrix-2x2
+group: diagram
+title: 四象限矩阵
+order: 2
+prompts: [四象限, 矩阵, 2x2, 优先级矩阵, 二维分类, 波士顿矩阵, quadrant]
+use_when: 用两个维度（如价值 × 成本）把事物分成四类，每类一句话建议
+avoid_when: 维度不止两个；分类没有明确的"哪个象限更好"
+demo:
+  layout: title-body
+  objects:
+    title: { type: text, role: title, text: 先做高价值、低成本的事 }
+    ylab_hi: { type: text, role: label, align: center, valign: middle, frame: [120, 270, 90, 310], text: 价值高 }
+    ylab_lo: { type: text, role: label, align: center, valign: middle, frame: [120, 600, 90, 310], text: 价值低 }
+    q1: { type: shape, fill: accent-3-soft, frame: [230, 270, 780, 310], text: ["# 马上做", "高价值 · 低成本"] }
+    q2: { type: shape, fill: accent-soft, frame: [1030, 270, 770, 310], text: ["# 认真规划", "高价值 · 高成本"] }
+    q3: { type: shape, fill: surface-2, frame: [230, 600, 780, 310], text: ["# 顺手做", "低价值 · 低成本"] }
+    q4: { type: shape, fill: surface-2, frame: [1030, 600, 770, 310], text: ["# 先不做", "低价值 · 高成本"] }
+    xlab: { type: text, role: label, align: center, frame: [230, 924, 1570, 40], text: "← 成本低　　　　　　　　　　　　　　　　　　　　　　成本高 →" }
+  steps:
+    - { enter: q1, effect: pop }
+    - { enter: q2, effect: pop }
+    - { enter: [q3, q4], effect: fade }

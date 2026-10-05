@@ -25,15 +25,17 @@ output/<deck>/site/（离线可放映） · qa/report.json · qa/shots · qa/con
 | `engine/src/layout.ts` | 布局 recipe 与 slot 矩形计算 |
 | `engine/src/motion.ts` | Motion Grammar v0：preset 表、intent、默认时长 |
 | `engine/src/components/` | 组件：schema + render + motion 声明（text、shape、image、metric、html） |
-| `engine/src/runtime/reveal/` | **唯一的 Reveal 适配层**：render.ts、runtime.js（初始化 + data-id matcher）、runtime.css、fx.css |
+| `engine/src/runtime/reveal/` | **唯一的 Reveal 适配层**：render.ts、runtime.js（初始化 + data-id matcher + 页面元素 chrome + 主题预览消息）、runtime.css、fx.css |
 | `engine/src/style.ts` · `engine/styles/<name>/` | 风格：tokens（颜色、字体、字号）+ rules（QA 读取）+ style.css |
 | `engine/src/library.ts` · `engine/library/` | 效果库：条目加载、匹配；`assets/` 为条目素材 |
 | `engine/src/qa/check.ts` | 截图、DOM QA、contact sheet、morph 帧 |
 | `engine/src/catalog.ts` | 生成 `engine/CATALOG.md` 与 `engine/library/INDEX.md` |
 | `engine/src/components/chart.ts` · `runtime/reveal/charts.js` | 交互图表：编译期输出数据规格，浏览器端渲染、交互、联动、State 间数据过渡（ADR-007） |
 | `engine/src/imagesize.ts` | 图片原始尺寸与 fit / zoom 几何；图片坐标标注（ADR-008） |
-| `engine/src/gallery.ts` | 效果库浏览器 `output/_gallery/`：每个条目一个迷你 deck、缩略图、浏览与预览页面 |
-| `engine/src/dev.ts` · `serve.ts` | 实时预览服务器（SSE 自动刷新） |
+| `engine/src/gallery.ts` | 效果库浏览器 `output/_gallery/`：每个条目一个迷你 deck、缩略图、条目预览页；另含主题预览 deck |
+| `engine/src/home.ts` · `engine/src/home/` | 主页（dev 的 `/` 与静态 `_gallery/index.html` 共用）：我的演示、主题与页面元素工作台、页面结构、动画与交互；`home.css` / `home.js` / `studio.js` 是真实文件 |
+| `engine/src/theme.ts` · `theme-derive.js` · `engine/themes/` | 主题：预设（种子色）与项目 `theme.yaml`；`theme-derive.js` 由种子色推导全部 token，引擎与主页共用（ADR-009） |
+| `engine/src/dev.ts` · `serve.ts` | 实时预览服务器（SSE 自动刷新；主页局部刷新；`POST /__new` 从主页新建演示） |
 | `engine/src/scaffold.ts` | `new`、`agents-sync` |
 
 ## 核心模型
@@ -59,4 +61,5 @@ output/<deck>/site/（离线可放映） · qa/report.json · qa/shots · qa/con
 | PPTX 导入（M1） | `layout: free` + `frame` + 精确 preset 参数；两级动画与 PowerPoint 一一对应 |
 | 其他运行时 / 导出 | IR 不含 Reveal 概念 |
 | 多风格 | `deck.style` + `engine/styles/<name>/` |
+| 主题 / 页面元素 | `deck.theme`（预设或 theme.yaml）+ `deck.chrome` + scene 的 `chrome` / `section`（ADR-009） |
 | 其他 AI 工具 | AGENTS.md + agents/ 为唯一来源；CLI 是通用接口 |

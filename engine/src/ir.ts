@@ -5,6 +5,7 @@
 import type { Rect, ResolvedLayout } from './layout.ts';
 import type { Dir, FxKind, Intent, SceneTransition } from './motion.ts';
 import type { Style } from './style.ts';
+import type { ChromeSrc } from './schema.ts';
 
 export interface IRFx {
   kind: FxKind;
@@ -55,6 +56,10 @@ export interface IRScene {
   purpose?: string;
   theme: 'light' | 'dark';
   background: string;
+  /** 背景的 token 名或 CSS 颜色（主页预览换主题时重新取色） */
+  bgToken: string;
+  /** 页面元素：本页是否隐藏、第几页、所属章节、仅本页的覆盖 */
+  chrome: { off: boolean; n: number; section?: string; override?: ChromeSrc };
   transition: SceneTransition;
   states: IRState[];
   file: string;
@@ -69,6 +74,9 @@ export interface IRDeck {
   style: Style;
   slideNumber: boolean;
   showPatterns: boolean;
+  /** 页面元素（主题与 deck.chrome 合并后；logo.src 已换成发布路径）；没有则不渲染 */
+  chrome?: ChromeSrc;
+  meta: { title: string; subtitle?: string; author?: string; date?: string };
   scenes: IRScene[];
   /** 需要拷贝进 site 的资源：发布路径 → 源文件 */
   assets: Map<string, string>;

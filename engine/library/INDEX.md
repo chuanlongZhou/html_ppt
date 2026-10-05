@@ -14,9 +14,9 @@
 
 | 类别 | 说明 | 分组（条目数） |
 |---|---|---|
-| `page` 页面版式 | 常用页面的版式与配色 | 结构页（3） · 文字页（4） · 图文与对比（4） · 数据页（1） |
+| `page` 页面结构 | 常用页面的版式与配色：封面、目录、章节、要点、对比、数据、时间线、总结 | 结构页（5） · 文字页（4） · 图文与对比（5） · 数据页（3） · 流程与框架（2） |
 | `build` 页内动画 | 一页之内逐次点击：出现、强调、搭建 | 出现（4） · 强调（2） · 结构搭建（1） |
-| `morph` 状态切换 | 同一画面在多个 State 之间平滑变化 | 版面变化（3） · 聚焦（1） · 数据与进度（2） |
+| `morph` 状态切换 | 同一画面在多个 State 之间平滑变化 | 版面变化（4） · 聚焦（1） · 数据与进度（2） |
 | `interact` 交互数据 | 可悬停、点击、切换的图表与数据面板；讲述推进和自由探索共用同一套状态 | 交互图表（3） · 联动与面板（2） · 讲述 + 探索（1） |
 | `image` 位图操作 | 对截图、照片等位图做局部放大、标注、聚光与对比 | 放大与聚光（2） · 标注（3） · 对比（1） |
 
@@ -24,18 +24,25 @@
 
 | 提示词 | 条目 | 分类 |
 |---|---|---|
-| 「封面」 「标题页」 「开场页」 「第一页」 「cover slide」 | [`page.cover`](#pagecover) 封面 | 页面版式 · 结构页 |
-| 「章节页」 「过渡页」 「分隔页」 「第几部分」 「section divider」 | [`page.section`](#pagesection) 章节页 | 页面版式 · 结构页 |
-| 「结尾」 「谢谢」 「结束页」 「Q&A」 「联系方式」 「closing」 | [`page.closing`](#pageclosing) 结尾页 | 页面版式 · 结构页 |
-| 「观点页」 「金句」 「一句话结论」 「大字报」 「强调一个观点」 「big statement」 | [`page.statement`](#pagestatement) 观点页 | 页面版式 · 文字页 |
-| 「要点页」 「列表页」 「几条要点」 「bullet points」 「标题加正文」 | [`page.title-bullets`](#pagetitle-bullets) 标题 + 要点 | 页面版式 · 文字页 |
-| 「引用」 「名言」 「用户原话」 「引述」 「quote」 | [`page.quote`](#pagequote) 引用 | 页面版式 · 文字页 |
-| 「代码页」 「展示代码」 「配置示例」 「代码讲解」 「code」 | [`page.code`](#pagecode) 代码 + 讲解 | 页面版式 · 文字页 |
-| 「左文右图」 「图文页」 「左边文字右边图」 「观点加证据」 「split」 | [`page.split`](#pagesplit) 左文右图 | 页面版式 · 图文与对比 |
-| 「三个卡片」 「三栏」 「三个要点并列」 「卡片布局」 「三个特点」 「cards」 | [`page.cards-3`](#pagecards-3) 三卡片 | 页面版式 · 图文与对比 |
-| 「对比」 「之前之后」 「before after」 「优缺点」 「两种方案对比」 「vs」 | [`page.comparison`](#pagecomparison) 左右对比 | 页面版式 · 图文与对比 |
-| 「全屏图片」 「背景图」 「图片铺满」 「大图配标题」 「full bleed」 | [`page.full-bleed`](#pagefull-bleed) 全图背景 | 页面版式 · 图文与对比 |
-| 「大数字」 「一个数字」 「关键指标」 「数据亮点」 「KPI」 「big number」 | [`page.big-number`](#pagebig-number) 大数字 | 页面版式 · 数据页 |
+| 「封面」 「标题页」 「开场页」 「第一页」 「cover slide」 | [`page.cover`](#pagecover) 封面 | 页面结构 · 结构页 |
+| 「章节页」 「过渡页」 「分隔页」 「第几部分」 「section divider」 | [`page.section`](#pagesection) 章节页 | 页面结构 · 结构页 |
+| 「目录」 「议程」 「大纲页」 「今天讲什么」 「内容提纲」 「agenda」 「contents」 | [`page.agenda`](#pageagenda) 目录页 | 页面结构 · 结构页 |
+| 「总结」 「小结」 「takeaway」 「要点回顾」 「带走什么」 「结论页」 「summary」 | [`page.summary`](#pagesummary) 总结页 | 页面结构 · 结构页 |
+| 「结尾」 「谢谢」 「结束页」 「Q&A」 「联系方式」 「closing」 | [`page.closing`](#pageclosing) 结尾页 | 页面结构 · 结构页 |
+| 「观点页」 「金句」 「一句话结论」 「大字报」 「强调一个观点」 「big statement」 | [`page.statement`](#pagestatement) 观点页 | 页面结构 · 文字页 |
+| 「要点页」 「列表页」 「几条要点」 「bullet points」 「标题加正文」 | [`page.title-bullets`](#pagetitle-bullets) 标题 + 要点 | 页面结构 · 文字页 |
+| 「引用」 「名言」 「用户原话」 「引述」 「quote」 | [`page.quote`](#pagequote) 引用 | 页面结构 · 文字页 |
+| 「代码页」 「展示代码」 「配置示例」 「代码讲解」 「code」 | [`page.code`](#pagecode) 代码 + 讲解 | 页面结构 · 文字页 |
+| 「左文右图」 「图文页」 「左边文字右边图」 「观点加证据」 「split」 | [`page.split`](#pagesplit) 左文右图 | 页面结构 · 图文与对比 |
+| 「三个卡片」 「三栏」 「三个要点并列」 「卡片布局」 「三个特点」 「cards」 | [`page.cards-3`](#pagecards-3) 三卡片 | 页面结构 · 图文与对比 |
+| 「对比」 「之前之后」 「before after」 「优缺点」 「两种方案对比」 「vs」 | [`page.comparison`](#pagecomparison) 左右对比 | 页面结构 · 图文与对比 |
+| 「团队介绍」 「人物介绍」 「我们的团队」 「核心成员」 「嘉宾介绍」 「team」 「讲者介绍」 | [`page.team`](#pageteam) 团队 / 人物介绍 | 页面结构 · 图文与对比 |
+| 「全屏图片」 「背景图」 「图片铺满」 「大图配标题」 「full bleed」 | [`page.full-bleed`](#pagefull-bleed) 全图背景 | 页面结构 · 图文与对比 |
+| 「大数字」 「一个数字」 「关键指标」 「数据亮点」 「KPI」 「big number」 | [`page.big-number`](#pagebig-number) 大数字 | 页面结构 · 数据页 |
+| 「四个数字」 「关键指标」 「KPI 看板」 「指标卡片」 「数据概览」 「四个指标」 「dashboard」 | [`page.metrics-4`](#pagemetrics-4) 四个关键指标 | 页面结构 · 数据页 |
+| 「表格」 「数据表」 「对比表」 「参数表」 「方案对比表」 「table」 「价格表」 | [`page.table`](#pagetable) 表格 | 页面结构 · 数据页 |
+| 「时间线」 「路线图」 「里程碑」 「发展历程」 「阶段计划」 「roadmap」 「timeline」 「五个阶段」 | [`page.timeline`](#pagetimeline) 时间线 / 路线图 | 页面结构 · 流程与框架 |
+| 「四象限」 「矩阵」 「2x2」 「优先级矩阵」 「二维分类」 「波士顿矩阵」 「quadrant」 | [`page.matrix-2x2`](#pagematrix-2x2) 四象限矩阵 | 页面结构 · 流程与框架 |
 | 「逐条出现」 「一条一条显示」 「要点依次出现」 「点一下出一条」 「bullets one by one」 | [`build.bullets-one-by-one`](#buildbullets-one-by-one) 逐条出现 | 页内动画 · 出现 |
 | 「卡片依次出现」 「依次浮现」 「错开出现」 「一个接一个」 「stagger」 | [`build.cards-stagger`](#buildcards-stagger) 卡片依次浮现 | 页内动画 · 出现 |
 | 「条形图出现」 「擦除」 「从左往右出现」 「进度条」 「数据条依次出现」 「wipe」 | [`build.wipe-bars`](#buildwipe-bars) 条形图擦除出现 | 页内动画 · 出现 |
@@ -46,6 +53,7 @@
 | 「标题上移」 「标题缩小到顶部」 「从标题过渡到内容」 「magic move 标题」 | [`morph.title-to-header`](#morphtitle-to-header) 标题上移，内容进场 | 状态切换 · 版面变化 |
 | 「从概览到详情」 「移到一边展开」 「对象移动腾出空间」 「展开讲解」 「move aside」 | [`morph.overview-to-detail`](#morphoverview-to-detail) 从概览到详情 | 状态切换 · 版面变化 |
 | 「列表变网格」 「重新排列」 「布局切换」 「横排变竖排」 「rearrange」 | [`morph.layout-switch`](#morphlayout-switch) 列表变网格 | 状态切换 · 版面变化 |
+| 「首字母缩写」 「缩略词展开」 「项目全称收拢成名字」 「字母合并」 「开场 morph 成 logo 字」 「acronym」 | [`morph.acronym-collapse`](#morphacronym-collapse) 缩略词收拢成品牌字 | 状态切换 · 版面变化 |
 | 「放大其中一个」 「聚焦」 「突出某一项」 「其他变暗」 「zoom in」 「focus」 | [`morph.focus-zoom`](#morphfocus-zoom) 放大其中一项 | 状态切换 · 聚焦 |
 | 「数据变化」 「柱子长高」 「柱状图动画」 「从去年到今年」 「数值增长」 「chart animation」 | [`morph.chart-grow`](#morphchart-grow) 柱状图数值变化 | 状态切换 · 数据与进度 |
 | 「时间线」 「路线图」 「里程碑推进」 「进度往前走」 「roadmap」 「timeline」 | [`morph.timeline-progress`](#morphtimeline-progress) 时间线推进 | 状态切换 · 数据与进度 |
@@ -62,9 +70,9 @@
 | 「强调截图里的文字」 「荧光笔标出」 「标出数字」 「划出这段」 「文字强调」 「mark text」 | [`image.text-emphasis`](#imagetext-emphasis) 截图文字强调 | 位图操作 · 标注 |
 | 「前后对比」 「处理前处理后」 「对比两张图」 「修图前后」 「before after 图片」 | [`image.before-after`](#imagebefore-after) 前后对比 | 位图操作 · 对比 |
 
-## page — 页面版式：常用页面的版式与配色
+## page — 页面结构：常用页面的版式与配色：封面、目录、章节、要点、对比、数据、时间线、总结
 
-### 页面版式 · 结构页
+### 页面结构 · 结构页
 
 #### page.cover
 
@@ -171,6 +179,80 @@
       font: display
 ```
 
+#### page.agenda
+
+**目录页** · 文件 `engine/library/page/agenda.yaml`
+
+- 提示词：「目录」 「议程」 「大纲页」 「今天讲什么」 「内容提纲」 「agenda」 「contents」
+- 适合：封面之后，用 3–5 项告诉听众这次会讲什么、按什么顺序；左边一句话立场，右边编号列表
+- 不适合：只有一两个部分的短演示（直接开讲）；超过 5 项（合并成 4–5 个部分）
+- 调用：`- { id: <scene-id>, use: page.agenda }`
+
+```yaml
+- id: agenda
+  layout:
+    type: split
+    ratio: 36
+  objects:
+    title:
+      type: text
+      role: title
+      text: 今天讲四件事
+    lead:
+      type: text
+      role: subtitle
+      slot: left
+      text: 先给结论，再讲证据，最后落到行动
+    items:
+      type: text
+      role: bullets
+      slot: right
+      text:
+        - 1. **背景与问题**
+        - + 为什么现在必须做
+        - 2. **方案与取舍**
+        - + 我们选了什么，放弃了什么
+        - 3. **结果与证据**
+        - + 数据怎么说
+        - 4. **下一步**
+        - + 需要你们做的决定
+```
+
+#### page.summary
+
+**总结页** · 文件 `engine/library/page/summary.yaml`
+
+- 提示词：「总结」 「小结」 「takeaway」 「要点回顾」 「带走什么」 「结论页」 「summary」
+- 适合：结尾之前的一页：把全篇收成 3 句话，再给出明确的下一步行动
+- 不适合：把所有内容再复述一遍（只留 3 条，每条一句）
+- 调用：`- { id: <scene-id>, use: page.summary }`
+
+```yaml
+- id: summary
+  layout: title-body
+  objects:
+    title:
+      type: text
+      role: title
+      text: 带走这三件事
+    points:
+      type: text
+      role: bullets
+      text:
+        - 1. **结论先行**：标题写结论，不写主题
+        - 2. **一页一个意思**：多了就拆成多个 State
+        - 3. **数据说话**：关键数字单独放大，并标明来源
+    next:
+      type: text
+      role: callout
+      text: 下一步 → 本周内确认范围与负责人
+  steps:
+    - enter: points
+      by: paragraph
+    - enter: next
+      effect: fade
+```
+
 #### page.closing
 
 **结尾页** · 文件 `engine/library/page/closing.yaml`
@@ -200,7 +282,7 @@
       text: github.com/your/repo · you@example.com
 ```
 
-### 页面版式 · 文字页
+### 页面结构 · 文字页
 
 #### page.statement
 
@@ -327,7 +409,7 @@
         - 坐标、动画参数由引擎计算
 ```
 
-### 页面版式 · 图文与对比
+### 页面结构 · 图文与对比
 
 #### page.split
 
@@ -449,6 +531,209 @@
         - "- 改一处，只动一处"
 ```
 
+#### page.team
+
+**团队 / 人物介绍** · 文件 `engine/library/page/team.yaml`
+
+- 提示词：「团队介绍」 「人物介绍」 「我们的团队」 「核心成员」 「嘉宾介绍」 「team」 「讲者介绍」
+- 适合：介绍 3–4 个人：头像、姓名、角色、一句话背景
+- 不适合：超过 4 人（改成名单或只放 logo 墙）
+- 调用：`- { id: <scene-id>, use: page.team }`
+
+```yaml
+- id: team
+  layout: title-body
+  objects:
+    title:
+      type: text
+      role: title
+      text: 一支小而全的团队
+    c1:
+      type: shape
+      fill: surface
+      shadow: true
+      frame:
+        - 120
+        - 290
+        - 390
+        - 580
+    c2:
+      type: shape
+      fill: surface
+      shadow: true
+      frame:
+        - 550
+        - 290
+        - 390
+        - 580
+    c3:
+      type: shape
+      fill: surface
+      shadow: true
+      frame:
+        - 980
+        - 290
+        - 390
+        - 580
+    c4:
+      type: shape
+      fill: surface
+      shadow: true
+      frame:
+        - 1410
+        - 290
+        - 390
+        - 580
+    a1:
+      type: shape
+      geom: ellipse
+      fill: accent-soft
+      color: accent
+      size: 72
+      weight: 800
+      align: center
+      valign: middle
+      frame:
+        - 235
+        - 330
+        - 160
+        - 160
+      text: 周
+    a2:
+      type: shape
+      geom: ellipse
+      fill: accent-2-soft
+      color: accent-2
+      size: 72
+      weight: 800
+      align: center
+      valign: middle
+      frame:
+        - 665
+        - 330
+        - 160
+        - 160
+      text: 李
+    a3:
+      type: shape
+      geom: ellipse
+      fill: accent-3-soft
+      color: accent-3
+      size: 72
+      weight: 800
+      align: center
+      valign: middle
+      frame:
+        - 1095
+        - 330
+        - 160
+        - 160
+      text: 王
+    a4:
+      type: shape
+      geom: ellipse
+      fill: accent-4-soft
+      color: accent-4
+      size: 72
+      weight: 800
+      align: center
+      valign: middle
+      frame:
+        - 1525
+        - 330
+        - 160
+        - 160
+      text: 陈
+    n1:
+      type: text
+      align: center
+      size: 30
+      frame:
+        - 140
+        - 520
+        - 350
+        - 120
+      text:
+        - "# 周川"
+        - 项目负责人
+    n2:
+      type: text
+      align: center
+      size: 30
+      frame:
+        - 570
+        - 520
+        - 350
+        - 120
+      text:
+        - "# 李明"
+        - 工程
+    n3:
+      type: text
+      align: center
+      size: 30
+      frame:
+        - 1000
+        - 520
+        - 350
+        - 120
+      text:
+        - "# 王芳"
+        - 设计
+    n4:
+      type: text
+      align: center
+      size: 30
+      frame:
+        - 1430
+        - 520
+        - 350
+        - 120
+      text:
+        - "# 陈静"
+        - 数据分析
+    b1:
+      type: text
+      role: caption
+      align: center
+      frame:
+        - 150
+        - 660
+        - 330
+        - 170
+      text: 一句话背景：做过什么，擅长什么
+    b2:
+      type: text
+      role: caption
+      align: center
+      frame:
+        - 580
+        - 660
+        - 330
+        - 170
+      text: 一句话背景：做过什么，擅长什么
+    b3:
+      type: text
+      role: caption
+      align: center
+      frame:
+        - 1010
+        - 660
+        - 330
+        - 170
+      text: 一句话背景：做过什么，擅长什么
+    b4:
+      type: text
+      role: caption
+      align: center
+      frame:
+        - 1440
+        - 660
+        - 330
+        - 170
+      text: 一句话背景：做过什么，擅长什么
+```
+
 #### page.full-bleed
 
 **全图背景** · 文件 `engine/library/page/full-bleed.yaml`
@@ -504,7 +789,7 @@
       text: 图片铺满舞台，叠一层半透明遮罩保证文字可读
 ```
 
-### 页面版式 · 数据页
+### 页面结构 · 数据页
 
 #### page.big-number
 
@@ -536,6 +821,469 @@
       type: text
       role: caption
       text: 大数字 + 单位 + 一句解释；数据来源写在 source 字段
+```
+
+#### page.metrics-4
+
+**四个关键指标** · 文件 `engine/library/page/metrics-4.yaml`
+
+- 提示词：「四个数字」 「关键指标」 「KPI 看板」 「指标卡片」 「数据概览」 「四个指标」 「dashboard」
+- 适合：一页同时交代 3–4 个并列的关键数字（规模、增速、占比…），每个配一句解释
+- 不适合：只有一个重点数字（用 page.big-number）；需要看趋势（用 morph.chart-grow）
+- 调用：`- { id: <scene-id>, use: page.metrics-4 }`
+
+```yaml
+- id: metrics-4
+  layout: title-body
+  objects:
+    title:
+      type: text
+      role: title
+      text: 过去一年的四个关键数字
+    k1:
+      type: shape
+      fill: surface
+      shadow: true
+      frame:
+        - 120
+        - 300
+        - 390
+        - 360
+    k2:
+      type: shape
+      fill: surface
+      shadow: true
+      frame:
+        - 550
+        - 300
+        - 390
+        - 360
+    k3:
+      type: shape
+      fill: surface
+      shadow: true
+      frame:
+        - 980
+        - 300
+        - 390
+        - 360
+    k4:
+      type: shape
+      fill: accent-soft
+      frame:
+        - 1410
+        - 300
+        - 390
+        - 360
+    m1:
+      type: metric
+      value: "128"
+      unit: 城市
+      label: 覆盖城市数（示例数据）
+      size: 120
+      frame:
+        - 156
+        - 340
+        - 318
+        - 290
+      delta: +18 vs 去年
+      tone: up
+    m2:
+      type: metric
+      value: "3.1"
+      unit: Gt
+      label: 年度总量（示例数据）
+      size: 120
+      frame:
+        - 586
+        - 340
+        - 318
+        - 290
+      delta: −12%
+      tone: up
+    m3:
+      type: metric
+      value: "92"
+      unit: "%"
+      label: 数据完整率（示例数据）
+      size: 120
+      frame:
+        - 1016
+        - 340
+        - 318
+        - 290
+      delta: 持平
+      tone: neutral
+    m4:
+      type: metric
+      value: "7.4"
+      unit: 万
+      label: 月活用户（示例数据）
+      size: 120
+      frame:
+        - 1446
+        - 340
+        - 318
+        - 290
+      delta: +31%
+      tone: up
+    source:
+      type: text
+      role: caption
+      frame:
+        - 120
+        - 700
+        - 1680
+        - 50
+      text: 来源：示例数据，使用时替换并标明出处
+```
+
+#### page.table
+
+**表格** · 文件 `engine/library/page/table.yaml`
+
+- 提示词：「表格」 「数据表」 「对比表」 「参数表」 「方案对比表」 「table」 「价格表」
+- 适合：3–5 列、不超过 6 行的结构化数据；高亮行用 class="hl"，数字列用 class="num" 右对齐
+- 不适合：行列很多（挑重点，其余放附录）；要看趋势（用 chart 组件）
+- 调用：`- { id: <scene-id>, use: page.table }`
+
+```yaml
+- id: table
+  layout: title-body
+  objects:
+    title:
+      type: text
+      role: title
+      text: 三个方案的对比，一眼看出差别
+    grid:
+      type: html
+      size: 34
+      html: |
+        <table class="tbl">
+          <thead><tr><th>方案</th><th class="num">成本</th><th class="num">周期</th><th>风险</th></tr></thead>
+          <tbody>
+            <tr><td>A　自研</td><td class="num">120 万</td><td class="num">6 个月</td><td>中</td></tr>
+            <tr class="hl"><td>B　采购 + 定制</td><td class="num">80 万</td><td class="num">3 个月</td><td>低</td></tr>
+            <tr><td>C　外包</td><td class="num">60 万</td><td class="num">4 个月</td><td>高</td></tr>
+          </tbody>
+        </table>
+```
+
+### 页面结构 · 流程与框架
+
+#### page.timeline
+
+**时间线 / 路线图** · 文件 `engine/library/page/timeline.yaml`
+
+- 提示词：「时间线」 「路线图」 「里程碑」 「发展历程」 「阶段计划」 「roadmap」 「timeline」 「五个阶段」
+- 适合：按时间或阶段排列 3–5 个节点；每个节点一个时间、一句标题、一行说明；点击逐个出现
+- 不适合：需要在同一画面里一步步推进进度（用 morph.timeline-progress）；超过 5 个节点（拆成两页）
+- 调用：`- { id: <scene-id>, use: page.timeline }`
+
+```yaml
+- id: timeline
+  layout: title-body
+  objects:
+    title:
+      type: text
+      role: title
+      text: 五个阶段，一年落地
+    line:
+      type: shape
+      geom: line
+      from:
+        - 150
+        - 500
+      to:
+        - 1770
+        - 500
+      stroke: line
+      strokeWidth: 6
+    n1:
+      type: shape
+      geom: ellipse
+      fill: accent
+      frame:
+        - 270
+        - 482
+        - 36
+        - 36
+    n2:
+      type: shape
+      geom: ellipse
+      fill: accent
+      frame:
+        - 606
+        - 482
+        - 36
+        - 36
+    n3:
+      type: shape
+      geom: ellipse
+      fill: accent
+      frame:
+        - 942
+        - 482
+        - 36
+        - 36
+    n4:
+      type: shape
+      geom: ellipse
+      fill: accent
+      frame:
+        - 1278
+        - 482
+        - 36
+        - 36
+    n5:
+      type: shape
+      geom: ellipse
+      fill: accent-2
+      frame:
+        - 1614
+        - 482
+        - 36
+        - 36
+    y1:
+      type: text
+      size: 46
+      weight: 800
+      color: accent
+      align: center
+      frame:
+        - 138
+        - 388
+        - 300
+        - 80
+      text: Q1
+    y2:
+      type: text
+      size: 46
+      weight: 800
+      color: accent
+      align: center
+      frame:
+        - 474
+        - 388
+        - 300
+        - 80
+      text: Q2
+    y3:
+      type: text
+      size: 46
+      weight: 800
+      color: accent
+      align: center
+      frame:
+        - 810
+        - 388
+        - 300
+        - 80
+      text: Q3
+    y4:
+      type: text
+      size: 46
+      weight: 800
+      color: accent
+      align: center
+      frame:
+        - 1146
+        - 388
+        - 300
+        - 80
+      text: Q4
+    y5:
+      type: text
+      size: 46
+      weight: 800
+      color: accent-2
+      align: center
+      frame:
+        - 1482
+        - 388
+        - 300
+        - 80
+      text: 明年
+    d1:
+      type: text
+      align: center
+      size: 30
+      frame:
+        - 138
+        - 548
+        - 300
+        - 190
+      text:
+        - "# 立项"
+        - 明确目标与范围
+    d2:
+      type: text
+      align: center
+      size: 30
+      frame:
+        - 474
+        - 548
+        - 300
+        - 190
+      text:
+        - "# 原型"
+        - 做出可演示的最小版本
+    d3:
+      type: text
+      align: center
+      size: 30
+      frame:
+        - 810
+        - 548
+        - 300
+        - 190
+      text:
+        - "# 试点"
+        - 小范围真实使用
+    d4:
+      type: text
+      align: center
+      size: 30
+      frame:
+        - 1146
+        - 548
+        - 300
+        - 190
+      text:
+        - "# 发布"
+        - 正式上线
+    d5:
+      type: text
+      align: center
+      size: 30
+      frame:
+        - 1482
+        - 548
+        - 300
+        - 190
+      text:
+        - "# 推广"
+        - 扩大到全部团队
+  steps:
+    - - enter: n1
+      - enter: y1
+      - enter: d1
+    - - enter: n2
+      - enter: y2
+      - enter: d2
+    - - enter: n3
+      - enter: y3
+      - enter: d3
+    - - enter: n4
+      - enter: y4
+      - enter: d4
+    - - enter: n5
+      - enter: y5
+      - enter: d5
+```
+
+#### page.matrix-2x2
+
+**四象限矩阵** · 文件 `engine/library/page/matrix-2x2.yaml`
+
+- 提示词：「四象限」 「矩阵」 「2x2」 「优先级矩阵」 「二维分类」 「波士顿矩阵」 「quadrant」
+- 适合：用两个维度（如价值 × 成本）把事物分成四类，每类一句话建议
+- 不适合：维度不止两个；分类没有明确的"哪个象限更好"
+- 调用：`- { id: <scene-id>, use: page.matrix-2x2 }`
+
+```yaml
+- id: matrix-2x2
+  layout: title-body
+  objects:
+    title:
+      type: text
+      role: title
+      text: 先做高价值、低成本的事
+    ylab_hi:
+      type: text
+      role: label
+      align: center
+      valign: middle
+      frame:
+        - 120
+        - 270
+        - 90
+        - 310
+      text: 价值高
+    ylab_lo:
+      type: text
+      role: label
+      align: center
+      valign: middle
+      frame:
+        - 120
+        - 600
+        - 90
+        - 310
+      text: 价值低
+    q1:
+      type: shape
+      fill: accent-3-soft
+      frame:
+        - 230
+        - 270
+        - 780
+        - 310
+      text:
+        - "# 马上做"
+        - 高价值 · 低成本
+    q2:
+      type: shape
+      fill: accent-soft
+      frame:
+        - 1030
+        - 270
+        - 770
+        - 310
+      text:
+        - "# 认真规划"
+        - 高价值 · 高成本
+    q3:
+      type: shape
+      fill: surface-2
+      frame:
+        - 230
+        - 600
+        - 780
+        - 310
+      text:
+        - "# 顺手做"
+        - 低价值 · 低成本
+    q4:
+      type: shape
+      fill: surface-2
+      frame:
+        - 1030
+        - 600
+        - 770
+        - 310
+      text:
+        - "# 先不做"
+        - 低价值 · 高成本
+    xlab:
+      type: text
+      role: label
+      align: center
+      frame:
+        - 230
+        - 924
+        - 1570
+        - 40
+      text: ← 成本低　　　　　　　　　　　　　　　　　　　　　　成本高 →
+  steps:
+    - enter: q1
+      effect: pop
+    - enter: q2
+      effect: pop
+    - enter:
+        - q3
+        - q4
+      effect: fade
 ```
 
 ## build — 页内动画：一页之内逐次点击：出现、强调、搭建
@@ -1284,6 +2032,154 @@
         cellHeight: 520
       transition:
         stagger: 80
+```
+
+#### morph.acronym-collapse
+
+**缩略词收拢成品牌字** · 文件 `engine/library/morph/acronym-collapse.yaml`
+
+- 提示词：「首字母缩写」 「缩略词展开」 「项目全称收拢成名字」 「字母合并」 「开场 morph 成 logo 字」 「acronym」
+- 适合：开场先展开项目全称（大写首字母 + 小字），点击后首字母放大靠拢成品牌名，其余文字淡出、副标题与 logo 进场
+- 不适合：首字母不在同一基线上，或全称很长、小字挤不下
+- 调用：`- { id: <scene-id>, use: morph.acronym-collapse }`
+
+```yaml
+- id: acronym-collapse
+  layout: free
+  theme: dark
+  objects:
+    shade:
+      type: shape
+      geom: rect
+      fill: rgba(18,58,132,.9)
+      frame:
+        - 0
+        - 0
+        - 1920
+        - 1080
+    a:
+      type: text
+      size: 170
+      weight: 900
+      color: "#FFFFFF"
+      lineHeight: 1
+      align: center
+      frame:
+        - 300
+        - 340
+        - 140
+        - 170
+      text: A
+    b:
+      type: text
+      size: 170
+      weight: 900
+      color: "#FFFFFF"
+      lineHeight: 1
+      align: center
+      frame:
+        - 820
+        - 340
+        - 140
+        - 170
+      text: B
+    c:
+      type: text
+      size: 170
+      weight: 900
+      color: "#FFFFFF"
+      lineHeight: 1
+      align: center
+      frame:
+        - 1340
+        - 340
+        - 140
+        - 170
+      text: C
+    wa:
+      type: text
+      size: 36
+      color: "#FFFFFF"
+      lineHeight: 1
+      frame:
+        - 430
+        - 453
+        - 330
+        - 50
+      text: lpha study
+    wb:
+      type: text
+      size: 36
+      color: "#FFFFFF"
+      lineHeight: 1
+      frame:
+        - 950
+        - 453
+        - 330
+        - 50
+      text: road survey
+    wc:
+      type: text
+      size: 36
+      color: "#FFFFFF"
+      lineHeight: 1
+      frame:
+        - 1470
+        - 453
+        - 330
+        - 50
+      text: ity analysis
+    tag:
+      type: text
+      size: 50
+      weight: bold
+      color: "#FFFFFF"
+      align: center
+      frame:
+        - 160
+        - 640
+        - 1600
+        - 90
+      text: 一句话说明这个项目
+  states:
+    - show:
+        - shade
+        - a
+        - b
+        - c
+        - wa
+        - wb
+        - wc
+    - show:
+        - shade
+        - a
+        - b
+        - c
+        - tag
+      override:
+        a:
+          size: 250
+          frame:
+            - 640
+            - 372
+            - 220
+            - 290
+        b:
+          size: 250
+          frame:
+            - 860
+            - 372
+            - 220
+            - 290
+        c:
+          size: 250
+          frame:
+            - 1080
+            - 372
+            - 220
+            - 290
+      transition:
+        duration: 1100
 ```
 
 ### 状态切换 · 聚焦

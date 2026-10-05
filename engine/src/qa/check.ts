@@ -149,6 +149,8 @@ function domQa(idx: number): DomIssue[] {
   };
   const hidden = (el: Element) => getComputedStyle(el).visibility === 'hidden';
   const texts: { key: string; b: ReturnType<typeof box> }[] = [];
+  // 页面元素（Logo、页眉页脚、页码）占用的矩形：内容不应压在上面
+  const chromeBoxes = [...sec.querySelectorAll('.chrome .ch-it')].map(box);
 
   sec.querySelectorAll<HTMLElement>('.obj:not(.ghost)').forEach((el) => {
     const key = el.dataset.key!;
@@ -174,6 +176,11 @@ function domQa(idx: number): DomIssue[] {
     el.querySelectorAll('img').forEach((img) => {
       if (!img.complete || img.naturalWidth === 0) out.push({ level: 'error', code: 'IMAGE_BROKEN', message: `"${key}" 图片加载失败：${img.getAttribute('src')}`, hint: '检查路径；资源应放在 deck 的 assets/ 中', key });
     });
+    if (chromeBoxes.length && b.w * b.h < W * H * 0.7) {
+      const cb = tx ? box(tx) : b;
+      const hit = chromeBoxes.some((c) => Math.min(cb.x + cb.w, c.x + c.w) - Math.max(cb.x, c.x) > 2 && Math.min(cb.y + cb.h, c.y + c.h) - Math.max(cb.y, c.y) > 2);
+      if (hit && (tx || el.querySelector('img'))) out.push({ level: 'warning', code: 'CHROME_OVERLAP', message: `"${key}" 压在页面元素（Logo / 页眉页脚 / 页码）上`, hint: '内容留在上下边距之内（y 约 84–984），或用 chrome: false / chrome.hideOn 关掉本页的页面元素', key });
+    }
     // 半透明对象（水印、focus 中被压暗的对象）不参与重叠检查
     if (tx && !hidden(tx) && parseFloat(getComputedStyle(el).opacity) >= 0.5) texts.push({ key, b: box(tx) });
   });

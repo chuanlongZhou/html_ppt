@@ -2,7 +2,8 @@
  * 效果库浏览器：output/_gallery/
  *  - e/<id>/site/      每个条目一个迷你 deck（共享 lib/reveal）
  *  - thumbs/<id>.png   缩略图（Playwright 截取最后一个 State 的最终画面）
- *  - index.html        按 类别 → 分组 浏览、搜索
+ *  - theme-preview/    主页「主题与页面元素」用的示例 deck（颜色与页面元素由 postMessage 驱动）
+ *  - index.html        主页（home.ts）：演示、主题与页面元素、页面结构、动画与交互
  *  - view.html#<id>    单条目查看：实时预览 + 逐步控制 + 提示词 + 可复制的 YAML
  * 页面数据内嵌在 HTML 中，直接双击打开（file://）也能用。
  */
@@ -13,7 +14,8 @@ import { loadLibrary, type LibEntry } from './library.ts';
 import { buildDeck, copyReveal } from './build.ts';
 import { Issues } from './issues.ts';
 import { LIB_CATEGORIES } from './schema.ts';
-import { OUTPUT, rel, type DeckPaths } from './paths.ts';
+import { ENGINE, OUTPUT, rel, type DeckPaths } from './paths.ts';
+import { homeHtml } from './home.ts';
 import { escapeHtml } from './markup.ts';
 import { printIssues } from './report.ts';
 
@@ -54,6 +56,7 @@ export async function buildGallery(opts: { thumbs?: boolean; quiet?: boolean } =
     const b = buildDeck(d, { libBase: '../../../lib/' });
     items.push(item(e, b.manifest?.sections.map((s) => s.clicks) ?? [], b.ok, b.issues.errors.map((i) => i.message)));
   }
+  buildThemePreview(issues);
   const thumbsDir = path.join(GALLERY, 'thumbs');
   fs.mkdirSync(thumbsDir, { recursive: true });
   writePages(items);
@@ -63,6 +66,15 @@ export async function buildGallery(opts: { thumbs?: boolean; quiet?: boolean } =
     printIssues(issues.list);
   }
   return { items, issues };
+}
+
+/** 主页工作台的预览 deck：engine/themes/preview/deck.yaml → output/_gallery/theme-preview/site/ */
+function buildThemePreview(issues: Issues) {
+  const dir = path.join(GALLERY, 'theme-preview');
+  const file = path.join(ENGINE, 'themes', 'preview', 'deck.yaml');
+  const d: DeckPaths = { name: 'theme-preview', dir, file, out: dir, site: path.join(dir, 'site'), qa: path.join(dir, 'qa') };
+  const b = buildDeck(d, { libBase: '../../lib/' });
+  for (const i of b.issues.errors) issues.error(i.code, `主题预览 deck：${i.message}`, i);
 }
 
 function item(e: LibEntry, clicks: number[], ok: boolean, errors: string[]): GalleryItem {
@@ -107,18 +119,38 @@ async function thumbnails(items: GalleryItem[], dir: string) {
   }
 }
 
+/** 「我的演示」卡片的缩略图：每个 deck 的第一页（需要 dev 服务器已构建过 output/<deck>/site） */
+export async function deckThumbnails(names: string[]) {
+  const dir = path.join(GALLERY, 'thumbs');
+  fs.mkdirSync(dir, { recursive: true });
+  const { launch, openDeck, goTo } = await import('./qa/check.ts');
+  const { serveStatic } = await import('./serve.ts');
+  const { server, port } = await serveStatic(OUTPUT, 0);
+  const browser = await launch();
+  try {
+    const page = await browser.newPage({ viewport: { width: 960, height: 540 }, deviceScaleFactor: 1 });
+    for (const name of names) {
+      if (!fs.existsSync(path.join(OUTPUT, name, 'site', 'index.html'))) continue;
+      try {
+        await openDeck(page, `http://127.0.0.1:${port}/${name}/site/index.html?qa`);
+        await goTo(page, 0, -1);
+        await page.screenshot({ path: path.join(dir, `deck-${name}.png`) });
+      } catch {
+        /* 单个 deck 失败不影响其他 */
+      }
+    }
+  } finally {
+    await browser.close();
+    server.close();
+  }
+}
+
 /* ---------------- 页面 ---------------- */
 
 function writePages(items: GalleryItem[]) {
   const data = JSON.stringify({ items, categories: LIB_CATEGORIES }).replace(/</g, '\\u003c');
-  fs.writeFileSync(path.join(GALLERY, 'index.html'), page('html_ppt 效果库', GRID_CSS, `<script>window.GALLERY=${data};window.BASE='';</script>${GRID_BODY}`));
+  fs.writeFileSync(path.join(GALLERY, 'index.html'), homeHtml({ items, decks: [], dev: false, base: '' }));
   fs.writeFileSync(path.join(GALLERY, 'view.html'), page('效果库 · 预览', VIEW_CSS, `<script>window.GALLERY=${data};</script>${VIEW_BODY}`));
-}
-
-/** dev 首页复用：返回网格部分（链接指向 /_gallery/） */
-export function galleryGridHtml(items: GalleryItem[]): string {
-  const data = JSON.stringify({ items, categories: LIB_CATEGORIES }).replace(/</g, '\\u003c');
-  return `<style>${GRID_CSS}</style><script>window.GALLERY=${data};window.BASE='/_gallery/';</script>${GRID_BODY}`;
 }
 
 function page(title: string, css: string, body: string) {
@@ -132,54 +164,17 @@ a{color:inherit;text-decoration:none}code,.mono{font-family:"Cascadia Code",Cons
 button{font:inherit;cursor:pointer}
 `;
 
-const GRID_CSS = `
-.gl{max-width:1440px;margin:0 auto;padding:28px 32px 80px}
-.gl-head{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:18px}
-.gl-head h1{font-size:26px;margin:0}.gl-head .n{color:var(--muted)}
-.gl-search{margin-left:auto;width:340px;max-width:100%;padding:10px 14px;border:1px solid var(--line);border-radius:10px;font:inherit;background:#fff}
-.gl-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
-.gl-tabs button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 14px}
-.gl-tabs button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
-.gl-cat{margin-top:30px}.gl-cat>h2{font-size:21px;margin:0 0 2px}.gl-cat>p{margin:0 0 6px;color:var(--muted)}
-.gl-grp{margin:18px 0 8px;font-size:14px;font-weight:700;color:var(--muted);letter-spacing:.04em}
-.gl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
-.gl-card{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;transition:transform .15s,box-shadow .15s}
-.gl-card:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(20,22,30,.1)}
-.gl-thumb{aspect-ratio:16/9;background:#E9E7E1 center/cover no-repeat;position:relative}
-.gl-thumb .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:13px}
-.gl-meta{padding:12px 14px 14px}.gl-meta b{font-size:16px}.gl-meta .id{display:block;color:var(--muted);font-size:12px;margin:2px 0 8px}
-.gl-pr{display:flex;flex-wrap:wrap;gap:6px}.gl-pr span{font-size:12px;background:var(--soft);color:var(--accent);padding:2px 8px;border-radius:6px}
-.gl-badge{position:absolute;right:8px;top:8px;background:rgba(22,24,29,.75);color:#fff;font-size:12px;padding:2px 8px;border-radius:6px}
-.gl-bad{position:absolute;left:8px;top:8px;background:#D83A3A;color:#fff;font-size:12px;padding:2px 8px;border-radius:6px}
-.gl-empty{color:var(--muted);padding:40px 0}
-`;
-
-const GRID_BODY = `<div class="gl"><div class="gl-head"><h1>效果库</h1><span class="n" id="gl-n"></span><input class="gl-search" id="gl-q" placeholder="搜索：提示词、名称或 id，例如「逐条出现」「放大」"></div><div class="gl-tabs" id="gl-tabs"></div><div id="gl-list"></div></div>
-<script>(function(){var G=window.GALLERY,B=window.BASE||'',cat='all';var tabs=document.getElementById('gl-tabs'),list=document.getElementById('gl-list'),q=document.getElementById('gl-q');
-function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
-var cats=Object.keys(G.categories);tabs.innerHTML=['<button data-c="all" class="on">全部</button>'].concat(cats.map(function(c){var n=G.items.filter(function(i){return i.category===c}).length;return '<button data-c="'+c+'">'+esc(G.categories[c].label)+' '+n+'</button>'})).join('');
-tabs.onclick=function(e){var b=e.target.closest('button');if(!b)return;cat=b.dataset.c;[].forEach.call(tabs.children,function(x){x.classList.toggle('on',x===b)});render()};q.oninput=render;
-function card(i){var clicks=i.clicks.reduce(function(a,b){return a+b},0);var badge=(i.states>1?i.states+' 个 State':'')+(clicks?(i.states>1?' · ':'')+clicks+' 次点击':'');
-return '<a class="gl-card" href="'+B+'view.html#'+i.id+'"><div class="gl-thumb" style="background-image:url('+B+'thumbs/'+i.id+'.png?v='+Date.now()%1e6+')"><div class="ph">运行 npm run gallery 生成缩略图</div>'+(badge?'<span class="gl-badge">'+badge+'</span>':'')+(i.ok?'':'<span class="gl-bad">构建失败</span>')+'</div><div class="gl-meta"><b>'+esc(i.title)+'</b><span class="id mono">'+esc(i.id)+'</span><div class="gl-pr">'+i.prompts.slice(0,4).map(function(p){return '<span>'+esc(p)+'</span>'}).join('')+'</div></div></a>'}
-function render(){var s=q.value.trim().toLowerCase();var items=G.items.filter(function(i){return (cat==='all'||i.category===cat)&&(!s||(i.title+' '+i.id+' '+i.prompts.join(' ')+' '+i.use_when).toLowerCase().indexOf(s)>=0)});
-document.getElementById('gl-n').textContent=items.length+' / '+G.items.length+' 个条目';var html='';
-cats.forEach(function(c){var ci=items.filter(function(i){return i.category===c});if(!ci.length)return;var C=G.categories[c];html+='<section class="gl-cat"><h2>'+esc(C.label)+'</h2><p>'+esc(C.desc)+'</p>';
-Object.keys(C.groups).forEach(function(g){var gi=ci.filter(function(i){return i.group===g});if(!gi.length)return;html+='<div class="gl-grp">'+esc(C.groups[g])+'</div><div class="gl-grid">'+gi.map(card).join('')+'</div>'});html+='</section>'});
-list.innerHTML=html||'<div class="gl-empty">没有匹配的条目</div>';
-[].forEach.call(list.querySelectorAll('.gl-thumb'),function(t){var img=new Image();img.onload=function(){var p=t.querySelector('.ph');if(p)p.remove()};img.src=t.style.backgroundImage.slice(5,-2)})}
-render()})();</script>`;
-
 const VIEW_CSS = `
 .vw{display:grid;grid-template-columns:minmax(0,1fr) 420px;gap:24px;padding:18px 24px;max-width:1720px;margin:0 auto}
 .vw-top{grid-column:1/-1;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .vw-top a.back{font-weight:700;color:var(--accent)}.vw-top .crumb{color:var(--muted)}.vw-top .sp{flex:1}
-.vw-top button,.vw-ctl button{border:1px solid var(--line);background:#fff;border-radius:10px;padding:7px 14px}
-.vw-stage{background:#1d1f24;border-radius:14px;overflow:hidden;aspect-ratio:16/9;position:relative}
+.vw-top button,.vw-ctl button{border:0;box-shadow:0 1px 2px rgba(22,24,29,.06),0 1px 3px rgba(22,24,29,.07);background:#fff;border-radius:10px;padding:7px 14px}
+.vw-stage{background:#1d1f24;border-radius:16px;box-shadow:0 4px 8px rgba(22,24,29,.06),0 20px 44px rgba(22,24,29,.16);overflow:hidden;aspect-ratio:16/9;position:relative}
 .vw-stage iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 .vw-ctl{display:flex;align-items:center;gap:10px;margin-top:12px;flex-wrap:wrap}
 .vw-ctl .prog{color:var(--muted);margin-left:6px}.vw-ctl .hint{margin-left:auto;color:var(--muted);font-size:13px}
 .vw-ctl button.pri{background:var(--ink);color:#fff;border-color:var(--ink)}
-.vw-side{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px;align-self:start;position:sticky;top:18px;max-height:calc(100vh - 36px);overflow:auto}
+.vw-side{background:#fff;box-shadow:0 2px 4px rgba(22,24,29,.05),0 8px 22px rgba(22,24,29,.09);border-radius:16px;padding:22px;align-self:start;position:sticky;top:18px;max-height:calc(100vh - 36px);overflow:auto}
 .vw-side h1{font-size:24px;margin:0}.vw-side .id{color:var(--muted);font-size:13px}
 .vw-side h3{font-size:13px;color:var(--muted);margin:18px 0 6px;letter-spacing:.04em}
 .vw-pr{display:flex;flex-wrap:wrap;gap:6px}.vw-pr span{background:var(--soft);color:var(--accent);padding:3px 10px;border-radius:8px;font-size:13px}
@@ -190,7 +185,7 @@ const VIEW_CSS = `
 @media (max-width:1100px){.vw{grid-template-columns:1fr}.vw-side{position:static;max-height:none}}
 `;
 
-const VIEW_BODY = `<div class="vw"><div class="vw-top"><a class="back" href="index.html">← 效果库</a><span class="crumb" id="vw-crumb"></span><span class="sp"></span><button id="vw-prevE">上一个条目</button><button id="vw-nextE">下一个条目</button></div>
+const VIEW_BODY = `<div class="vw"><div class="vw-top"><a class="back" id="vw-back" href="index.html">← 返回主页</a><span class="crumb" id="vw-crumb"></span><span class="sp"></span><button id="vw-prevE">上一个条目</button><button id="vw-nextE">下一个条目</button></div>
 <div><div class="vw-stage"><iframe id="vw-frame" title="预览"></iframe></div>
 <div class="vw-ctl"><button id="vw-replay">⟲ 重播</button><button id="vw-prev">◀ 上一步</button><button id="vw-next" class="pri">下一步 ▶</button><span class="prog" id="vw-prog"></span><span class="hint">方向键 ← → 也可以；图表类条目可直接在预览中点击、悬停</span></div><div id="vw-err"></div></div>
 <aside class="vw-side" id="vw-side"></aside></div>
@@ -200,7 +195,7 @@ function post(method,args){frame.contentWindow&&frame.contentWindow.postMessage(
 function prog(){if(!cur)return;var c=cur.clicks[idx.h]||0;document.getElementById('vw-prog').textContent=(cur.states>1?'State '+(idx.h+1)+' / '+cur.states:'单个 State')+(c?' · 点击 '+(idx.f+1)+' / '+c:'')}
 function copyBtn(id){return '<button data-copy="'+id+'">复制</button>'}
 function load(){var id=decodeURIComponent(location.hash.slice(1))||G.items[0].id;cur=G.items.find(function(i){return i.id===id})||G.items[0];idx={h:0,f:-1};
-var C=G.categories[cur.category];document.getElementById('vw-crumb').textContent=C.label+' › '+C.groups[cur.group];document.title=cur.title+' · 效果库';
+var home=location.protocol==='file:'?'index.html':'/';document.getElementById('vw-back').href=home+'#'+(cur.category==='page'?'pages':'effects');var C=G.categories[cur.category];document.getElementById('vw-crumb').textContent=C.label+' › '+C.groups[cur.group];document.title=cur.title+' · 效果库';
 frame.src='e/'+cur.id+'/site/index.html';
 side.innerHTML='<h1>'+esc(cur.title)+'</h1><div class="id mono">'+esc(cur.id)+'</div>'+
 '<h3>提示词（这样说就能调用）</h3><div class="vw-pr">'+cur.prompts.map(function(p){return '<span>'+esc(p)+'</span>'}).join('')+'</div>'+
