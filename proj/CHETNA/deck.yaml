@@ -1,0 +1,77 @@
+deck:
+  title: CHETNA
+  subtitle: CO₂ and Pollutants Emission from 100+ Indian Cities
+  author: Chuanlong Zhou
+  slideNumber: false
+  transition: fade
+
+scenes:
+  # 开场：首字母缩略词页 morph 成品牌页（C H E T N A 六个字母原地放大并靠拢，其余文字淡出）
+  - id: opening
+    purpose: 开场：先交代项目全称与团队，再把首字母收拢成 CHETNA 品牌页
+    patterns: [morph.acronym-collapse]
+    layout: free
+    theme: dark
+    objects:
+      bg: { type: image, src: assets/bg.jpg, frame: [0, 0, 1920, 1080], alt: Aerial view of Mumbai }
+      shade: { type: shape, geom: rect, fill: "rgba(18,58,132,.8)", frame: [0, 0, 1920, 1080] }
+      fade: { type: shape, geom: rect, fill: "linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,.93))", frame: [0, 870, 1920, 210] }
+      source: { type: text, role: caption, font: display, size: 20, color: "#C9CED6", align: right, frame: [900, 14, 1000, 30], text: "Aerial view of Mumbai by Johnny Miller, https://unequalscenes.com/mumbai" }
+
+      # 六个首字母：状态 1 是缩略词，状态 2 是品牌大字
+      c: { type: text, size: 174, weight: 900, color: "#FFFFFF", lineHeight: 1, align: center, frame: [114, 323, 155, 174], text: C }
+      h: { type: text, size: 174, weight: 900, color: "#FFFFFF", lineHeight: 1, align: center, frame: [372, 323, 162, 174], text: H }
+      e: { type: text, size: 174, weight: 900, color: "#FFFFFF", lineHeight: 1, align: center, frame: [724, 323, 121, 174], text: E }
+      t: { type: text, size: 174, weight: 900, color: "#FFFFFF", lineHeight: 1, align: center, frame: [957, 323, 130, 174], text: T }
+      n: { type: text, size: 174, weight: 900, color: "#FFFFFF", lineHeight: 1, align: center, frame: [1248, 323, 166, 174], text: N }
+      a: { type: text, size: 174, weight: 900, color: "#FFFFFF", lineHeight: 1, align: center, frame: [1551, 323, 152, 174], text: A }
+
+      w1: { type: text, size: 34, color: "#FFFFFF", lineHeight: 1, frame: [253, 450, 140, 50], text: ity-wise }
+      w2: { type: text, size: 34, color: "#FFFFFF", lineHeight: 1, frame: [511, 450, 235, 50], text: igh-resolution }
+      w3: { type: text, size: 34, color: "#FFFFFF", lineHeight: 1, frame: [830, 450, 138, 50], text: mission }
+      w4: { type: text, size: 34, color: "#FFFFFF", lineHeight: 1, frame: [1072, 450, 198, 50], text: racking and }
+      w5: { type: text, size: 34, color: "#FFFFFF", lineHeight: 1, frame: [1391, 450, 170, 50], text: ationwide }
+      w6: { type: text, size: 34, color: "#FFFFFF", lineHeight: 1, frame: [1691, 450, 123, 50], text: nalysis }
+
+      authors:
+        type: text
+        size: 34
+        color: "#FFFFFF"
+        align: center
+        frame: [160, 540, 1600, 130]
+        text:
+          - "Chuanlong Zhou¹, Philippe Ciais¹, Harish C. Phuleria², Arnab Jana², Fouzi Benkhelifa³"
+          - "& the CHETNA Group"
+      affil:
+        type: text
+        size: 26
+        color: "#FFFFFF"
+        frame: [505, 690, 1100, 160]
+        text:
+          - "¹ Laboratoire des Sciences du Climat et de l’Environnement (LSCE), France"
+          - "² Indian Institute of Technology Bombay (IITB), India"
+          - "³ NEXQT, France"
+
+      lsce: { type: image, src: assets/logos/lsce.png, fit: contain, frame: [62, 994, 183, 76] }
+      iit: { type: image, src: assets/logos/iit.png, fit: contain, frame: [305, 994, 285, 76] }
+      nexqt: { type: image, src: assets/logos/nexqt.png, fit: contain, frame: [665, 995, 132, 58] }
+      grantham: { type: image, src: assets/logos/grantham.png, fit: contain, frame: [866, 994, 451, 77] }
+      um: { type: image, src: assets/logos/um.png, fit: contain, frame: [1371, 995, 211, 75] }
+      tsinghua: { type: image, src: assets/logos/tsinghua.png, fit: contain, frame: [1640, 994, 196, 76] }
+
+      # 状态 2 才出现
+      tagline: { type: text, size: 50, weight: bold, color: "#14213D", align: center, frame: [160, 605, 1600, 90], text: "CO₂ and Pollutants Emission from 100+ Indian Cities" }
+      logo: { type: image, src: assets/logos/main.png, fit: contain, frame: [1502, 427, 163, 163] }
+
+    states:
+      - show: [bg, shade, fade, source, c, h, e, t, n, a, w1, w2, w3, w4, w5, w6, authors, affil, lsce, iit, nexqt, grantham, um, tsinghua]
+      - show: [bg, shade, c, h, e, t, n, a, tagline, logo]
+        override:
+          shade: { fill: "rgba(255,255,255,.58)" }
+          c: { size: 250, color: "#14213D", frame: [415, 372, 181, 290] }
+          h: { size: 250, color: "#14213D", frame: [576, 372, 221, 290] }
+          e: { size: 250, color: "#14213D", frame: [776, 372, 167, 290] }
+          t: { size: 250, color: "#14213D", frame: [943, 372, 153, 290] }
+          n: { size: 250, color: "#14213D", frame: [1076, 372, 221, 290] }
+          a: { size: 250, color: "#14213D", frame: [1276, 372, 181, 290] }
+        transition: { duration: 1100 }
