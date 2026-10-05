@@ -1,3 +1,4 @@
+/** 媒体类组件：image（fit / zoom / filter / 图片坐标标注）、metric（大数字）、html（自定义片段） */
 import { z } from 'zod';
 import { base, Color, textStyleCss, type RenderCtx, type Rendered } from './common.ts';
 import { escapeHtml, inline } from '../markup.ts';

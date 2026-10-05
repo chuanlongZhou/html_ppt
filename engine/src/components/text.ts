@@ -1,3 +1,4 @@
+/** text 组件：按语义角色排版的文字块（要点、编号、小标题、行内强调） */
 import { z } from 'zod';
 import { base, textStyle, TextContent, ROLES, textStyleCss, valignClass, type RenderCtx, type Rendered } from './common.ts';
 import { parseParas, renderParas, escapeHtml, splitParas } from '../markup.ts';

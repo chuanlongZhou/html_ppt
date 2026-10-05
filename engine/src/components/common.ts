@@ -1,3 +1,4 @@
+/** 组件共享：公共 schema 片段（frame、颜色、文字内容）、语义角色、文字样式到 CSS 的转换 */
 import { z } from 'zod';
 
 export const Frame = z

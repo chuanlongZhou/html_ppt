@@ -1,3 +1,4 @@
+/** 统一的问题模型（error / warning，带 deck.yaml 行号与修复提示）与带行号的 YAML 解析 */
 import { LineCounter, parseDocument, type Document } from 'yaml';
 import fs from 'node:fs';
 import { rel } from './paths.ts';
