@@ -40,6 +40,10 @@ steps:
 | 讲到关键句 | `emphasis` + `highlight` |
 | 讲过的项 | `emphasis` + `dim` |
 
+- **自动播放**：steps 开头连续几项写 `auto: true`，进入该 State（morph 结束后）自动依次播放，不需要点击。适合"镜头推进 → 圈出 → 弹出三个问题"这类一气呵成的演示；`auto` 项必须排在需要点击的项之前（`AUTO_NOT_FIRST`）。
+
+- **跨页 morph**：下一个 scene 写 `continues: true`，两页里同名 key 的对象在翻页时直接移动 / 变形（上一页的小标签变成下一页的大方框）；其余对象淡入淡出。key 必须相同，且两页需相邻。要让句子里的某个词变成可移动的对象：句中写 `[[词|ghost]]` 留出位置，上面叠一个同尺寸的独立文字框（位置用浏览器实测）。
+
 完整 preset 表见 `engine/CATALOG.md` §4。
 
 ## states（morph）

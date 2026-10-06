@@ -59,6 +59,16 @@
     return e;
   }
 
+  /** 页眉页脚文字：**强调** 渲染为主色加粗（用 DOM 构造，不经 innerHTML） */
+  function rich(node, text) {
+    String(text).split(/(\*\*[^*]+\*\*)/).forEach(function (part) {
+      if (!part) return;
+      if (/^\*\*[^*]+\*\*$/.test(part)) node.appendChild(el('strong', 'ch-em', part.slice(2, -2)));
+      else node.appendChild(document.createTextNode(part));
+    });
+    return node;
+  }
+
   function buildChrome(sec, cfg) {
     var stage = sec.querySelector('.stage');
     if (!stage) return;
@@ -71,7 +81,7 @@
     ['header', 'footer'].forEach(function (band) {
       ['left', 'center', 'right'].forEach(function (pos) {
         var t = c[band] && c[band][pos];
-        if (t) cells[band + '-' + pos].push(el('span', 'ch-it ch-tx', fmt(t, sec, cfg)));
+        if (t) cells[band + '-' + pos].push(rich(el('span', 'ch-it ch-tx'), fmt(t, sec, cfg)));
       });
     });
     var pn = c.pageNumber;
@@ -114,7 +124,7 @@
       cells['footer-center'].push(dots);
     }
 
-    var root = el('div', 'chrome');
+    var root = el('div', 'chrome' + (c.caps ? ' ch-caps' : ''));
     root.setAttribute('data-id', (sec.getAttribute('data-scene') || '') + '.__chrome');
     root.setAttribute('aria-hidden', 'true');
     ['header', 'footer'].forEach(function (band) {
@@ -255,9 +265,25 @@
     // ?embed：被主页的预览框嵌入——不显示 Reveal 自带的箭头与进度条（进度由 chrome 负责）
     if (params.has('embed')) { opts.controls = false; opts.progress = false; embedded = true; }
     window.__htmlppt = { ready: false, cfg: cfg };
+    // steps 里 auto: true 的前几次点击：进入该 State 后按时间表自动播放（只在向前翻页、尚无片段显示时；QA 截图模式不触发）
+    var autoTimers = [];
+    function playAuto(slide) {
+      autoTimers.forEach(clearTimeout);
+      autoTimers = [];
+      var at = slide && slide.getAttribute('data-auto-at');
+      if (!at || qa) return;
+      var idx = Reveal.getIndices();
+      if (idx.f !== undefined && idx.f >= 0) return;
+      at.split(',').forEach(function (t) {
+        autoTimers.push(setTimeout(function () {
+          if (Reveal.getCurrentSlide() === slide) Reveal.nextFragment();
+        }, Number(t)));
+      });
+    }
     Reveal.initialize(opts).then(function () {
       syncNav(Reveal.getCurrentSlide(), null);
-      Reveal.on('slidechanged', function (e) { syncNav(e.currentSlide, e.previousSlide); });
+      playAuto(Reveal.getCurrentSlide());
+      Reveal.on('slidechanged', function (e) { syncNav(e.currentSlide, e.previousSlide); playAuto(e.currentSlide); });
       if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { syncNav(Reveal.getCurrentSlide(), null); });
       wireNav();
       if (window.HtmlPptCharts) {

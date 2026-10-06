@@ -14,7 +14,7 @@
 
 | 类别 | 说明 | 分组（条目数） |
 |---|---|---|
-| `page` 页面结构 | 常用页面的版式与配色：封面、目录、章节、要点、对比、数据、时间线、总结 | 结构页（5） · 文字页（4） · 图文与对比（5） · 数据页（3） · 流程与框架（2） |
+| `page` 页面结构 | 常用页面的版式与配色：封面、目录、章节、要点、对比、数据、时间线、总结 | 结构页（5） · 文字页（4） · 图文与对比（5） · 数据页（3） · 流程与框架（4） |
 | `build` 页内动画 | 一页之内逐次点击：出现、强调、搭建 | 出现（4） · 强调（2） · 结构搭建（1） |
 | `morph` 状态切换 | 同一画面在多个 State 之间平滑变化 | 版面变化（4） · 聚焦（1） · 数据与进度（2） |
 | `interact` 交互数据 | 可悬停、点击、切换的图表与数据面板；讲述推进和自由探索共用同一套状态 | 交互图表（3） · 联动与面板（2） · 讲述 + 探索（1） |
@@ -42,7 +42,9 @@
 | 「四个数字」 「关键指标」 「KPI 看板」 「指标卡片」 「数据概览」 「四个指标」 「dashboard」 | [`page.metrics-4`](#pagemetrics-4) 四个关键指标 | 页面结构 · 数据页 |
 | 「表格」 「数据表」 「对比表」 「参数表」 「方案对比表」 「table」 「价格表」 | [`page.table`](#pagetable) 表格 | 页面结构 · 数据页 |
 | 「时间线」 「路线图」 「里程碑」 「发展历程」 「阶段计划」 「roadmap」 「timeline」 「五个阶段」 | [`page.timeline`](#pagetimeline) 时间线 / 路线图 | 页面结构 · 流程与框架 |
+| 「流程链条加说明」 「左边步骤右边讲解」 「四步流程逐行解释」 「颜色逐渐变淡的步骤」 「关键词标签高亮」 「chain with notes」 | [`page.chain-rows`](#pagechain-rows) 左侧渐变链条 + 右侧逐行讲解 | 页面结构 · 流程与框架 |
 | 「四象限」 「矩阵」 「2x2」 「优先级矩阵」 「二维分类」 「波士顿矩阵」 「quadrant」 | [`page.matrix-2x2`](#pagematrix-2x2) 四象限矩阵 | 页面结构 · 流程与框架 |
+| 「方法论图」 「数据源到方法再到结果」 「多对多连线」 「肘形连接线」 「输入方法输出」 「技术路线图」 「method map」 | [`page.method-map`](#pagemethod-map) 数据源 → 方法 → 挑战（肘形连接线） | 页面结构 · 流程与框架 |
 | 「逐条出现」 「一条一条显示」 「要点依次出现」 「点一下出一条」 「bullets one by one」 | [`build.bullets-one-by-one`](#buildbullets-one-by-one) 逐条出现 | 页内动画 · 出现 |
 | 「卡片依次出现」 「依次浮现」 「错开出现」 「一个接一个」 「stagger」 | [`build.cards-stagger`](#buildcards-stagger) 卡片依次浮现 | 页内动画 · 出现 |
 | 「条形图出现」 「擦除」 「从左往右出现」 「进度条」 「数据条依次出现」 「wipe」 | [`build.wipe-bars`](#buildwipe-bars) 条形图擦除出现 | 页内动画 · 出现 |
@@ -1182,6 +1184,135 @@
       - enter: d5
 ```
 
+#### page.chain-rows
+
+**左侧渐变链条 + 右侧逐行讲解** · 文件 `engine/library/page/chain-rows.yaml`
+
+- 提示词：「流程链条加说明」 「左边步骤右边讲解」 「四步流程逐行解释」 「颜色逐渐变淡的步骤」 「关键词标签高亮」 「chain with notes」
+- 适合：3–4 个先后相连的步骤（颜色由深到浅），每一步在右侧有对应的一段说明；左侧自动一次性出现，右侧点击逐段出现；关键词可以用 [[词|orange|green|blue]] 做成行内标签
+- 不适合：步骤超过 5 个，或每一步的说明超过三行（拆页）
+- 调用：`- { id: <scene-id>, use: page.chain-rows }`
+
+```yaml
+- id: chain-rows
+  layout: free
+  objects:
+    b1:
+      type: shape
+      fill: accent
+      color: "#FFFFFF"
+      size: 34
+      weight: bold
+      align: center
+      valign: middle
+      frame:
+        - 120
+        - 150
+        - 420
+        - 160
+      text: 第一步
+    b2:
+      type: shape
+      fill: accent-3
+      color: "#FFFFFF"
+      size: 34
+      weight: bold
+      align: center
+      valign: middle
+      frame:
+        - 120
+        - 370
+        - 420
+        - 120
+      text: 第二步
+    b3:
+      type: shape
+      fill: accent-3-soft
+      color: accent-3
+      size: 34
+      weight: bold
+      align: center
+      valign: middle
+      frame:
+        - 120
+        - 550
+        - 420
+        - 120
+      text: 第三步
+    a1:
+      type: shape
+      geom: arrow
+      fill: muted
+      rotate: 90
+      frame:
+        - 300
+        - 326
+        - 60
+        - 28
+    a2:
+      type: shape
+      geom: arrow
+      fill: muted
+      rotate: 90
+      frame:
+        - 300
+        - 506
+        - 60
+        - 28
+    t1:
+      type: text
+      size: 32
+      color: ink
+      lineHeight: 1.5
+      valign: middle
+      frame:
+        - 600
+        - 150
+        - 1200
+        - 160
+      text: 解决 [[数据缺口|orange]]，以 [[低延迟|green]] 提供 [[高分辨率|blue]] 的数据
+    t2:
+      type: text
+      size: 32
+      color: ink
+      lineHeight: 1.5
+      valign: middle
+      frame:
+        - 600
+        - 370
+        - 1200
+        - 120
+      text: 所有数据在项目网站**公开**，方便政策制定者和研究者使用
+    t3:
+      type: text
+      size: 32
+      color: ink
+      lineHeight: 1.5
+      valign: middle
+      frame:
+        - 600
+        - 550
+        - 1200
+        - 120
+      text: "**分析**减排情景，**评估**目标"
+  steps:
+    - enter:
+        - b1
+        - a1
+        - b2
+        - a2
+        - b3
+      effect: fade
+      duration: 700
+      auto: true
+    - enter: t1
+      effect: fade-up
+    - enter: t2
+      effect: fade-up
+    - enter: t3
+      effect: fade-up
+```
+
 #### page.matrix-2x2
 
 **四象限矩阵** · 文件 `engine/library/page/matrix-2x2.yaml`
@@ -1284,6 +1415,152 @@
         - q3
         - q4
       effect: fade
+```
+
+#### page.method-map
+
+**数据源 → 方法 → 挑战（肘形连接线）** · 文件 `engine/library/page/method-map.yaml`
+
+- 提示词：「方法论图」 「数据源到方法再到结果」 「多对多连线」 「肘形连接线」 「输入方法输出」 「技术路线图」 「method map」
+- 适合：几个输入（数据源）经几种方法汇到几个目标（挑战 / 结果）；每个目标点击时依次展开对应的数据源、连线与方法
+- 不适合：节点超过 10 个（拆页）；只是线性流程（用 page.chain-rows 或 build.diagram-flow）
+- 调用：`- { id: <scene-id>, use: page.method-map }`
+
+```yaml
+- id: method-map
+  layout: free
+  objects:
+    s1:
+      type: shape
+      fill: "#C04F15"
+      stroke: "#662A07"
+      strokeWidth: 4
+      color: "#FFFFFF"
+      size: 30
+      align: center
+      valign: middle
+      padding: 0
+      radius: 20
+      frame:
+        - 160
+        - 220
+        - 320
+        - 120
+      text: 数据 A
+    s2:
+      type: shape
+      fill: "#A02B92"
+      stroke: "#460B41"
+      strokeWidth: 4
+      color: "#FFFFFF"
+      size: 30
+      align: center
+      valign: middle
+      padding: 0
+      radius: 20
+      frame:
+        - 160
+        - 460
+        - 320
+        - 120
+      text: 数据 B
+    m1:
+      type: shape
+      fill: "#F2AA85"
+      stroke: "#642D10"
+      strokeWidth: 4
+      color: "#333333"
+      size: 30
+      align: center
+      valign: middle
+      padding: 0
+      radius: 20
+      frame:
+        - 760
+        - 340
+        - 360
+        - 120
+      text: 方法
+    g1:
+      type: shape
+      fill: "#FF9901"
+      stroke: "#B35A00"
+      strokeWidth: 4
+      color: "#B00300"
+      size: 44
+      weight: bold
+      align: center
+      valign: middle
+      padding: 0
+      radius: 16
+      frame:
+        - 1300
+        - 355
+        - 340
+        - 90
+      text: 目标
+    c1:
+      type: shape
+      geom: line
+      points:
+        - - 480
+          - 260
+        - - 620
+          - 260
+        - - 620
+          - 380
+        - - 760
+          - 380
+      stroke: "#C04F15"
+      strokeWidth: 3
+      arrow: end
+      ports: true
+      z: 5
+    c2:
+      type: shape
+      geom: line
+      points:
+        - - 480
+          - 520
+        - - 620
+          - 520
+        - - 620
+          - 420
+        - - 760
+          - 420
+      stroke: "#7B2C7E"
+      strokeWidth: 3
+      arrow: end
+      ports: true
+      z: 5
+    a1:
+      type: shape
+      geom: line
+      points:
+        - - 1130
+          - 400
+        - - 1300
+          - 400
+      stroke: "#000000"
+      strokeWidth: 5
+      arrow: end
+  steps:
+    - - enter:
+          - s1
+          - s2
+        effect: fade-up
+        stagger: 120
+      - enter:
+          - c1
+          - c2
+        effect: draw
+        after: true
+      - enter: m1
+        effect: pop
+        after: true
+      - enter: a1
+        effect: draw
+        after: true
 ```
 
 ## build — 页内动画：一页之内逐次点击：出现、强调、搭建

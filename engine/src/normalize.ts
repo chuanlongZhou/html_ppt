@@ -33,6 +33,8 @@ interface Ctx {
   ids: Set<string>;
   /** 当前章节名（scene.section 沿用到下一个 section） */
   section?: string;
+  /** 上一个 Scene 的 morph 分组 */
+  group?: string;
 }
 
 interface Origin {
@@ -208,8 +210,11 @@ function normScene(data: any, o: Origin, ctx: Ctx, defaultTransition: string) {
     const a = registerAsset(chromeOverride.logo.src, o.assetDir, ctx, where(['chrome', 'logo', 'src']));
     chromeOverride = { ...chromeOverride, logo: { ...chromeOverride.logo, src: a?.pub } };
   }
+  const group = s.continues && ctx.group ? ctx.group : s.id;
+  ctx.group = group;
   const scene: IRScene = {
     id: s.id,
+    group,
     purpose: s.purpose,
     theme,
     background: colorValue(style, s.background ?? 'bg', theme),
@@ -265,7 +270,7 @@ function normScene(data: any, o: Origin, ctx: Ctx, defaultTransition: string) {
       if (props.type === 'chart') for (const m of chartProblems(props)) issues.error('CHART_DATA', `"${key}" ${m}`, { ...where(overridePath[key] ?? ['objects', key], { state: si, object: key }), hint: '检查 categories / series / show / highlight' });
       if (props.type === 'image') props = resolveImage(props, o, ctx, where(overridePath[key] ?? ['objects', key, 'src'], { object: key }));
       const sl = at(o.src, [...o.base, ...(overridePath[key] ?? ['objects', key])]);
-      items.push({ key, dataId: `${s.id}.${key}`, type: props.type, props, place: { kind: 'slot', slot: '' }, fx: steps.fx.get(key) ?? [], paraFx: steps.paraFx.get(key) ?? new Map(), src: `${sl.file}:${sl.line}`, prev: prev?.items.find((x) => x.key === key && !x.ghost)?.props });
+      items.push({ key, dataId: `${scene.group}.${key}`, type: props.type, props, place: { kind: 'slot', slot: '' }, fx: steps.fx.get(key) ?? [], paraFx: steps.paraFx.get(key) ?? new Map(), src: `${sl.file}:${sl.line}`, prev: prev?.items.find((x) => x.key === key && !x.ghost)?.props });
     }
 
     // 5. 布局：先决定 slot，再算矩形
@@ -351,7 +356,7 @@ function normScene(data: any, o: Origin, ctx: Ctx, defaultTransition: string) {
     // 7. 设计规则（来自 style rules）
     densityChecks(items, steps.clicks, style, (code, msg, hint, key) => issues.warn(code, msg, { ...where(key ? overridePath[key] ?? ['objects', key] : p, { state: si, object: key }), hint }));
 
-    const state: IRState = { index: si, layout, items, clicks: steps.clicks, transition, notes: st.notes ?? (si === 0 ? s.notes : undefined) };
+    const state: IRState = { index: si, layout, items, clicks: steps.clicks, autoAt: steps.autoGaps.length ? steps.autoGaps.map((g) => g + transition.duration + 150) : undefined, transition, notes: st.notes ?? (si === 0 ? s.notes : undefined) };
     scene.states.push(state);
     prev = state;
     prevFinal = new Set(visible.filter((k) => !steps.exits.has(k)));
@@ -426,8 +431,14 @@ function compileSteps(steps: StepSrc[], base: (string | number)[], c: StepCtx) {
     }
   };
   let click = 0;
+  const clickEnd: number[] = [];
+  let autoClicks = 0;
+  let autoOpen = true;
   steps.forEach((step, si) => {
     const group: EffectSrc[] = Array.isArray(step) ? step : [step];
+    const isAuto = group.some((e) => e.auto);
+    if (isAuto && !autoOpen) c.issues.error('AUTO_NOT_FIRST', 'auto 步骤必须排在 steps 最前面，不能出现在需要点击的步骤之后', { ...c.where(Array.isArray(step) ? [...base, si, 0] : [...base, si], { state: c.si, step: si }), hint: '把 auto: true 的步骤移到 steps 开头' });
+    if (!isAuto) autoOpen = false;
     let prevStart = 0;
     let prevEnd = 0;
     let consumed = 1;
@@ -480,9 +491,17 @@ function compileSteps(steps: StepSrc[], base: (string | number)[], c: StepCtx) {
       prevStart = start;
       prevEnd = end;
     });
+    clickEnd[click] = Math.max(prevEnd, clickEnd[click] ?? 0);
+    if (isAuto && autoOpen) autoClicks += consumed;
     click += consumed;
   });
-  return { fx, paraFx, enters, exits, clicks: click };
+  const autoGaps: number[] = [];
+  let t = 0;
+  for (let i = 0; i < autoClicks; i++) {
+    autoGaps.push(t);
+    t += (clickEnd[i] ?? 0) + 150;
+  }
+  return { fx, paraFx, enters, exits, clicks: click, autoGaps };
 }
 
 /* ------------------------------------------------------------------ */
