@@ -1,22 +1,20 @@
-# Netlify 部署配置：构建 proj/CHETNA 并发布为静态站点。
-# 详见 docs/DEPLOY.md。换成别的演示：改 build.command 与 publish 中的名字。
+# 【deploy/full 分支】整站部署：主页 + 所有演示（/<deck>/）。
+# 本分支的 netlify.toml 就是 netlify.full.toml 的内容；main 上的 netlify.toml 只部署 CHETNA。
+# 更新方式：把 main 合并进本分支（git merge main），冲突时保留本文件。详见 docs/DEPLOY.md。
+
+# 整站部署配置：主页（主题与页面元素、页面结构、动画与交互）+ 所有演示（/<deck>/）。
+# Netlify 只自动读取名为 netlify.toml 的文件；用法见 docs/DEPLOY.md「部署整个项目页面」。
+# 只部署部分演示：把命令改成 npm run site -- CHETNA intro
 
 [build]
-  command = "npm ci && npm run build -- CHETNA"
-  publish = "output/CHETNA/site"
+  command = "npm ci && npm run site"
+  publish = "output/_site"
 
 [build.environment]
   NODE_VERSION = "22"
-  # playwright-core 只是库，构建不需要浏览器；跳过下载以加快安装。
   PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD = "1"
 
-# 静态资源（图片、字体、脚本）可长期缓存；HTML 每次都重新校验。
 [[headers]]
-  for = "/assets/*"
+  for = "/*/assets/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
-
-[[headers]]
-  for = "/index.html"
-  [headers.values]
-    Cache-Control = "public, max-age=0, must-revalidate"
