@@ -27,6 +27,7 @@
 | `npm run new -- <deck> [--theme <预设名\|theme.yaml>]` | 新建 deck 骨架（可带主题：颜色 + 页码 / Logo / 页脚） |
 | `npm run check -- <deck> [--scene <id>] [--film] [--no-shots]` | 构建 + 逐步截图 + QA → `output/<deck>/qa/` |
 | `npm run build -- <deck> [--ir]` | 只构建（`--ir` 另存 `output/<deck>/ir.json`） |
+| `npm run export -- <deck> [--out <文件.html>] [--verify [--no-shots]]` | 导出**单个 HTML**（CSS / JS / Reveal / 图片全部内嵌，可直接双击离线打开、发给别人）→ `output/<deck>/<deck>.html`；`--verify` 在 `file://` 下实测（零外部请求、无报错、图片全加载、逐步翻完并截图到 `output/<deck>/<deck>-export-verify/`） |
 | `npm run dev` | 实时预览：http://localhost:5173 主页 = 我的演示 · 主题与页面元素（选配色、配页码 / Logo / 页脚，下载 theme.yaml）· 页面结构 · 动画与交互（缩略图、搜索、逐条预览），改源文件自动刷新 |
 | `npm run gallery` | 生成效果库浏览器 `output/_gallery/`（含缩略图，可离线双击打开） |
 | `npm run catalog` | 重新生成 `engine/CATALOG.md` 与 `engine/library/INDEX.md` |
@@ -40,6 +41,8 @@
 3. 有 error：按 `@ 文件:行号` 定位、按 `→` 提示修复，回到第 2 步
 4. 查看 `output/<deck>/qa/contact*.png`（每个 State 的总览）与变化 scene 的 `qa/shots/`；动画用 `--film` 查看 `qa/film/*.png`（morph 0–100% 五帧）
 5. 改动较大时做一次独立评审（`agents/roles/deck-reviewer.md`）
+
+**交付给别人**：`npm run export -- <deck> --verify`，把 `output/<deck>/<deck>.html` 发出去即可（单文件，无需服务器）。
 
 **不能查看图片的工具**：以 `output/<deck>/qa/report.json` 为准，跳过第 4 步，并在交付时说明未做视觉检查。
 
