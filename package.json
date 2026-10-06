@@ -11,6 +11,7 @@
     "new": "tsx engine/src/cli.ts new",
     "build": "tsx engine/src/cli.ts build",
     "check": "tsx engine/src/cli.ts check",
+    "export": "tsx engine/src/cli.ts export",
     "dev": "tsx watch --clear-screen=false engine/src/cli.ts dev",
     "gallery": "tsx engine/src/cli.ts gallery",
     "site": "tsx engine/src/cli.ts site",
