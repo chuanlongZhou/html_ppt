@@ -5,11 +5,12 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { Issues, readYaml, zodIssues, at, type SrcDoc } from './issues.ts';
-import { Scene, LibraryInclude, DeckShape, type StateSrc, type StepSrc, type EffectSrc } from './schema.ts';
+import { Scene, LibraryInclude, DeckShape, type StateSrc, type StepSrc, type EffectSrc, type ChromeSrc } from './schema.ts';
 import { COMPONENTS, ObjectSchema } from './components/index.ts';
 import { resolveLayout, defaultSlot, LAYOUTS, type LayoutSpec, type Rect, type LayoutName, type ResolvedLayout } from './layout.ts';
 import { PRESETS, DEFAULT_PRESET, DEFAULT_EASING, presetsOf, MORPH_DEFAULTS, type FxKind, type Intent, type Dir } from './motion.ts';
 import { loadStyle, colorValue, type Style } from './style.ts';
+import { resolveTheme, type Theme } from './theme.ts';
 import { loadLibrary, matchLibrary, libSceneId, type LibEntry } from './library.ts';
 import { LIBRARY, rel } from './paths.ts';
 import type { IRDeck, IRScene, IRState, IRItem, IRFx, Placement } from './ir.ts';
@@ -30,6 +31,8 @@ interface Ctx {
   stage: { w: number; h: number };
   ir: IRDeck;
   ids: Set<string>;
+  /** 当前章节名（scene.section 沿用到下一个 section） */
+  section?: string;
 }
 
 interface Origin {
@@ -65,18 +68,41 @@ export function compileDeck(file: string): CompileResult {
     return { issues, files };
   }
   const meta = shape.data.deck;
+  const deckDir = path.dirname(file);
+  let theme: Theme | undefined;
+  if (meta.theme) {
+    try {
+      theme = resolveTheme(meta.theme, deckDir);
+      files.push(theme.file);
+    } catch (e: any) {
+      issues.error('THEME', e.message, at(src, ['deck', 'theme']));
+      return { issues, files };
+    }
+  }
   let style: Style;
   try {
-    style = loadStyle(meta.style ?? 'default', meta.tokens);
+    style = loadStyle(meta.style ?? 'default', { light: { ...theme?.light, ...meta.tokens }, dark: { ...theme?.dark, ...meta.tokensDark } });
   } catch (e: any) {
     issues.error('STYLE', e.message, at(src, ['deck', 'style']));
     return { issues, files };
   }
   const stage = { w: meta.stage?.[0] ?? 1920, h: meta.stage?.[1] ?? 1080 };
-  const ir: IRDeck = { title: meta.title, stage, style, slideNumber: meta.slideNumber ?? true, showPatterns: meta.showPatterns ?? false, scenes: [], assets: new Map() };
+  const ir: IRDeck = {
+    title: meta.title,
+    stage,
+    style,
+    slideNumber: meta.slideNumber ?? true,
+    showPatterns: meta.showPatterns ?? false,
+    meta: { title: meta.title, subtitle: meta.subtitle, author: meta.author, date: meta.date },
+    scenes: [],
+    assets: new Map(),
+  };
   const ctx: Ctx = { issues, style, stage, ir, ids: new Set() };
-  const deckDir = path.dirname(file);
   const defaultTransition = meta.transition ?? 'fade';
+  // 页面元素：主题的 chrome 为底，deck.chrome 逐项覆盖；Logo 图片按各自所在目录解析
+  const chromeBase = theme?.chrome ? withLogo(theme.chrome, theme.dir) : undefined;
+  const chromeDeck = meta.chrome ? withLogo(meta.chrome, deckDir) : undefined;
+  const chromeCfg = mergeChrome(chromeBase, chromeDeck);
   let lib: LibEntry[] | undefined;
 
   shape.data.scenes.forEach((item: any, i: number) => {
@@ -109,7 +135,36 @@ export function compileDeck(file: string): CompileResult {
     }
   });
 
+  if (chromeCfg) finishChrome(chromeCfg, ctx, issues, src);
   return { ir: issues.errors.length ? undefined : ir, issues, files };
+}
+
+/** logo.src 换成绝对路径（相对声明它的文件所在目录） */
+function withLogo(c: ChromeSrc, dir: string): ChromeSrc {
+  return c.logo?.src ? { ...c, logo: { ...c.logo, src: path.resolve(dir, c.logo.src) } } : c;
+}
+
+function mergeChrome(base?: ChromeSrc, over?: ChromeSrc): ChromeSrc | undefined {
+  if (!base && !over) return undefined;
+  const out: Record<string, any> = { ...base };
+  for (const [k, v] of Object.entries(over ?? {})) out[k] = k === 'header' || k === 'footer' ? { ...out[k], ...(v as object) } : v;
+  return out as ChromeSrc;
+}
+
+/** 所有 scene 都编译完才能检查 hideOn；同时登记 Logo 资源、写入 IR */
+function finishChrome(cfg: ChromeSrc, ctx: Ctx, issues: Issues, src: SrcDoc) {
+  const scenes = ctx.ir.scenes;
+  // hideOn 交给运行时解析（first / last / scene id），这样主页预览里改它也能立刻生效；这里只检查 id 是否存在
+  for (const id of cfg.hideOn ?? []) {
+    if (id !== 'first' && id !== 'last' && !scenes.some((x) => x.id === id))
+      issues.warn('CHROME_HIDE_UNKNOWN', `chrome.hideOn 中的 scene "${id}" 不存在`, { ...at(src, ['deck', 'chrome', 'hideOn']), hint: `可用：first、last 或 ${scenes.slice(0, 6).map((x) => x.id).join('、')}…` });
+  }
+  const out: ChromeSrc = { ...cfg };
+  if (out.logo?.src) {
+    const a = registerAsset(out.logo.src, '', ctx, at(src, ['deck', 'chrome', 'logo']));
+    out.logo = { ...out.logo, src: a?.pub };
+  }
+  ctx.ir.chrome = out;
 }
 
 /* ------------------------------------------------------------------ */
@@ -148,11 +203,18 @@ function normScene(data: any, o: Origin, ctx: Ctx, defaultTransition: string) {
     : [{ st: { steps: s.steps, notes: s.notes }, p: [], stepsP: ['steps'] }];
 
   const theme = s.theme ?? 'light';
+  let chromeOverride = s.chrome === false ? undefined : s.chrome;
+  if (chromeOverride?.logo?.src) {
+    const a = registerAsset(chromeOverride.logo.src, o.assetDir, ctx, where(['chrome', 'logo', 'src']));
+    chromeOverride = { ...chromeOverride, logo: { ...chromeOverride.logo, src: a?.pub } };
+  }
   const scene: IRScene = {
     id: s.id,
     purpose: s.purpose,
     theme,
     background: colorValue(style, s.background ?? 'bg', theme),
+    bgToken: s.background ?? 'bg',
+    chrome: { off: s.chrome === false, n: ctx.ir.scenes.length + 1, section: (ctx.section = s.section ?? ctx.section), override: chromeOverride },
     transition: (s.transition ?? defaultTransition) as IRScene['transition'],
     states: [],
     file: rel(o.src.file),
@@ -446,21 +508,30 @@ function resolveImage(props: any, o: Origin, ctx: Ctx, loc: any) {
     if (src.startsWith('http')) ctx.issues.warn('REMOTE_ASSET', `远程图片在离线放映时无法显示：${src}`, { ...loc, hint: '下载到 deck 的 assets/ 目录' });
     return props;
   }
+  const a = registerAsset(src, o.assetDir, ctx, loc);
+  return a ? { ...props, _src: a.pub, _size: imageSize(a.file) } : props;
+}
+
+/** 登记要拷进 site 的资源，返回发布路径；找不到文件时报错并返回 undefined。src 可以是绝对路径 */
+function registerAsset(src: string, assetDir: string, ctx: Ctx, loc: any): { pub: string; file: string } | undefined {
   let file: string;
   let pub: string;
   if (src.startsWith('@lib/')) {
     file = path.join(LIBRARY, 'assets', src.slice(5));
     pub = '_lib/' + src.slice(5);
+  } else if (path.isAbsolute(src)) {
+    file = src;
+    pub = 'assets/_chrome/' + path.basename(src);
   } else {
-    file = path.resolve(o.assetDir, src);
+    file = path.resolve(assetDir, src);
     pub = src.replace(/^\.?\//, '');
   }
   if (!fs.existsSync(file)) {
-    ctx.issues.error('ASSET_MISSING', `找不到图片：${src}`, { ...loc, hint: `应位于 ${rel(file)}` });
-    return props;
+    ctx.issues.error('ASSET_MISSING', `找不到图片：${path.isAbsolute(src) ? rel(src) : src}`, { ...loc, hint: `应位于 ${rel(file)}` });
+    return undefined;
   }
   ctx.ir.assets.set(pub, file);
-  return { ...props, _src: pub, _size: imageSize(file) };
+  return { pub, file };
 }
 
 function plain(s: unknown): string {

@@ -10,8 +10,9 @@
 
 | 目录 | 内容 | 规则 |
 |---|---|---|
-| `engine/` | 框架源码：编译器、组件、布局、动画、QA、**效果库** `engine/library/` | 改动后跑测试（见下） |
+| `engine/` | 框架源码：编译器、组件、布局、动画、QA、**效果库** `engine/library/`、**主题预设** `engine/themes/`、主页 `engine/src/home/` | 改动后跑测试（见下） |
 | `decks/` | 演示源文件，每个 deck 自包含；`deck.yaml` 是唯一 source of truth | |
+| `proj/` | 正式项目（如复刻的真实演示），结构同 `decks/`，用名字寻址（同名时 `decks/` 优先） | |
 | `output/` | 命令生成的产物（网页、截图、报告） | **不要手改**，可删除重建 |
 | `archive/` | 归档与参考；待复刻的 PPTX 放 `archive/reference/` | **只读** |
 | `agents/` | 本文件引用的 skill 与角色（纯 Markdown，工具中立） | 改后运行 `npm run agents:sync` |
@@ -23,10 +24,10 @@
 
 | 命令 | 作用 |
 |---|---|
-| `npm run new -- <deck>` | 新建 deck 骨架 |
+| `npm run new -- <deck> [--theme <预设名\|theme.yaml>]` | 新建 deck 骨架（可带主题：颜色 + 页码 / Logo / 页脚） |
 | `npm run check -- <deck> [--scene <id>] [--film] [--no-shots]` | 构建 + 逐步截图 + QA → `output/<deck>/qa/` |
 | `npm run build -- <deck> [--ir]` | 只构建（`--ir` 另存 `output/<deck>/ir.json`） |
-| `npm run dev` | 实时预览：http://localhost:5173 首页列出全部 deck 与效果库（缩略图、搜索、逐条预览），改源文件自动刷新 |
+| `npm run dev` | 实时预览：http://localhost:5173 主页 = 我的演示 · 主题与页面元素（选配色、配页码 / Logo / 页脚，下载 theme.yaml）· 页面结构 · 动画与交互（缩略图、搜索、逐条预览），改源文件自动刷新 |
 | `npm run gallery` | 生成效果库浏览器 `output/_gallery/`（含缩略图，可离线双击打开） |
 | `npm run catalog` | 重新生成 `engine/CATALOG.md` 与 `engine/library/INDEX.md` |
 | `npm run agents:sync` | 由 `agents/` 生成 `.claude/`（Claude Code 的 skills 与 subagent） |
@@ -48,7 +49,7 @@
 
 | 任务 | 文件 |
 |---|---|
-| 做一份演示、改页面内容或版式 | `agents/skills/deck-author/SKILL.md` |
+| 做一份演示、改页面内容或版式；主题色、页码、Logo、页眉页脚、进度 | `agents/skills/deck-author/SKILL.md` |
 | 设计动画：点击构建、State、morph | `agents/skills/deck-motion/SKILL.md` |
 | 新增或修改效果库条目 | `agents/skills/library-curate/SKILL.md` |
 | 修改引擎：组件、布局、preset、QA | `agents/skills/engine-dev/SKILL.md` |
@@ -65,6 +66,7 @@
 - 用户描述了某种页面或效果时，先查 `engine/library/INDEX.md` 的「提示词速查」，优先 `use: <条目 id>` 复用。
 - 优先使用 layout recipe 与语义组件；`layout: free` + `frame` 只用于精确构图或导入的 PPT。
 - 不手写关键帧或坐标动画：页内动画用 `steps` + preset，页面变化用 State 的 `override`。
+- 配色与每页都有的元素（页码、Logo、页脚、进度）用 `deck.theme` / `deck.chrome` 配置，不要逐页复制对象。
 - 数据用 `chart` 组件（可交互），不要用一堆 shape 拼图表；数据变化写成 State。
 - 在截图 / 照片上标注时用 `on: <图片 key>` + `box`（图片坐标 0–1），不要手算舞台坐标；放大用图片的 `zoom`。
 - 每个 scene 写 `purpose`；标题写结论。

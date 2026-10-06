@@ -1,0 +1,3 @@
+label: 海洋青
+desc: 冷白底、青蓝主色，适合科技、数据与环境主题
+seeds: { accent: "#0E7490", accent2: "#F59E0B", accent3: "#16A34A", accent4: "#6366F1", bg: "#F2F7F9", ink: "#0B1F2A" }

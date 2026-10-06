@@ -23,14 +23,17 @@ export interface Style {
   css: string;
 }
 
-export function loadStyle(name: string, overrides?: Record<string, string>): Style {
+/** overrides：主题与 deck.tokens 合并后的 token 覆盖（light 覆盖浅色；dark 只覆盖深色） */
+export function loadStyle(name: string, overrides?: { light?: Record<string, string>; dark?: Record<string, string> }): Style {
   const dir = path.join(STYLES, name);
   const file = path.join(dir, 'style.yaml');
   if (!fs.existsSync(file)) throw new Error(`风格不存在：${name}（engine/styles/${name}/style.yaml）`);
   const y = parse(fs.readFileSync(file, 'utf8'));
   const css = fs.existsSync(path.join(dir, 'style.css')) ? fs.readFileSync(path.join(dir, 'style.css'), 'utf8') : '';
-  const light = { ...y.colors.light, ...(overrides ?? {}) };
-  return { name, label: y.label, colors: { light, dark: { ...light, ...y.colors.dark } }, fonts: y.fonts, sizes: y.sizes, radius: y.radius, shadow: y.shadow, rules: y.rules, css };
+  const light = { ...y.colors.light, ...overrides?.light };
+  // 深色：先继承浅色（未单独定义的 token 如 success），再用风格的深色值，最后才是显式覆盖
+  const dark = { ...light, ...y.colors.dark, ...overrides?.dark };
+  return { name, label: y.label, colors: { light, dark }, fonts: y.fonts, sizes: y.sizes, radius: y.radius, shadow: y.shadow, rules: y.rules, css };
 }
 
 export function isToken(style: Style, c: string) {

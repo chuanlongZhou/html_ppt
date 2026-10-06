@@ -2,13 +2,30 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { DECKS, ROOT, rel, UsageError } from './paths.ts';
+import { THEMES, validateThemeText } from './theme.ts';
 
-export function newDeck(name: string | undefined): number {
+/** themeText：写成 deck 目录里的 theme.yaml 并在 deck.yaml 引用；themeRef（CLI --theme）：预设名或主题文件路径 */
+export function newDeck(name: string | undefined, opts: { themeText?: string; themeRef?: string; quiet?: boolean } = {}): number {
   if (!name || !/^[a-z0-9][a-z0-9-]*$/.test(name)) throw new UsageError('用法：npm run new -- <deck-name>（小写字母、数字、-）');
   const dir = path.join(DECKS, name);
   if (fs.existsSync(dir)) throw new UsageError(`已存在：${rel(dir)}`);
+  let themeText = opts.themeText;
+  if (opts.themeRef) {
+    const preset = path.join(THEMES, `${opts.themeRef}.yaml`);
+    const file = fs.existsSync(preset) ? preset : path.resolve(opts.themeRef);
+    if (!fs.existsSync(file)) throw new UsageError(`找不到主题：${opts.themeRef}（预设名见 engine/themes/，或给一个 theme.yaml 的路径）`);
+    themeText = fs.readFileSync(file, 'utf8');
+  }
+  if (themeText) {
+    try {
+      validateThemeText(themeText);
+    } catch (e: any) {
+      throw new UsageError(e.message);
+    }
+  }
   fs.mkdirSync(path.join(dir, 'assets'), { recursive: true });
   fs.writeFileSync(path.join(dir, 'assets', '.gitkeep'), '');
+  if (themeText) fs.writeFileSync(path.join(dir, 'theme.yaml'), themeText);
   fs.writeFileSync(
     path.join(dir, 'brief.md'),
     `# ${name} · brief\n\n- 目标：\n- 受众：\n- 时长：\n- 核心论点（thesis）：\n- 素材：\n- 风格 / 约束：\n`,
@@ -17,7 +34,7 @@ export function newDeck(name: string | undefined): number {
     path.join(dir, 'deck.yaml'),
     `# 字段与组件见 engine/CATALOG.md；可复用的页面与动画见 engine/library/INDEX.md
 deck:
-  title: ${name}
+  title: ${name}${themeText ? THEME_LINE : ''}
   story:
     thesis: 一句话核心论点
     audience: 受众
@@ -35,9 +52,11 @@ scenes:
     purpose: 列出要点
 `,
   );
-  console.log(`✔ 已创建 ${rel(dir)}/（deck.yaml、brief.md、assets/）\n下一步：npm run check -- ${name}`);
+  if (!opts.quiet) console.log(`✔ 已创建 ${rel(dir)}/（deck.yaml、brief.md${themeText ? '、theme.yaml' : ''}、assets/）\n下一步：npm run check -- ${name}`);
   return 0;
 }
+
+const THEME_LINE = '\n  theme: theme.yaml   # 颜色与页面元素（页码、Logo、页脚…）；deck.tokens / deck.chrome 可逐项覆盖';
 
 /* ---------------- agents-sync ---------------- */
 

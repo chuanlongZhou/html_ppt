@@ -21,6 +21,202 @@
     return pairs;
   }
 
+
+  /* ---------------- 页面元素（chrome）：Logo、页眉页脚、页码、进度 ----------------
+   * 配置来自 deck.chrome / theme.chrome（见 schema.ts 的 Chrome）；每个 section 在 .stage 里放一个 .chrome。
+   * .chrome 带 data-id，同一 Scene 内 State 之间按 data-id 配对，不会闪动。 */
+  var embedded = false;
+  var CHROME_AT = ['header-left', 'header-center', 'header-right', 'footer-left', 'footer-center', 'footer-right'];
+
+  function fmt(tpl, sec, cfg) {
+    return String(tpl).replace(/\{(n|N|title|subtitle|author|date|section)\}/g, function (_, k) {
+      if (k === 'n') return sec.getAttribute('data-n') || '';
+      if (k === 'N') return String(cfg.total || '');
+      if (k === 'section') return sec.getAttribute('data-section') || '';
+      return (cfg.meta && cfg.meta[k]) || '';
+    });
+  }
+
+  function chromeFor(sec, cfg) {
+    var flag = sec.getAttribute('data-chrome');
+    if (!cfg.chrome || flag === 'off') return null;
+    var hide = cfg.chrome.hideOn || [];
+    var n = Number(sec.getAttribute('data-n')) || 0;
+    if (hide.indexOf(sec.getAttribute('data-scene')) >= 0 || (hide.indexOf('first') >= 0 && n === 1) || (hide.indexOf('last') >= 0 && n === Number(cfg.total))) return null;
+    var c = {};
+    Object.keys(cfg.chrome).forEach(function (k) { c[k] = cfg.chrome[k]; });
+    if (flag) {
+      var o = JSON.parse(flag);
+      Object.keys(o).forEach(function (k) { c[k] = (k === 'header' || k === 'footer') ? Object.assign({}, c[k], o[k]) : o[k]; });
+    }
+    return c;
+  }
+
+  function el(tag, cls, text) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text !== undefined) e.textContent = text;
+    return e;
+  }
+
+  function buildChrome(sec, cfg) {
+    var stage = sec.querySelector('.stage');
+    if (!stage) return;
+    var old = stage.querySelector(':scope > .chrome');
+    if (old) old.remove();
+    var c = chromeFor(sec, cfg);
+    if (!c) return;
+    var cells = {};
+    CHROME_AT.forEach(function (a) { cells[a] = []; });
+    ['header', 'footer'].forEach(function (band) {
+      ['left', 'center', 'right'].forEach(function (pos) {
+        var t = c[band] && c[band][pos];
+        if (t) cells[band + '-' + pos].push(el('span', 'ch-it ch-tx', fmt(t, sec, cfg)));
+      });
+    });
+    var pn = c.pageNumber;
+    if (pn) {
+      var po = pn === true ? {} : pn;
+      cells[po.at || 'footer-right'].push(el('span', 'ch-it ch-tx ch-pn', fmt(po.format || '{n} / {N}', sec, cfg)));
+    }
+    var lg = c.logo;
+    if (lg && (lg.src || lg.text)) {
+      var at = lg.at || 'header-right';
+      var node;
+      if (lg.src) {
+        node = el('img', 'ch-it ch-logo');
+        node.src = lg.src;
+        node.alt = '';
+        node.style.height = (lg.height || 40) + 'px';
+      } else node = el('span', 'ch-it ch-wm', lg.text);
+      if (/left$/.test(at)) cells[at].unshift(node); else cells[at].push(node);
+    }
+    var navAt = null;
+    var names = sectionNames();
+    if (c.sections && names.length > 1) {
+      navAt = (c.sections === true || !c.sections.at) ? 'footer' : c.sections.at;
+      var nav = el('div', 'ch-it ch-nav ch-still');
+      nav.setAttribute('data-active', names.indexOf(sec.getAttribute('data-section') || ''));
+      nav.appendChild(el('i', 'ch-pill'));
+      names.forEach(function (nm, i) {
+        var t = el('span', 'ch-tab', nm);
+        t.setAttribute('data-i', i);
+        nav.appendChild(t);
+      });
+      cells[navAt + '-center'] = [nav];
+    }
+    var total = Number(cfg.total) || 0, n = Number(sec.getAttribute('data-n')) || 1;
+    var prog = c.progress;
+    if (prog === 'dots' && (cells['footer-center'].length || total > 30 || total < 2)) prog = 'bar';
+    if (prog === 'dots') {
+      var dots = el('span', 'ch-it ch-dots');
+      for (var i = 1; i <= total; i++) dots.appendChild(el('i', i === n ? 'on' : i < n ? 'done' : ''));
+      cells['footer-center'].push(dots);
+    }
+
+    var root = el('div', 'chrome');
+    root.setAttribute('data-id', (sec.getAttribute('data-scene') || '') + '.__chrome');
+    root.setAttribute('aria-hidden', 'true');
+    ['header', 'footer'].forEach(function (band) {
+      var parts = ['left', 'center', 'right'].map(function (p) { return cells[band + '-' + p]; });
+      if (!parts[0].length && !parts[1].length && !parts[2].length) return;
+      var b = el('div', 'ch-band ch-' + band + (c.rule ? ' ch-rule' : '') + (navAt === band ? ' ch-hasnav' : ''));
+      parts.forEach(function (items, i) {
+        var cell = el('div', 'ch-cell ch-' + ['l', 'c', 'r'][i]);
+        items.forEach(function (it) { cell.appendChild(it); });
+        b.appendChild(cell);
+      });
+      root.appendChild(b);
+    });
+    if (prog === 'bar' && total > 0) {
+      var bar = el('div', 'ch-bar');
+      var fill = el('i');
+      fill.style.width = (n / total * 100) + '%';
+      bar.appendChild(fill);
+      root.appendChild(bar);
+    }
+    stage.insertBefore(root, stage.firstChild);
+  }
+
+  /* 章节导航：章节名按出现顺序取自各 section 的 data-section；高亮块从上一章滑到当前章 */
+  function sectionNames() {
+    var out = [];
+    document.querySelectorAll('.reveal .slides section.sc').forEach(function (sec) {
+      var s = sec.getAttribute('data-section');
+      if (s && out.indexOf(s) < 0) out.push(s);
+    });
+    return out;
+  }
+  function setNav(nav, idx, animate) {
+    nav.classList.toggle('ch-still', !animate);
+    var tabs = nav.querySelectorAll('.ch-tab'), pill = nav.querySelector('.ch-pill');
+    tabs.forEach(function (t, i) { t.classList.toggle('on', i === idx); });
+    var t = tabs[idx];
+    if (!t) { pill.style.opacity = 0; return; }
+    pill.style.cssText = 'opacity:1;left:' + t.offsetLeft + 'px;top:' + t.offsetTop + 'px;width:' + t.offsetWidth + 'px;height:' + t.offsetHeight + 'px';
+  }
+  function syncNav(cur, prev) {
+    var nav = cur && cur.querySelector('.ch-nav');
+    if (!nav) return;
+    var to = Number(nav.getAttribute('data-active'));
+    var pn = prev && prev !== cur && prev.querySelector('.ch-nav');
+    var from = pn ? Number(pn.getAttribute('data-active')) : to;
+    setNav(nav, from, false);
+    void nav.offsetWidth;
+    setNav(nav, to, true);
+  }
+  function wireNav() {
+    document.addEventListener('click', function (e) {
+      var t = e.target.closest && e.target.closest('.ch-tab');
+      if (!t) return;
+      var name = t.textContent;
+      var first = [].filter.call(document.querySelectorAll('.reveal .slides section.sc'), function (s) { return s.getAttribute('data-section') === name; })[0];
+      if (first) window.Reveal.slide(window.Reveal.getIndices(first).h);
+    });
+  }
+
+  function buildAllChrome(cfg) {
+    document.querySelectorAll('.reveal .slides section.sc').forEach(function (sec) { buildChrome(sec, cfg); });
+  }
+
+  /* ---------------- 换主题预览：主页的「主题与页面元素」通过 postMessage 驱动 ---------------- */
+  function tokenCss(map) {
+    return Object.keys(map).map(function (k) { return '--c-' + k + ':' + map[k] + ';'; }).join('');
+  }
+  function applyTheme(tokens) {
+    var st = document.getElementById('htmlppt-theme');
+    if (!st) { st = document.createElement('style'); st.id = 'htmlppt-theme'; document.head.appendChild(st); }
+    var dark = Object.assign({}, tokens.light, tokens.dark);
+    st.textContent = '.reveal{' + tokenCss(tokens.light) + '}\n.reveal .sc.theme-dark{' + tokenCss(dark) + '}';
+    document.querySelectorAll('.reveal .slides section.sc').forEach(function (sec) {
+      var map = sec.classList.contains('theme-dark') ? dark : tokens.light;
+      var key = sec.getAttribute('data-bg') || 'bg';
+      var color = map[key] || key;
+      sec.setAttribute('data-background-color', color);
+      var bgEl = window.Reveal && Reveal.getSlideBackground && Reveal.getSlideBackground(sec);
+      if (bgEl) bgEl.style.backgroundColor = color;
+    });
+  }
+
+  function onMessage(cfg) {
+    window.addEventListener('message', function (e) {
+      var d = e.data;
+      if (typeof d === 'string') { try { d = JSON.parse(d); } catch (x) { return; } }
+      if (!d || !d.htmlppt) return;
+      if (d.htmlppt === 'theme') applyTheme(d.tokens);
+      else if (d.htmlppt === 'chrome') {
+        cfg.chrome = d.chrome || undefined;
+        // 自带页码 / 进度与 Reveal 的不同时显示
+        window.Reveal.configure({
+          slideNumber: cfg.slideNumber && !(cfg.chrome && cfg.chrome.pageNumber) ? 'c/t' : false,
+          progress: !embedded && !(cfg.chrome && cfg.chrome.progress && cfg.chrome.progress !== 'none')
+        });
+        buildAllChrome(cfg);
+        syncNav(window.Reveal.getCurrentSlide(), null);
+      }
+    });
+  }
+
   function init(cfg) {
     var params = new URLSearchParams(location.search);
     var qa = params.has('qa');
@@ -34,8 +230,9 @@
       hash: true,
       controls: true,
       controlsTutorial: false,
-      progress: true,
-      slideNumber: cfg.slideNumber ? 'c/t' : false,
+      progress: !(cfg.chrome && cfg.chrome.progress && cfg.chrome.progress !== 'none'),
+      // 启用了自己的页码 / 进度时，关掉 Reveal 自带的（它按 State 计数，与"第几页"对不上）
+      slideNumber: cfg.slideNumber && !(cfg.chrome && cfg.chrome.pageNumber) ? 'c/t' : false,
       transition: 'fade',
       backgroundTransition: 'fade',
       autoAnimateMatcher: matcher,
@@ -53,8 +250,16 @@
         document.documentElement.classList.add('qa');
       }
     }
+    buildAllChrome(cfg);
+    onMessage(cfg);
+    // ?embed：被主页的预览框嵌入——不显示 Reveal 自带的箭头与进度条（进度由 chrome 负责）
+    if (params.has('embed')) { opts.controls = false; opts.progress = false; embedded = true; }
     window.__htmlppt = { ready: false, cfg: cfg };
     Reveal.initialize(opts).then(function () {
+      syncNav(Reveal.getCurrentSlide(), null);
+      Reveal.on('slidechanged', function (e) { syncNav(e.currentSlide, e.previousSlide); });
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { syncNav(Reveal.getCurrentSlide(), null); });
+      wireNav();
       if (window.HtmlPptCharts) {
         window.HtmlPptCharts.init();
         window.HtmlPptCharts.enter(Reveal.getCurrentSlide(), null);

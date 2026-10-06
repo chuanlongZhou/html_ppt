@@ -24,7 +24,10 @@ deck.yaml
 | `date` | string |  |
 | `stage` | [number, number] | 舞台尺寸，默认 [1920, 1080] |
 | `style` | string | engine/styles 下的风格名（默认 default） |
-| `tokens` | object | 覆盖风格 token，如 { accent: "#E8590C" } |
+| `theme` | string | 主题：engine/themes/ 下的预设名（ocean、forest …），或相对 deck 目录的主题文件（theme.yaml；可在主页「主题与页面元素」配置并下载） |
+| `tokens` | object | 覆盖浅色 token，如 { accent: "#E8590C" }（优先于 theme） |
+| `tokensDark` | object | 覆盖深色 token（theme: dark 的页面） |
+| `chrome` | object | 页面元素：Logo、页眉页脚、页码、进度（优先于 theme 中的 chrome） |
 | `transition` | `fade` \| `slide` \| `convex` \| `zoom` \| `none` | Scene 之间默认翻页方式（默认 fade） |
 | `story` | object | 叙事信息：核心论点、受众、时长、目标 |
 | `showPatterns` | boolean | 在页角显示本页用到的效果库条目 |
@@ -46,6 +49,8 @@ deck.yaml
 | `steps` | object \| object[][] | 单 State 时的点击构建（等价于 states[0].steps） |
 | `notes` | string |  |
 | `patterns` | string[] | 本页使用的效果库条目 id（showPatterns 时显示在页角） |
+| `section` | string | 所属章节名（页眉里的 {section}）；后续 scene 沿用，直到下一个 section |
+| `chrome` | `false` \| object | false = 本页不显示页面元素；对象 = 只覆盖写出的项 |
 
 **states[i]**
 

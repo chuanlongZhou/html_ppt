@@ -24,10 +24,10 @@ npm run dev                 # 实时预览 http://localhost:5173（含效果库�
 
 | 命令 | 作用 |
 |---|---|
-| `npm run new -- <deck>` | 新建 deck 骨架 |
+| `npm run new -- <deck> [--theme <预设名\|theme.yaml>]` | 新建 deck 骨架（可带主题） |
 | `npm run check -- <deck> [--scene <id>] [--film] [--no-shots]` | 构建 + 逐步截图 + QA → `output/<deck>/qa/` |
 | `npm run build -- <deck> [--ir]` | 只构建（`--ir` 另存 `ir.json`） |
-| `npm run dev` | 实时预览，改源文件自动刷新 |
+| `npm run dev` | 实时预览主页：演示、主题与页面元素（选配色、配页码 / Logo / 页脚，下载 theme.yaml）、页面结构、动画与交互 |
 | `npm run gallery` | 生成离线效果库浏览器 `output/_gallery/` |
 | `npm run catalog` | 重新生成 `engine/CATALOG.md` 与 `engine/library/INDEX.md` |
 | `npm run agents:sync` | 由 `agents/` 生成 `.claude/` 的 skills 与 subagent |
@@ -38,7 +38,8 @@ npm run dev                 # 实时预览 http://localhost:5173（含效果库�
 - **Scene / State**：Scene 是一页，内含对象池与一串 State；Scene 之间翻页，State 之间 morph 平滑过渡。
 - **两级动画**：页内点击构建（`steps` + preset → Reveal fragments）；页面变化（State `override` → Reveal Auto-Animate）。不手写关键帧。
 - **语义组件**：`text`、`shape`、`image`、`metric`、`chart`（可交互）、`html`；版式用 layout recipe，精确构图才用 `layout: free` + `frame`。
-- **效果库**：`engine/library/` 收录 37 个「提示词 ↔ 可复制 YAML」条目（页面版式、页内动画、状态切换、交互数据、位图操作），用 `use: <条目 id>` 一行复用。
+- **效果库**：`engine/library/` 收录 45 个「提示词 ↔ 可复制 YAML」条目（页面结构、页内动画、状态切换、交互数据、位图操作），用 `use: <条目 id>` 一行复用。
+- **主题与页面元素**：`deck.theme`（`engine/themes/` 的 9 套配色预设，或主页下载的 `theme.yaml`）+ `deck.chrome`（页码、Logo、页眉页脚、进度，每页相同）。
 
 ## 目录
 
@@ -46,6 +47,7 @@ npm run dev                 # 实时预览 http://localhost:5173（含效果库�
 |---|---|
 | `engine/` | 框架源码：编译器、组件、布局、动画、QA、效果库 |
 | `decks/` | 演示源文件，每个 deck 自包含 |
+| `proj/` | 正式项目（如复刻的真实演示），结构同 `decks/`；`npm run check -- <name>` 同样可寻址 |
 | `output/` | 生成产物（已 gitignore，可删除重建） |
 | `agents/` | 工具中立的 skill 与角色（Markdown） |
 | `docs/` | 计划、架构（[ARCHITECTURE](docs/ARCHITECTURE.md)）与 ADR（`docs/adr/`） |

@@ -63,3 +63,24 @@ html.qa .reveal *, html.qa .reveal *::before, html.qa .reveal *::after { transit
 .reveal .o-chart.interactive .ch-rect, .reveal .o-chart.interactive .ch-dot, .reveal .o-chart.interactive .ch-line, .reveal .o-chart.interactive .ch-cat { cursor: pointer; }
 .reveal .o-chart .ch-line { fill: none; stroke-linejoin: round; stroke-linecap: round; }
 .reveal .o-chart .ch-val, .reveal .o-chart .ch-tick, .reveal .o-chart .ch-grid, .reveal .o-chart .ch-base { pointer-events: none; }
+
+/* 页面元素（chrome）：每页都有的 Logo、页眉页脚、页码、进度。结构在这里，视觉在风格的 style.css。
+ * 页眉带 y∈[0,64]、页脚带 y∈[1016,1080]，在 layout 的上下边距（84 / 96）之外，不会挤占内容。 */
+.reveal .chrome { position: absolute; inset: 0; pointer-events: none; }
+.reveal .ch-band { position: absolute; left: 120px; right: 120px; height: 64px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; column-gap: 28px; box-sizing: border-box; }
+.reveal .ch-header { top: 0; }
+.reveal .ch-footer { bottom: 0; }
+.reveal .ch-cell { display: flex; align-items: center; gap: 20px; min-width: 0; }
+.reveal .ch-l { justify-content: flex-start; }
+.reveal .ch-c { justify-content: center; }
+.reveal .ch-r { justify-content: flex-end; }
+.reveal .ch-bar { position: absolute; left: 0; right: 0; bottom: 0; height: 6px; }
+.reveal .ch-bar i { display: block; height: 100%; }
+
+/* 章节导航（chrome.sections）：占满页脚 / 页眉的中间，两侧留给左右文字与页码 */
+.reveal .ch-band.ch-hasnav { grid-template-columns: auto minmax(0, 1fr) auto; }
+.reveal .ch-hasnav .ch-c { justify-content: stretch; min-width: 0; }
+.reveal .ch-nav { position: relative; display: flex; gap: 10px; width: 100%; pointer-events: auto; }
+.reveal .ch-tab { position: relative; z-index: 1; flex: 1 1 0; min-width: 0; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; transition: color .35s; }
+.reveal .ch-pill { position: absolute; z-index: 0; left: 0; top: 0; width: 0; height: 0; opacity: 0; pointer-events: none; transition: left .5s cubic-bezier(.45, 0, .2, 1), width .5s cubic-bezier(.45, 0, .2, 1), opacity .3s; }
+.reveal .ch-nav.ch-still .ch-pill, .reveal .ch-nav.ch-still .ch-tab { transition: none; }

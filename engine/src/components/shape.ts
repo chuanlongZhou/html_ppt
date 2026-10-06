@@ -73,9 +73,11 @@ export const shape = {
       };
     }
     const radius = geom === 'pill' ? '9999px' : geom === 'ellipse' ? '50%' : geom === 'roundRect' ? `${p.radius ?? 24}px` : p.radius !== undefined ? `${p.radius}px` : '0';
+    const fill = ctx.color(p.fill ?? 'surface') ?? '';
     const style: Rendered['style'] = {
       ...textStyleCss(p, ctx),
-      'background-color': ctx.color(p.fill ?? 'surface'),
+      // 渐变填充（linear-gradient(...)）走 background，纯色走 background-color（可 morph）
+      ...(/gradient\(/.test(fill) ? { background: fill } : { 'background-color': fill }),
       'border-radius': radius,
       'clip-path': CLIP[geom],
       border: p.stroke ? `${p.strokeWidth ?? 2}px ${p.dash ? 'dashed' : 'solid'} ${ctx.color(p.stroke)}` : undefined,

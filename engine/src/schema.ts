@@ -69,6 +69,42 @@ export const State = z.strictObject({
 });
 export type StateSrc = z.infer<typeof State>;
 
+/* ---------------- 页面元素（chrome）：每页都有的 Logo、页眉页脚、页码、进度 ---------------- */
+
+export const CHROME_AT = ['header-left', 'header-center', 'header-right', 'footer-left', 'footer-center', 'footer-right'] as const;
+const ChromeBand = z.strictObject({
+  left: z.string().optional(),
+  center: z.string().optional(),
+  right: z.string().optional(),
+});
+
+/** 页面元素配置。文字里可用占位符 {n} {N} {title} {subtitle} {author} {date} {section}；n 与 N 按 Scene 计数 */
+export const Chrome = z.strictObject({
+  logo: z
+    .strictObject({
+      src: z.string().optional().describe('图片路径（相对 deck 目录）；与 text 二选一'),
+      text: z.string().optional().describe('文字 Logo（字标）'),
+      at: z.enum(CHROME_AT).optional().describe('位置（默认 header-right）'),
+      height: z.number().optional().describe('图片高度 px（默认 40）'),
+    })
+    .optional()
+    .describe('每页相同的 Logo'),
+  header: ChromeBand.optional().describe('页眉：left / center / right 三段文字'),
+  footer: ChromeBand.optional().describe('页脚：left / center / right 三段文字'),
+  pageNumber: z
+    .union([z.boolean(), z.strictObject({ format: z.string().optional().describe('默认 "{n} / {N}"'), at: z.enum(CHROME_AT).optional().describe('默认 footer-right') })])
+    .optional()
+    .describe('页码（按 Scene 计数）。true = 右下角 "n / N"'),
+  sections: z
+    .union([z.boolean(), z.strictObject({ at: z.enum(['header', 'footer']).optional().describe('默认 footer') })])
+    .optional()
+    .describe('章节导航：一排章节标签，当前章节高亮，翻到新章节时高亮块滑动过去。章节名来自 scene 的 section（至少两个不同的 section）；占用页脚（或页眉）的中间'),
+  progress: z.enum(['none', 'bar', 'dots']).optional().describe('进度：bar 底部细条 / dots 页脚圆点'),
+  rule: z.boolean().optional().describe('页眉页脚与内容之间的细分隔线'),
+  hideOn: z.array(z.string()).optional().describe('不显示的 scene id；first / last 代表第一页 / 最后一页（封面、结尾）'),
+});
+export type ChromeSrc = z.infer<typeof Chrome>;
+
 export const Scene = z.strictObject({
   id: Id.describe('scene id（全 deck 唯一）'),
   use: z.string().optional().describe('以效果库条目为模板（如 page.cards-3）：继承其 layout / objects / states，本 scene 写出的字段覆盖模板，objects 按 key 合并属性'),
@@ -82,6 +118,8 @@ export const Scene = z.strictObject({
   steps: z.array(Step).optional().describe('单 State 时的点击构建（等价于 states[0].steps）'),
   notes: z.string().optional(),
   patterns: z.array(z.string()).optional().describe('本页使用的效果库条目 id（showPatterns 时显示在页角）'),
+  section: z.string().optional().describe('所属章节名（页眉里的 {section}）；后续 scene 沿用，直到下一个 section'),
+  chrome: z.union([z.literal(false), Chrome]).optional().describe('false = 本页不显示页面元素；对象 = 只覆盖写出的项'),
 });
 export type SceneSrc = z.infer<typeof Scene>;
 
@@ -97,7 +135,10 @@ export const DeckMeta = z.strictObject({
   date: z.string().optional(),
   stage: z.tuple([z.number(), z.number()]).optional().describe('舞台尺寸，默认 [1920, 1080]'),
   style: z.string().optional().describe('engine/styles 下的风格名（默认 default）'),
-  tokens: z.record(z.string(), z.string()).optional().describe('覆盖风格 token，如 { accent: "#E8590C" }'),
+  theme: z.string().optional().describe('主题：engine/themes/ 下的预设名（ocean、forest …），或相对 deck 目录的主题文件（theme.yaml；可在主页「主题与页面元素」配置并下载）'),
+  tokens: z.record(z.string(), z.string()).optional().describe('覆盖浅色 token，如 { accent: "#E8590C" }（优先于 theme）'),
+  tokensDark: z.record(z.string(), z.string()).optional().describe('覆盖深色 token（theme: dark 的页面）'),
+  chrome: Chrome.optional().describe('页面元素：Logo、页眉页脚、页码、进度（优先于 theme 中的 chrome）'),
   transition: z.enum(SCENE_TRANSITIONS).optional().describe('Scene 之间默认翻页方式（默认 fade）'),
   story: z
     .strictObject({ thesis: z.string().optional(), audience: z.string().optional(), duration: z.string().optional(), goal: z.string().optional() })
@@ -117,7 +158,7 @@ export const DeckShape = z.strictObject({
 
 /** 效果库分类：类别 → 分组。新增分组在这里登记；条目的 group 必须是所属类别的分组之一 */
 export const LIB_CATEGORIES = {
-  page: { label: '页面版式', desc: '常用页面的版式与配色', groups: { structure: '结构页', text: '文字页', visual: '图文与对比', data: '数据页' } },
+  page: { label: '页面结构', desc: '常用页面的版式与配色：封面、目录、章节、要点、对比、数据、时间线、总结', groups: { structure: '结构页', text: '文字页', visual: '图文与对比', data: '数据页', diagram: '流程与框架' } },
   build: { label: '页内动画', desc: '一页之内逐次点击：出现、强调、搭建', groups: { reveal: '出现', emphasis: '强调', diagram: '结构搭建' } },
   morph: { label: '状态切换', desc: '同一画面在多个 State 之间平滑变化', groups: { layout: '版面变化', focus: '聚焦', data: '数据与进度' } },
   interact: { label: '交互数据', desc: '可悬停、点击、切换的图表与数据面板；讲述推进和自由探索共用同一套状态', groups: { chart: '交互图表', linked: '联动与面板', narrative: '讲述 + 探索' } },

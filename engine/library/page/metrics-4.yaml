@@ -1,0 +1,20 @@
+id: page.metrics-4
+group: data
+title: 四个关键指标
+order: 9
+prompts: [四个数字, 关键指标, KPI 看板, 指标卡片, 数据概览, 四个指标, dashboard]
+use_when: 一页同时交代 3–4 个并列的关键数字（规模、增速、占比…），每个配一句解释
+avoid_when: 只有一个重点数字（用 page.big-number）；需要看趋势（用 morph.chart-grow）
+demo:
+  layout: title-body
+  objects:
+    title: { type: text, role: title, text: 过去一年的四个关键数字 }
+    k1: { type: shape, fill: surface, shadow: true, frame: [120, 300, 390, 360] }
+    k2: { type: shape, fill: surface, shadow: true, frame: [550, 300, 390, 360] }
+    k3: { type: shape, fill: surface, shadow: true, frame: [980, 300, 390, 360] }
+    k4: { type: shape, fill: accent-soft, frame: [1410, 300, 390, 360] }
+    m1: { type: metric, value: "128", unit: 城市, label: 覆盖城市数（示例数据）, size: 120, frame: [156, 340, 318, 290], delta: "+18 vs 去年", tone: up }
+    m2: { type: metric, value: "3.1", unit: Gt, label: 年度总量（示例数据）, size: 120, frame: [586, 340, 318, 290], delta: "−12%", tone: up }
+    m3: { type: metric, value: "92", unit: "%", label: 数据完整率（示例数据）, size: 120, frame: [1016, 340, 318, 290], delta: 持平, tone: neutral }
+    m4: { type: metric, value: "7.4", unit: 万, label: 月活用户（示例数据）, size: 120, frame: [1446, 340, 318, 290], delta: "+31%", tone: up }
+    source: { type: text, role: caption, frame: [120, 700, 1680, 50], text: 来源：示例数据，使用时替换并标明出处 }

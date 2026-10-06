@@ -15,7 +15,8 @@ description: 制作或修改 html_ppt 演示（decks/<name>/deck.yaml）。用�
 
 | 需求 | 用什么 |
 |---|---|
-| 版式（封面、要点、卡片、对比、大数字…） | `page.*` 条目 / layout recipe |
+| 版式（封面、目录、要点、卡片、对比、大数字、四指标、时间线、四象限、团队、表格、总结…） | `page.*` 条目 / layout recipe |
+| 主题色、每页都有的页码 / Logo / 页眉页脚 / 进度 | `deck.theme` + `deck.chrome`（见下方「主题与页面元素」） |
 | 页内逐步出现、强调 | steps（deck-motion skill） |
 | 同一画面变化、聚焦、布局切换 | states + morph（deck-motion skill） |
 | 数据图表（可悬停、点击、切换、联动） | `chart` 组件；`interact.*` 条目 |
@@ -47,6 +48,29 @@ description: 制作或修改 html_ppt 演示（decks/<name>/deck.yaml）。用�
 - 颜色用 token（`accent`、`muted`、`surface`…），不要写死十六进制（白字 `#FFFFFF` 除外）。
 - 需要动画时，读 `agents/skills/deck-motion/SKILL.md`。
 - 每个 scene 都写 `purpose`。
+
+## 主题与页面元素
+
+用户说"换个配色""加页码""每页放 logo""底部写上…""显示进度"时，不要逐页改，在 deck 级别配置：
+
+```yaml
+deck:
+  theme: ocean            # 预设名（engine/themes/*.yaml）或 theme.yaml（主页「主题与页面元素」下载）
+  chrome:                 # 页面元素；也可以写在 theme.yaml 里，deck.chrome 逐项覆盖
+    logo: { src: assets/logo.png, at: header-right, height: 40 }   # 或 { text: ACME }
+    header: { left: "{title}", right: "{section}" }
+    footer: { left: "{author} · 内部资料" }
+    pageNumber: { format: "{n} / {N}", at: footer-right }          # true = 右下角 "n / N"
+    sections: { at: footer }   # 章节导航：页脚一排章节标签，当前章节高亮，换章时高亮块滑动（章节名取自各 scene 的 section）
+    progress: bar           # none | bar | dots
+    rule: true
+    hideOn: [first, last]   # first / last / scene id
+```
+
+- 占位符：`{n}` `{N}`（按 Scene 计数）`{title}` `{subtitle}` `{author}` `{date}` `{section}`。`section` 写在 scene 上，往后沿用到下一个；章节导航至少需要两个不同的 section，点标签可跳到该章。
+- 单页覆盖：`chrome: false`（关掉）或 `chrome: { footer: { left: … } }`（只改写出的项）。
+- 页面元素占上下边距（页眉 y<64、页脚 y>1016），内容留在 y≈84–984 之内；压到会有 `CHROME_OVERLAP` 警告。
+- 颜色微调：`deck.tokens`（浅色）/ `deck.tokensDark`（深色页）逐项覆盖主题。用户想"挑颜色"时，让他打开 `npm run dev` 首页的「主题与页面元素」，选好后下载 `theme.yaml`，放进 deck 目录并写 `theme: theme.yaml`；或 `npm run new -- <name> --theme <预设名|theme.yaml>`。
 
 ## 3. Check
 

@@ -18,7 +18,7 @@ description: 维护 html_ppt 效果库（engine/library/）：新增或修改"�
 
 | 类别（目录） | 分组 |
 |---|---|
-| `page` 页面版式 | structure 结构页 · text 文字页 · visual 图文与对比 · data 数据页 |
+| `page` 页面结构 | structure 结构页 · text 文字页 · visual 图文与对比 · data 数据页 · diagram 流程与框架 |
 | `build` 页内动画 | reveal 出现 · emphasis 强调 · diagram 结构搭建 |
 | `morph` 状态切换 | layout 版面变化 · focus 聚焦 · data 数据与进度 |
 | `interact` 交互数据 | chart 交互图表 · linked 联动与面板 · narrative 讲述 + 探索 |

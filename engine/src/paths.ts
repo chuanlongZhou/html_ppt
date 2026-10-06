@@ -8,6 +8,7 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 export const ROOT = path.resolve(here, '..', '..');
 export const ENGINE = path.join(ROOT, 'engine');
 export const DECKS = path.join(ROOT, 'decks');
+export const PROJ = path.join(ROOT, 'proj');
 export const OUTPUT = path.join(ROOT, 'output');
 export const LIBRARY = path.join(ENGINE, 'library');
 export const STYLES = path.join(ENGINE, 'styles');
@@ -23,10 +24,14 @@ export interface DeckPaths {
   qa: string;
 }
 
-/** 解析 deck 名或路径：`intro`、`decks/intro`、`decks/intro/deck.yaml` 都可以。 */
+/** 解析 deck 名或路径：`intro`、`decks/intro`、`decks/intro/deck.yaml` 都可以；也可寻址 `proj/<name>`（正式复刻项目）。 */
 export function resolveDeck(arg: string | undefined): DeckPaths {
   if (!arg) throw new UsageError('缺少 deck 名。用法：npm run <cmd> -- <deck>（可用：' + listDecks().join(', ') + '）');
   let dir = arg.endsWith('.yaml') ? path.dirname(path.resolve(ROOT, arg)) : path.resolve(DECKS, path.basename(arg));
+  if (!fs.existsSync(path.join(dir, 'deck.yaml')) && !arg.endsWith('.yaml')) {
+    const p = path.resolve(PROJ, path.basename(arg));
+    if (fs.existsSync(path.join(p, 'deck.yaml'))) dir = p;
+  }
   if (!fs.existsSync(path.join(dir, 'deck.yaml'))) {
     const alt = path.resolve(ROOT, arg);
     if (fs.existsSync(path.join(alt, 'deck.yaml'))) dir = alt;
@@ -37,13 +42,15 @@ export function resolveDeck(arg: string | undefined): DeckPaths {
   return { name, dir, file: path.join(dir, 'deck.yaml'), out, site: path.join(out, 'site'), qa: path.join(out, 'qa') };
 }
 
+/** decks/ 与 proj/ 下含 deck.yaml 的目录名（同名时 decks/ 优先） */
 export function listDecks(): string[] {
-  if (!fs.existsSync(DECKS)) return [];
-  return fs
-    .readdirSync(DECKS, { withFileTypes: true })
-    .filter((d) => d.isDirectory() && fs.existsSync(path.join(DECKS, d.name, 'deck.yaml')))
-    .map((d) => d.name)
-    .sort();
+  const names = new Set<string>();
+  for (const root of [DECKS, PROJ]) {
+    if (!fs.existsSync(root)) continue;
+    for (const d of fs.readdirSync(root, { withFileTypes: true }))
+      if (d.isDirectory() && fs.existsSync(path.join(root, d.name, 'deck.yaml'))) names.add(d.name);
+  }
+  return [...names].sort();
 }
 
 export function rel(p: string): string {

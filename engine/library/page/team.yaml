@@ -1,0 +1,27 @@
+id: page.team
+group: visual
+title: 团队 / 人物介绍
+order: 9
+prompts: [团队介绍, 人物介绍, 我们的团队, 核心成员, 嘉宾介绍, team, 讲者介绍]
+use_when: 介绍 3–4 个人：头像、姓名、角色、一句话背景
+avoid_when: 超过 4 人（改成名单或只放 logo 墙）
+demo:
+  layout: title-body
+  objects:
+    title: { type: text, role: title, text: 一支小而全的团队 }
+    c1: { type: shape, fill: surface, shadow: true, frame: [120, 290, 390, 580] }
+    c2: { type: shape, fill: surface, shadow: true, frame: [550, 290, 390, 580] }
+    c3: { type: shape, fill: surface, shadow: true, frame: [980, 290, 390, 580] }
+    c4: { type: shape, fill: surface, shadow: true, frame: [1410, 290, 390, 580] }
+    a1: { type: shape, geom: ellipse, fill: accent-soft, color: accent, size: 72, weight: 800, align: center, valign: middle, frame: [235, 330, 160, 160], text: 周 }
+    a2: { type: shape, geom: ellipse, fill: accent-2-soft, color: accent-2, size: 72, weight: 800, align: center, valign: middle, frame: [665, 330, 160, 160], text: 李 }
+    a3: { type: shape, geom: ellipse, fill: accent-3-soft, color: accent-3, size: 72, weight: 800, align: center, valign: middle, frame: [1095, 330, 160, 160], text: 王 }
+    a4: { type: shape, geom: ellipse, fill: accent-4-soft, color: accent-4, size: 72, weight: 800, align: center, valign: middle, frame: [1525, 330, 160, 160], text: 陈 }
+    n1: { type: text, align: center, size: 30, frame: [140, 520, 350, 120], text: ["# 周川", "项目负责人"] }
+    n2: { type: text, align: center, size: 30, frame: [570, 520, 350, 120], text: ["# 李明", "工程"] }
+    n3: { type: text, align: center, size: 30, frame: [1000, 520, 350, 120], text: ["# 王芳", "设计"] }
+    n4: { type: text, align: center, size: 30, frame: [1430, 520, 350, 120], text: ["# 陈静", "数据分析"] }
+    b1: { type: text, role: caption, align: center, frame: [150, 660, 330, 170], text: 一句话背景：做过什么，擅长什么 }
+    b2: { type: text, role: caption, align: center, frame: [580, 660, 330, 170], text: 一句话背景：做过什么，擅长什么 }
+    b3: { type: text, role: caption, align: center, frame: [1010, 660, 330, 170], text: 一句话背景：做过什么，擅长什么 }
+    b4: { type: text, role: caption, align: center, frame: [1440, 660, 330, 170], text: 一句话背景：做过什么，擅长什么 }

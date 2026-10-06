@@ -1,6 +1,6 @@
 /**
  * html_ppt CLI —— 所有命令都是非交互的；退出码 0=通过、1=deck 有 error、2=工具故障。
- *   new <deck> · build <deck> [--ir] · check <deck> [--scene id] [--film] [--no-shots]
+ *   new <deck> [--theme <预设名|theme.yaml>] · build <deck> [--ir] · check <deck> [--scene id] [--film] [--no-shots]
  *   dev [--port n] · gallery · catalog · agents-sync
  */
 import path from 'node:path';
@@ -16,7 +16,7 @@ for (let i = 0; i < rest.length; i++) {
   if (a.startsWith('--')) {
     const [k, v] = a.slice(2).split('=');
     if (v !== undefined) flags.set(k, v);
-    else if (rest[i + 1] && !rest[i + 1].startsWith('--') && ['scene', 'port'].includes(k)) flags.set(k, rest[++i]);
+    else if (rest[i + 1] && !rest[i + 1].startsWith('--') && ['scene', 'port', 'theme'].includes(k)) flags.set(k, rest[++i]);
     else flags.set(k, true);
   } else pos.push(a);
 }
@@ -52,7 +52,7 @@ async function main(): Promise<number> {
     }
     case 'new': {
       const { newDeck } = await import('./scaffold.ts');
-      return newDeck(pos[0]);
+      return newDeck(pos[0], { themeRef: flag('theme') });
     }
     case 'agents-sync': {
       const { agentsSync } = await import('./scaffold.ts');
