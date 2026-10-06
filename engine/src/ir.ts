@@ -47,12 +47,16 @@ export interface IRState {
   layout: ResolvedLayout;
   items: IRItem[];
   clicks: number;
+  /** 进入本 State 后自动播放的前几次点击的开始时间（ms，相对于进入时刻；已含 morph 时长） */
+  autoAt?: number[];
   transition: { intent: Intent; duration: number; easing: string };
   notes?: string;
 }
 
 export interface IRScene {
   id: string;
+  /** morph 分组：continues 的 Scene 沿用上一个 Scene 的分组，同组同名 key 的对象会跨页 morph */
+  group: string;
   purpose?: string;
   theme: 'light' | 'dark';
   background: string;

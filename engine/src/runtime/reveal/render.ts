@@ -74,7 +74,7 @@ function renderState(ir: IRDeck, scene: IRScene, st: IRState, si: number, sectio
   const intent = st.transition.intent;
   const attrs: Css = {
     'data-auto-animate': '',
-    'data-auto-animate-id': scene.id,
+    'data-auto-animate-id': scene.group,
     'data-auto-animate-duration': st.transition.duration / 1000,
     'data-auto-animate-easing': st.transition.easing,
     'data-transition': si === 0 ? scene.transition : intent === 'none' ? 'none' : 'fade',
@@ -87,6 +87,7 @@ function renderState(ir: IRDeck, scene: IRScene, st: IRState, si: number, sectio
     'data-scene': scene.id,
     'data-state': si,
   };
+  if (st.autoAt?.length) attrs['data-auto-at'] = st.autoAt.join(',');
   if (si > 0 && (intent === 'fade' || intent === 'none')) attrs['data-auto-animate-restart'] = '';
   const cls = ['sc', `theme-${scene.theme}`, `layout-${st.layout.type}`, `align-${st.layout.align}`];
 
