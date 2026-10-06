@@ -92,6 +92,8 @@ export async function checkDeck(d: DeckPaths, opts: CheckOpts = {}): Promise<num
 /* ---------------- browser helpers ---------------- */
 
 export async function launch(): Promise<Browser> {
+  // HTMLPPT_BROWSER：指定浏览器可执行文件（容器 / CI 里没有 Edge 与 Chrome 时用）
+  if (process.env.HTMLPPT_BROWSER) return await chromium.launch({ executablePath: process.env.HTMLPPT_BROWSER });
   try {
     return await chromium.launch({ channel: 'msedge' });
   } catch {
