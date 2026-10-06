@@ -1,7 +1,7 @@
 /**
  * html_ppt CLI —— 所有命令都是非交互的；退出码 0=通过、1=deck 有 error、2=工具故障。
  *   new <deck> [--theme <预设名|theme.yaml>] · build <deck> [--ir] · check <deck> [--scene id] [--film] [--no-shots]
- *   dev [--port n] · gallery · catalog · agents-sync
+ *   dev [--port n] · gallery · site [deck…] · catalog · agents-sync
  */
 import path from 'node:path';
 import { resolveDeck, rel, UsageError } from './paths.ts';
@@ -46,6 +46,10 @@ async function main(): Promise<number> {
       const { galleryCli } = await import('./gallery.ts');
       return galleryCli();
     }
+    case 'site': {
+      const { siteCli } = await import('./site.ts');
+      return siteCli(pos);
+    }
     case 'catalog': {
       const { catalog } = await import('./catalog.ts');
       return catalog();
@@ -59,7 +63,7 @@ async function main(): Promise<number> {
       return agentsSync();
     }
     default:
-      console.log('用法：npm run <new|build|check|dev|catalog|agents:sync> -- [deck] [选项]\n详见 AGENTS.md');
+      console.log('用法：npm run <new|build|check|dev|site|catalog|agents:sync> -- [deck] [选项]\n详见 AGENTS.md');
       return cmd ? 2 : 0;
   }
 }
