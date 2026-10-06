@@ -4,7 +4,7 @@ import { base, textStyle, TextContent, ROLES, Color, Point, textStyleCss, valign
 import { renderText } from './text.ts';
 import { splitParas } from '../markup.ts';
 
-export const GEOMS = ['rect', 'roundRect', 'pill', 'ellipse', 'triangle', 'diamond', 'arrow', 'chevron', 'line', 'spotlight'] as const;
+export const GEOMS = ['rect', 'roundRect', 'pill', 'ellipse', 'triangle', 'diamond', 'arrow', 'chevron', 'pentagon', 'line', 'spotlight'] as const;
 
 export const schema = z.strictObject({
   type: z.literal('shape'),
@@ -17,6 +17,8 @@ export const schema = z.strictObject({
   shadow: z.boolean().optional().describe('投影'),
   from: Point.optional().describe('line：起点 [x, y]（舞台坐标）'),
   to: Point.optional().describe('line：终点 [x, y]'),
+  points: z.array(Point).min(2).optional().describe('line：折线顶点 [[x, y], …]（舞台坐标；转折处为直角时就是"肘形连接线"）；arrow 作用在最后一段'),
+  ports: z.boolean().optional().describe('line：两端画小圆点（端口）'),
   arrow: z.enum(['none', 'end', 'start', 'both']).optional().describe('line：箭头位置（默认 none）'),
   text: TextContent.optional().describe('形状内文字（卡片、标签、流程框）'),
   role: z.enum(ROLES).optional().describe('形状内文字的语义角色（默认 body）'),
@@ -24,13 +26,14 @@ export const schema = z.strictObject({
   ...textStyle,
   ...base,
 });
-export type ShapeProps = z.infer<typeof schema> & { _line?: { x1: number; y1: number; x2: number; y2: number } };
+export type ShapeProps = z.infer<typeof schema> & { _line?: { x1: number; y1: number; x2: number; y2: number }; _pts?: [number, number][] };
 
 const CLIP: Record<string, string> = {
   triangle: 'polygon(50% 0, 100% 100%, 0 100%)',
   diamond: 'polygon(50% 0, 100% 50%, 50% 100%, 0 50%)',
   arrow: 'polygon(0 28%, 68% 28%, 68% 0, 100% 50%, 68% 100%, 68% 72%, 0 72%)',
   chevron: 'polygon(0 0, 84% 0, 100% 50%, 84% 100%, 0 100%, 16% 50%)',
+  pentagon: 'polygon(0 0, 86% 0, 100% 50%, 86% 100%, 0 100%)',
 };
 
 export const shape = {
@@ -45,6 +48,13 @@ export const shape = {
   prepare(p: ShapeProps): ShapeProps {
     if (p.geom !== 'line') return p;
     const pad = Math.max(24, (p.strokeWidth ?? 4) * 4);
+    if (p.points) {
+      const xs = p.points.map((q) => q[0]);
+      const ys = p.points.map((q) => q[1]);
+      const x = Math.min(...xs) - pad;
+      const y = Math.min(...ys) - pad;
+      return { ...p, frame: [x, y, Math.max(...xs) - Math.min(...xs) + 2 * pad, Math.max(...ys) - Math.min(...ys) + 2 * pad], _pts: p.points.map((q) => [q[0] - x, q[1] - y] as [number, number]) };
+    }
     if (p.from && p.to) {
       const [x1, y1] = p.from;
       const [x2, y2] = p.to;
@@ -90,6 +100,7 @@ export const shape = {
 };
 
 function renderLine(p: ShapeProps, ctx: RenderCtx): Rendered {
+  if (p._pts) return renderPolyline(p, ctx);
   const l = p._line ?? { x1: 0, y1: 0, x2: 100, y2: 0 };
   const [, , w, h] = p.frame ?? [0, 0, 100, 1];
   const sw = p.strokeWidth ?? 4;
@@ -123,6 +134,38 @@ function renderLine(p: ShapeProps, ctx: RenderCtx): Rendered {
     `<svg class="shape-svg" viewBox="0 0 ${f(w)} ${f(h)}" preserveAspectRatio="none">` +
     `<line class="stroke${p.dash ? ' dashed' : ''}" x1="${f(x1)}" y1="${f(y1)}" x2="${f(x2)}" y2="${f(y2)}" pathLength="1" style="stroke:${color};stroke-width:${sw}px;${dash}"/>` +
     heads.map((pts) => `<polygon class="head" points="${pts}" style="fill:${color}"/>`).join('') +
+    `</svg>`;
+  return { cls: ['o-shape', 'g-line'], style: {}, html: svg };
+}
+
+/** 折线 / 肘形连接线：沿顶点连线，最后一段可带箭头；ports 在两端画小圆点 */
+function renderPolyline(p: ShapeProps, ctx: RenderCtx): Rendered {
+  const pts = p._pts!.map((q) => [...q] as [number, number]);
+  const [, , w, h] = p.frame ?? [0, 0, 100, 1];
+  const sw = p.strokeWidth ?? 4;
+  const color = ctx.color(p.stroke ?? 'ink');
+  const L = Math.max(14, sw * 4.5);
+  let head = '';
+  if (p.arrow === 'end' || p.arrow === 'both') {
+    const [x2, y2] = pts[pts.length - 1];
+    const [x1, y1] = pts[pts.length - 2];
+    const len = Math.hypot(x2 - x1, y2 - y1) || 1;
+    const ux = (x2 - x1) / len;
+    const uy = (y2 - y1) / len;
+    const bx = x2 - ux * L;
+    const by = y2 - uy * L;
+    head = `<polygon class="head" points="${f(x2)},${f(y2)} ${f(bx - uy * L * 0.42)},${f(by + ux * L * 0.42)} ${f(bx + uy * L * 0.42)},${f(by - ux * L * 0.42)}" style="fill:${color}"/>`;
+    pts[pts.length - 1] = [x2 - ux * L * 0.8, y2 - uy * L * 0.8];
+  }
+  const r = Math.max(5, sw * 1.9);
+  const ports = p.ports
+    ? [p._pts![0], p._pts![p._pts!.length - 1]].map((q) => `<circle class="port" cx="${f(q[0])}" cy="${f(q[1])}" r="${f(r)}" style="fill:#fff;stroke:${color};stroke-width:${sw}px"/>`).join('')
+    : '';
+  const svg =
+    `<svg class="shape-svg" viewBox="0 0 ${f(w)} ${f(h)}" preserveAspectRatio="none">` +
+    `<polyline class="stroke" points="${pts.map((q) => f(q[0]) + ',' + f(q[1])).join(' ')}" pathLength="1" style="fill:none;stroke:${color};stroke-width:${sw}px;stroke-linejoin:round"/>` +
+    head +
+    ports +
     `</svg>`;
   return { cls: ['o-shape', 'g-line'], style: {}, html: svg };
 }

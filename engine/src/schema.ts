@@ -39,6 +39,7 @@ export const Effect = z
     delay: z.number().optional().describe('ms，额外延迟'),
     duration: z.number().optional().describe('ms，覆盖 preset 默认时长'),
     easing: z.string().optional(),
+    auto: z.boolean().optional().describe('进入本 State 后自动播放，无需点击；只能写在 steps 最前面的连续几项，各项按顺序间隔播放'),
   })
   .refine((e) => [e.enter, e.exit, e.emphasis].filter((x) => x !== undefined).length === 1, {
     message: '每个效果必须且只能写 enter / exit / emphasis 其中之一',
@@ -101,6 +102,7 @@ export const Chrome = z.strictObject({
     .describe('章节导航：一排章节标签，当前章节高亮，翻到新章节时高亮块滑动过去。章节名来自 scene 的 section（至少两个不同的 section）；占用页脚（或页眉）的中间'),
   progress: z.enum(['none', 'bar', 'dots']).optional().describe('进度：bar 底部细条 / dots 页脚圆点'),
   rule: z.boolean().optional().describe('页眉页脚与内容之间的细分隔线'),
+  caps: z.boolean().optional().describe('页眉页脚文字全部大写；文字里的 **强调** 显示为主色加粗（如项目名）'),
   hideOn: z.array(z.string()).optional().describe('不显示的 scene id；first / last 代表第一页 / 最后一页（封面、结尾）'),
 });
 export type ChromeSrc = z.infer<typeof Chrome>;
@@ -118,6 +120,7 @@ export const Scene = z.strictObject({
   steps: z.array(Step).optional().describe('单 State 时的点击构建（等价于 states[0].steps）'),
   notes: z.string().optional(),
   patterns: z.array(z.string()).optional().describe('本页使用的效果库条目 id（showPatterns 时显示在页角）'),
+  continues: z.boolean().optional().describe('与上一个 Scene 共享对象身份：两页里同名 key 的对象在翻页时 morph（上一页的卡片直接移动到本页的位置）；其余对象淡入淡出'),
   section: z.string().optional().describe('所属章节名（页眉里的 {section}）；后续 scene 沿用，直到下一个 section'),
   chrome: z.union([z.literal(false), Chrome]).optional().describe('false = 本页不显示页面元素；对象 = 只覆盖写出的项'),
 });

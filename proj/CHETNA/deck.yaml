@@ -4,17 +4,22 @@ deck:
   author: Chuanlong Zhou
   slideNumber: false
   transition: fade
+  theme: theme.yaml
+  chrome:
+    caps: true
+    rule: true
+    header: { left: "" }
 
 scenes:
   # 开场：首字母缩略词页 morph 成品牌页（C H E T N A 六个字母原地放大并靠拢，其余文字淡出）
   - id: opening
+    section: What is CHETNA
     purpose: 开场：先交代项目全称与团队，再把首字母收拢成 CHETNA 品牌页
     patterns: [morph.acronym-collapse]
     layout: free
-    theme: dark
     objects:
       bg: { type: image, src: assets/bg.jpg, frame: [0, 0, 1920, 1080], alt: Aerial view of Mumbai }
-      shade: { type: shape, geom: rect, fill: "rgba(18,58,132,.8)", frame: [0, 0, 1920, 1080] }
+      shade: { type: shape, geom: rect, fill: accent-3, opacity: 0.8, frame: [0, 0, 1920, 1080] }
       fade: { type: shape, geom: rect, fill: "linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,.93))", frame: [0, 870, 1920, 210] }
       source: { type: text, role: caption, font: display, size: 20, color: "#C9CED6", align: right, frame: [900, 14, 1000, 30], text: "Aerial view of Mumbai by Johnny Miller, https://unequalscenes.com/mumbai" }
 
@@ -60,18 +65,453 @@ scenes:
       tsinghua: { type: image, src: assets/logos/tsinghua.png, fit: contain, frame: [1640, 994, 196, 76] }
 
       # 状态 2 才出现
-      tagline: { type: text, size: 50, weight: bold, color: "#14213D", align: center, frame: [160, 605, 1600, 90], text: "CO₂ and Pollutants Emission from 100+ Indian Cities" }
+      tagline: { type: text, size: 50, weight: bold, color: ink, align: center, frame: [160, 605, 1600, 90], text: "CO₂ and Pollutants Emission from 100+ Indian Cities" }
       logo: { type: image, src: assets/logos/main.png, fit: contain, frame: [1502, 427, 163, 163] }
 
     states:
       - show: [bg, shade, fade, source, c, h, e, t, n, a, w1, w2, w3, w4, w5, w6, authors, affil, lsce, iit, nexqt, grantham, um, tsinghua]
       - show: [bg, shade, c, h, e, t, n, a, tagline, logo]
         override:
-          shade: { fill: "rgba(255,255,255,.58)" }
-          c: { size: 250, color: "#14213D", frame: [415, 372, 181, 290] }
-          h: { size: 250, color: "#14213D", frame: [576, 372, 221, 290] }
-          e: { size: 250, color: "#14213D", frame: [776, 372, 167, 290] }
-          t: { size: 250, color: "#14213D", frame: [943, 372, 153, 290] }
-          n: { size: 250, color: "#14213D", frame: [1076, 372, 221, 290] }
-          a: { size: 250, color: "#14213D", frame: [1276, 372, 181, 290] }
+          shade: { fill: bg, opacity: 0.6 }
+          c: { size: 250, color: ink, frame: [415, 372, 181, 290] }
+          h: { size: 250, color: ink, frame: [576, 372, 221, 290] }
+          e: { size: 250, color: ink, frame: [776, 372, 167, 290] }
+          t: { size: 250, color: ink, frame: [943, 372, 153, 290] }
+          n: { size: 250, color: ink, frame: [1076, 372, 221, 290] }
+          a: { size: 250, color: ink, frame: [1276, 372, 181, 290] }
         transition: { duration: 1100 }
+
+  # Part 1 · 第一页：Total Emission → Policy 的链条里，中间缺一环 “Information Gap”（用不填充的框装下三段式解释）；同一张图负责镜头与注释
+  - id: why-resolution
+    section: What is CHETNA
+    purpose: Show that the step from total emissions to policy hides an information gap, and that high-resolution inventories close it
+    patterns: [image.zoom-region, image.arrow-label, morph.focus-zoom, build.cards-stagger]
+    layout: free
+    chrome: { header: { left: "Why high-resolution emission inventory" } }
+    objects:
+      img: { type: image, src: "assets/part 1/1.png", frame: [800, 110, 1040, 780], radius: 24, shadow: true, alt: "Heat map of emissions over a city: industry, power plant, airport, highway and housing" }
+
+      # 左列纵向链条：Total Emission ↓ Policy；缺口出现后 Policy 沉到底部，Information Gap 是中间的空心框
+      te: { type: shape, fill: accent, color: "#FFFFFF", size: 36, weight: bold, align: center, valign: middle, padding: 0, frame: [120, 120, 620, 80], text: Total Emission }
+      ig: { type: shape, fill: transparent, stroke: accent-2, strokeWidth: 4, color: accent-2, size: 34, weight: bold, align: center, valign: top, padding: 14, frame: [120, 310, 620, 480], text: Information Gap }
+      po: { type: shape, fill: accent-3, color: "#FFFFFF", size: 36, weight: bold, align: center, valign: middle, padding: 0, frame: [120, 310, 620, 80], text: Policy }
+      a1: { type: shape, geom: arrow, fill: muted, rotate: 90, frame: [375, 241, 110, 28] }
+      a2: { type: shape, geom: arrow, fill: muted, rotate: 90, frame: [375, 831, 110, 28] }
+      q: { type: shape, geom: ellipse, fill: accent-2, color: "#FFFFFF", size: 36, weight: bold, align: center, valign: middle, padding: 0, frame: [482, 227, 56, 56], text: "?" }
+
+      # 缺口里的三段式：为什么会有缺口
+      c1: { type: shape, align: center, fill: surface, shadow: true, size: 24, valign: middle, padding: 12, frame: [140, 380, 580, 108], text: ["# Top-down statistics", "Annual energy use, industrial output"] }
+      c2: { type: shape, align: center, fill: surface, shadow: true, size: 24, valign: middle, padding: 12, frame: [140, 510, 580, 108], text: ["# Spatial proxies + typical profiles", "Fixed maps and time curves"] }
+      c3: { type: shape, align: center, fill: accent-2-soft, shadow: true, size: 24, valign: middle, padding: 12, frame: [140, 640, 580, 108], text: ["# Regional Emission Map (10km)", "Allocated, not observed"] }
+
+      # 结论：新范式（三个框 + 箭头）
+      m1: { type: shape, fill: accent-3-soft, color: ink, size: 30, weight: bold, align: center, valign: middle, padding: 12, lineHeight: 1.3, frame: [120, 170, 620, 150], text: "Near-real-time Activities\\nAccurate Emission Factors" }
+      m2: { type: shape, fill: accent, color: "#FFFFFF", size: 30, weight: bold, align: center, valign: middle, padding: 12, frame: [120, 400, 620, 120], text: High-resolution Sectoral Emission Inventory (500m) }
+      m3: { type: shape, fill: accent-3, color: "#FFFFFF", size: 32, weight: bold, align: center, valign: top, padding: 22, frame: [120, 600, 620, 190], text: "Spatially Explicit Research\\n& Policy" }
+      m3s: { type: text, size: 22, color: "#FFFFFF", opacity: 0.92, align: center, frame: [144, 716, 572, 70], text: Hotspot identification · Exposure & health impacts · Targeted mitigation }
+      ma1: { type: shape, geom: arrow, fill: muted, rotate: 90, frame: [390, 346, 80, 28] }
+      ma2: { type: shape, geom: arrow, fill: muted, rotate: 90, frame: [390, 546, 80, 28] }
+
+      # 部门标签 + 圆头引线（State 0 与最后一页复用）
+      l_ind: { type: shape, geom: roundRect, radius: 14, fill: surface, color: "#F2731D", stroke: "#F2731D", strokeWidth: 3, size: 26, weight: bold, align: center, valign: middle, padding: 0, on: img, box: [0.0490, 0.300, 0.1869, 0.060], text: "   Industry" }
+      n_ind: { type: shape, geom: line, on: img, from: [0.12, 0.3], to: [0.14, 0.2], stroke: "#FFFFFF", strokeWidth: 4 }
+      d_ind: { type: shape, geom: ellipse, fill: "#FFFFFF", stroke: "#F2731D", strokeWidth: 3, on: img, box: [0.1320, 0.1893, 0.0160, 0.0213] }
+      i_ind: { type: image, src: "assets/part 1/industrial.svg", fit: contain, on: img, box: [0.0721, 0.3130, 0.03, 0.04] }
+      l_pow: { type: shape, geom: roundRect, radius: 14, fill: surface, color: "#E6BA3D", stroke: "#E6BA3D", strokeWidth: 3, size: 26, weight: bold, align: center, valign: middle, padding: 0, on: img, box: [0.4172, 0.250, 0.1608, 0.060], text: "   Power" }
+      n_pow: { type: shape, geom: line, on: img, from: [0.475, 0.25], to: [0.5, 0.14], stroke: "#FFFFFF", strokeWidth: 4 }
+      d_pow: { type: shape, geom: ellipse, fill: "#FFFFFF", stroke: "#E6BA3D", strokeWidth: 3, on: img, box: [0.4920, 0.1293, 0.0160, 0.0213] }
+      i_pow: { type: image, src: "assets/part 1/power.svg", fit: contain, on: img, box: [0.4402, 0.2630, 0.03, 0.04] }
+      l_avi: { type: shape, geom: roundRect, radius: 14, fill: surface, color: "#3B6D5C", stroke: "#3B6D5C", strokeWidth: 3, size: 26, weight: bold, align: center, valign: middle, padding: 0, on: img, box: [0.7497, 0.420, 0.1856, 0.060], text: "   Aviation" }
+      n_avi: { type: shape, geom: line, on: img, from: [0.82, 0.42], to: [0.82, 0.3], stroke: "#FFFFFF", strokeWidth: 4 }
+      d_avi: { type: shape, geom: ellipse, fill: "#FFFFFF", stroke: "#3B6D5C", strokeWidth: 3, on: img, box: [0.8120, 0.2893, 0.0160, 0.0213] }
+      i_avi: { type: image, src: "assets/part 1/aviation.svg", fit: contain, on: img, box: [0.7727, 0.4330, 0.03, 0.04] }
+      l_tra: { type: shape, geom: roundRect, radius: 14, fill: surface, color: "#89B32B", stroke: "#89B32B", strokeWidth: 3, size: 26, weight: bold, align: center, valign: middle, padding: 0, on: img, box: [0.6369, 0.560, 0.2013, 0.060], text: "   Transport" }
+      n_tra: { type: shape, geom: line, on: img, from: [0.64, 0.56], to: [0.5, 0.46], stroke: "#FFFFFF", strokeWidth: 4 }
+      d_tra: { type: shape, geom: ellipse, fill: "#FFFFFF", stroke: "#89B32B", strokeWidth: 3, on: img, box: [0.4920, 0.4493, 0.0160, 0.0213] }
+      i_tra: { type: image, src: "assets/part 1/ground transport.svg", fit: contain, on: img, box: [0.6600, 0.5730, 0.03, 0.04] }
+      l_res: { type: shape, geom: roundRect, radius: 14, fill: surface, color: "#9C4788", stroke: "#9C4788", strokeWidth: 3, size: 26, weight: bold, align: center, valign: middle, padding: 0, on: img, box: [0.1194, 0.620, 0.2163, 0.060], text: "   Residential" }
+      n_res: { type: shape, geom: line, on: img, from: [0.21, 0.62], to: [0.31, 0.5], stroke: "#FFFFFF", strokeWidth: 4 }
+      d_res: { type: shape, geom: ellipse, fill: "#FFFFFF", stroke: "#9C4788", strokeWidth: 3, on: img, box: [0.3020, 0.4893, 0.0160, 0.0213] }
+      i_res: { type: image, src: "assets/part 1/residential.svg", fit: contain, on: img, box: [0.1425, 0.6330, 0.03, 0.04] }
+
+      # State 4：公路上的三个问题
+      ring: { type: shape, geom: ellipse, fill: transparent, stroke: "#FFFFFF", strokeWidth: 6, on: img, box: [0.355, 0.45, 0.16, 0.22] }
+      w1: { type: shape, geom: pill, fill: accent-2, color: "#FFFFFF", size: 26, weight: bold, align: center, valign: middle, padding: 0, on: img, box: [0.57, 0.36, 0.13, 0.045], text: Which roads? }
+      w2: { type: shape, geom: pill, fill: accent-2, color: "#FFFFFF", size: 26, weight: bold, align: center, valign: middle, padding: 0, on: img, box: [0.57, 0.45, 0.13, 0.045], text: Which time? }
+      w3: { type: shape, geom: pill, fill: accent-2, color: "#FFFFFF", size: 26, weight: bold, align: center, valign: middle, padding: 0, on: img, box: [0.57, 0.54, 0.13, 0.045], text: Which vehicles? }
+
+      # State 5：住宅的三种差异（同一列，分别指向最高楼 / 另一栋公寓 / 小房子）
+      r_inc: { type: shape, geom: pill, fill: accent-2, color: "#FFFFFF", size: 26, weight: bold, align: center, valign: middle, padding: 0, on: img, box: [0.455, 0.33, 0.2, 0.05], text: Different income levels }
+      rn_inc: { type: shape, geom: line, on: img, from: [0.455, 0.355], to: [0.325, 0.43], stroke: "#FFFFFF", strokeWidth: 4 }
+      rd_inc: { type: shape, geom: ellipse, fill: "#FFFFFF", stroke: accent, strokeWidth: 3, on: img, box: [0.3205, 0.4240, 0.009, 0.012] }
+      r_inf: { type: shape, geom: pill, fill: accent-2, color: "#FFFFFF", size: 26, weight: bold, align: center, valign: middle, padding: 0, on: img, box: [0.455, 0.42, 0.2, 0.05], text: Different infrastructure }
+      rn_inf: { type: shape, geom: line, on: img, from: [0.455, 0.445], to: [0.21, 0.54], stroke: "#FFFFFF", strokeWidth: 4 }
+      rd_inf: { type: shape, geom: ellipse, fill: "#FFFFFF", stroke: accent, strokeWidth: 3, on: img, box: [0.2055, 0.5340, 0.009, 0.012] }
+      r_cli: { type: shape, geom: pill, fill: accent-2, color: "#FFFFFF", size: 26, weight: bold, align: center, valign: middle, padding: 0, on: img, box: [0.455, 0.51, 0.2, 0.05], text: Different climate risks }
+      rn_cli: { type: shape, geom: line, on: img, from: [0.455, 0.535], to: [0.23, 0.68], stroke: "#FFFFFF", strokeWidth: 4 }
+      rd_cli: { type: shape, geom: ellipse, fill: "#FFFFFF", stroke: accent, strokeWidth: 3, on: img, box: [0.2255, 0.6740, 0.009, 0.012] }
+
+    states:
+      - show: [te, img, l_ind, n_ind, d_ind, l_pow, n_pow, d_pow, l_avi, n_avi, d_avi, l_tra, n_tra, d_tra, l_res, n_res, d_res, i_ind, i_pow, i_avi, i_tra, i_res]
+        notes: Sector totals seem to reflect real human activity, so policy looks like it follows directly.
+        steps:
+          - { enter: img, effect: fade, duration: 900 }
+          - [{ enter: [l_ind, l_pow, l_avi, l_tra, l_res, i_ind, i_pow, i_avi, i_tra, i_res, d_ind, d_pow, d_avi, d_tra, d_res], effect: pop },
+             { enter: [n_ind, n_pow, n_avi, n_tra, n_res], effect: draw }]
+      - show: [te, img, l_ind, n_ind, d_ind, l_pow, n_pow, d_pow, l_avi, n_avi, d_avi, l_tra, n_tra, d_tra, l_res, n_res, d_res, i_ind, i_pow, i_avi, i_tra, i_res, a1, po, q]
+        notes: But we cannot go straight from total emissions to policy.
+        steps:
+          - [{ enter: a1, effect: wipe, from: top }, { enter: po, effect: fade-up, after: true }]
+          - { enter: q, effect: pop }
+      - show: [te, img, a1, ig, a2, po]
+        override:
+          img: { filter: "grayscale(1) brightness(1.08)" }
+          po: { frame: [120, 900, 620, 80] }
+        transition: { duration: 1000 }
+        notes: Between emission accounting and urban action there is an information gap.
+      - add: [c1, c2, c3]
+        notes: Most inventories are top-down, spread with proxies and typical profiles, so we cannot tell when, where and through which behaviour emissions occurred.
+        steps:
+          - { enter: c1, effect: fade-up }
+          - { enter: c2, effect: fade-up }
+          - { enter: c3, effect: fade-up }
+      - add: [ring, w1, w2, w3]
+        override:
+          img: { zoom: { at: [0.54, 0.56], scale: 2.1 } }
+        transition: { duration: 1000 }
+        notes: Knowing a sector's annual emissions is not enough to decide which roads, time slots, vehicles and traffic conditions to prioritise. (Plays automatically - zoom, circle, three questions.)
+        steps:
+          - { enter: ring, effect: draw, auto: true }
+          - { enter: [w1, w2, w3], effect: pop, stagger: 250, auto: true }
+      - remove: [ring, w1, w2, w3]
+        add: [r_inc, rn_inc, rd_inc, r_inf, rn_inf, rd_inf, r_cli, rn_cli, rd_cli]
+        override:
+          img: { zoom: { at: [0.38, 0.58], scale: 1.8 } }
+        transition: { duration: 1000 }
+        notes: The same is true for residential emissions, which differ with income, infrastructure and climate risk.
+        steps:
+          - [{ enter: r_inc, effect: pop }, { enter: rn_inc, effect: draw, delay: 150 }, { enter: rd_inc, effect: pop, delay: 300 }]
+          - [{ enter: r_inf, effect: pop }, { enter: rn_inf, effect: draw, delay: 150 }, { enter: rd_inf, effect: pop, delay: 300 }]
+          - [{ enter: r_cli, effect: pop }, { enter: rn_cli, effect: draw, delay: 150 }, { enter: rd_cli, effect: pop, delay: 300 }]
+      - show: [img, l_ind, n_ind, d_ind, l_pow, n_pow, d_pow, l_avi, n_avi, d_avi, l_tra, n_tra, d_tra, l_res, n_res, d_res, i_ind, i_pow, i_avi, i_tra, i_res, m1, ma1, m2, ma2, m3, m3s]
+        override:
+          img: { filter: "grayscale(0)", zoom: { at: [0.5, 0.5], scale: 1 } }
+        transition: { duration: 1000 }
+        notes: Back on the coloured map, each sector now has its own signal. High-resolution sectoral inventories, built from near-real-time activities and accurate emission factors, enable spatially explicit research and policy. (Plays automatically - sectors first, then the three boxes.)
+        steps:
+          - [{ enter: [l_ind, l_pow, l_avi, l_tra, l_res, i_ind, i_pow, i_avi, i_tra, i_res, d_ind, d_pow, d_avi, d_tra, d_res], effect: pop, auto: true },
+             { enter: [n_ind, n_pow, n_avi, n_tra, n_res], effect: draw }]
+          - { enter: m1, effect: fade-up, auto: true }
+          - { enter: ma1, effect: wipe, from: top, duration: 400, auto: true }
+          - { enter: m2, effect: fade-up, auto: true }
+          - { enter: ma2, effect: wipe, from: top, duration: 400, auto: true }
+          - [{ enter: m3, effect: fade-up, auto: true }, { enter: m3s, effect: fade-up, auto: true }]
+
+  - id: goal
+    section: What is CHETNA
+    purpose: State the CHETNA goal as a four-step chain from modelling to mitigation policy, and show India as the pilot with three more developing countries to follow
+    patterns: [page.chain-rows]
+    layout: free
+    chrome: { header: { left: "**CHETNA** goal" } }
+    objects:
+      b1: { type: shape, fill: accent, color: "#FFFFFF", size: 34, weight: bold, align: center, valign: middle, padding: 16, lineHeight: 1.25, frame: [120, 130, 420, 180], text: "City-wise\\nEmission Modeling" }
+      b2: { type: shape, fill: accent-3, color: "#FFFFFF", size: 34, weight: bold, align: center, valign: middle, padding: 16, lineHeight: 1.25, frame: [120, 370, 420, 120], text: "Public Available Data" }
+      b3: { type: shape, fill: "#9EBDD8", color: accent, size: 34, weight: bold, align: center, valign: middle, padding: 16, lineHeight: 1.25, frame: [120, 550, 420, 100], text: "Scenario Analysis" }
+      b4: { type: shape, fill: accent-3-soft, color: accent-3, size: 34, weight: bold, align: center, valign: middle, padding: 16, lineHeight: 1.25, frame: [120, 710, 420, 100], text: "Mitigation Policy" }
+      ga1: { type: shape, geom: arrow, fill: muted, rotate: 90, frame: [300, 326, 60, 28] }
+      ga2: { type: shape, geom: arrow, fill: muted, rotate: 90, frame: [300, 506, 60, 28] }
+      ga3: { type: shape, geom: arrow, fill: muted, rotate: 90, frame: [300, 666, 60, 28] }
+
+      t1: { type: text, size: 30, color: ink, lineHeight: 1.55, valign: middle, frame: [600, 130, 1000, 180], text: "Provide [[HIGH RESOLUTION|ghost]] data for **CO₂** and **air pollutant** emissions at [[LOW LATENCY|ghost]] by dealing with the [[DATA GAP|ghost]] for urban areas & establish a **scalable blueprint** for developing country cities." }
+      ch_hr: { type: shape, geom: roundRect, radius: 12, fill: "#7EB3E7", stroke: "#15406A", strokeWidth: 3, color: "#1A496B", lineHeight: 1.1, size: 30, weight: bold, align: center, valign: middle, padding: 0, frame: [710, 153, 297, 43], text: HIGH RESOLUTION }
+      ch_ll: { type: shape, geom: roundRect, radius: 12, fill: "#92D050", stroke: "#3E8E2A", strokeWidth: 3, color: "#3A6F34", lineHeight: 1.1, size: 30, weight: bold, align: center, valign: middle, padding: 0, frame: [602, 199, 231, 43], text: LOW LATENCY }
+      ch_dg: { type: shape, geom: roundRect, radius: 12, fill: "#FF9901", stroke: "#C36A00", strokeWidth: 3, color: "#B00300", lineHeight: 1.1, size: 30, weight: bold, align: center, valign: middle, padding: 0, frame: [1108, 199, 173, 43], text: DATA GAP }
+      t2: { type: text, size: 30, color: ink, lineHeight: 1.5, valign: middle, frame: [600, 360, 1000, 140], text: "All of data will be publicly available on the project website, facilitating the data uptake by various stakeholders including **policymakers**, and **research communities**." }
+      t3:
+        type: text
+        size: 30
+        color: ink
+        lineHeight: 1.5
+        valign: middle
+        frame: [600, 540, 1000, 290]
+        text:
+          - "**Analyze** urban carbon reduction scenarios to assess air quality co-benefits."
+          - "**Evaluate** mitigation scenarios on targets at city, regional, and national levels."
+          - "**Enable** spatially explicit, evidence-based policy decisions."
+
+      # 国家图：印度（试点）大图，埃及 / 南非 / 土耳其小图
+      im_in: { type: image, src: "assets/part 1/2.png", fit: contain, frame: [1650, 130, 230, 244] }
+      im_eg: { type: image, src: "assets/part 1/3.png", fit: contain, frame: [1715, 450, 100, 100] }
+      im_za: { type: image, src: "assets/part 1/4.png", fit: contain, frame: [1706, 610, 118, 100] }
+      im_tr: { type: image, src: "assets/part 1/5.png", fit: contain, frame: [1690, 770, 150, 64] }
+      c_in: { type: text, size: 22, color: muted, align: center, frame: [1650, 380, 230, 38], text: India }
+      c_eg: { type: text, size: 22, color: muted, align: center, frame: [1650, 554, 230, 38], text: Egypt }
+      c_za: { type: text, size: 22, color: muted, align: center, frame: [1650, 714, 230, 38], text: South Africa }
+      c_tr: { type: text, size: 22, color: muted, align: center, frame: [1650, 838, 230, 38], text: Türkiye }
+      more: { type: text, size: 48, weight: bold, color: muted, align: center, frame: [1650, 868, 230, 80], text: "···" }
+
+    steps:
+      - [{ enter: [b1, ga1, b2, ga2, b3, ga3, b4], effect: fade, duration: 700, auto: true }]
+      - [{ enter: t1, effect: fade-up }, { enter: [ch_hr, ch_ll, ch_dg], effect: fade-up }]
+      - [{ enter: [im_in, c_in], effect: zoom-in }, { enter: [im_eg, c_eg, im_za, c_za, im_tr, c_tr], effect: pop, stagger: 160, after: true }, { enter: more, effect: fade, after: true }]
+      - { enter: t2, effect: fade-up }
+      - { enter: t3, by: paragraph, effect: fade-up, stagger: 400 }
+    notes: "The CHETNA goal in four steps (the left column appears on its own): city-wise emission modeling, publicly available data, scenario analysis and mitigation policy. India is the pilot; the same blueprint can then be scaled to other developing countries such as Egypt, South Africa and Turkey."
+
+  # Part 2 · CHETNA Strategy：三个挑战（由上一页的三个文字框 morph 而来）→ 逐个展开对应的方法论 → 最后进入各部门
+  - id: strategy
+    section: CHETNA Methodology
+    continues: true
+    purpose: Show how each of the three challenges (data gap, high spatial resolution, low latency) is solved by a dedicated method built from open data, machine learning, physical models and satellites, then apply it to every sector
+    patterns: [page.chain-rows]
+    layout: free
+    chrome: { header: { left: "**CHETNA** Strategy" } }
+    objects:
+      ch_dg: { type: shape, geom: roundRect, radius: 16, fill: "#FF9901", stroke: "#B35A00", strokeWidth: 4, color: "#B00300", lineHeight: 1.1, size: 44, weight: bold, align: center, valign: middle, padding: 0, frame: [936, 295, 294, 69], text: Data Gap }
+      ch_hr: { type: shape, geom: roundRect, radius: 16, fill: "#7EB3E7", stroke: "#15406A", strokeWidth: 4, color: "#1A496B", lineHeight: 1.15, size: 44, weight: bold, align: center, valign: middle, padding: 0, frame: [936, 461, 294, 130], text: "High Spatial\\nResolution" }
+      ch_ll: { type: shape, geom: roundRect, radius: 16, fill: "#92D050", stroke: "#3E8E2A", strokeWidth: 4, color: "#3A6F34", lineHeight: 1.1, size: 44, weight: bold, align: center, valign: middle, padding: 0, frame: [936, 689, 294, 68], text: Low Latency }
+      s_os: { type: shape, geom: roundRect, radius: 20, fill: "#C04F15", stroke: "#662A07", strokeWidth: 4, color: "#FFFFFF", lineHeight: 1.25, size: 30, align: center, valign: middle, padding: 0, frame: [196, 151, 248, 110], text: "Open-Source\\nData" }
+      si_os: { type: image, src: "assets/part2/open_source_data.png", fit: contain, frame: [99, 164, 83, 87] }
+      s_ml: { type: shape, geom: roundRect, radius: 20, fill: "#A02B92", stroke: "#460B41", strokeWidth: 4, color: "#FFFFFF", lineHeight: 1.25, size: 30, align: center, valign: middle, padding: 0, frame: [196, 353, 248, 110], text: "Machine\\nLearning" }
+      si_ml: { type: image, src: "assets/part2/ai.png", fit: contain, frame: [99, 367, 83, 87] }
+      s_pn: { type: shape, geom: roundRect, radius: 20, fill: "#166082", stroke: "#03344A", strokeWidth: 4, color: "#FFFFFF", lineHeight: 1.25, size: 30, align: center, valign: middle, padding: 0, frame: [196, 555, 248, 110], text: "Physical\\nNetwork Model" }
+      si_pn: { type: image, src: "assets/part2/network model.png", fit: contain, frame: [94, 569, 87, 83] }
+      s_sat: { type: shape, geom: roundRect, radius: 20, fill: "#196B24", stroke: "#073F0F", strokeWidth: 4, color: "#FFFFFF", lineHeight: 1.25, size: 30, align: center, valign: middle, padding: 0, frame: [196, 758, 248, 110], text: "Satellite\\nImagery" }
+      si_sat: { type: image, src: "assets/part2/satellite.png", fit: contain, frame: [99, 776, 83, 83] }
+      m1: { type: shape, geom: roundRect, radius: 20, fill: "#F2AA85", stroke: "#642D10", strokeWidth: 4, color: "#333333", lineHeight: 1.3, size: 30, align: center, valign: middle, padding: 0, frame: [605, 275, 271, 109], text: "Accurate\\n“Gap Filling”" }
+      m2: { type: shape, geom: roundRect, radius: 20, fill: "#96DCF9", stroke: "#1A5C7A", strokeWidth: 4, color: "#333333", lineHeight: 1.3, size: 30, align: center, valign: middle, padding: 0, frame: [605, 473, 271, 108], text: "Sophisticated\\nDownscaling" }
+      m3: { type: shape, geom: roundRect, radius: 20, fill: "#B4E6A3", stroke: "#1D460D", strokeWidth: 4, color: "#333333", lineHeight: 1.3, size: 30, align: center, valign: middle, padding: 0, frame: [605, 668, 271, 109], text: "Near-Real Time\\nActivity Proxy" }
+      c1: { type: shape, geom: line, points: [[444, 190], [556, 190], [556, 314], [605, 314]], stroke: "#C04F15", strokeWidth: 3, arrow: end, ports: true, z: 5 }
+      c2: { type: shape, geom: line, points: [[444, 224], [534, 224], [534, 498], [605, 498]], stroke: "#C04F15", strokeWidth: 3, arrow: end, ports: true, z: 5 }
+      c3: { type: shape, geom: line, points: [[444, 385], [513, 385], [513, 347], [605, 347]], stroke: "#7B2C7E", strokeWidth: 3, arrow: end, ports: true, z: 5 }
+      c4: { type: shape, geom: line, points: [[444, 410], [519, 410], [519, 528], [605, 528]], stroke: "#7B2C7E", strokeWidth: 3, arrow: end, ports: true, z: 5 }
+      c5: { type: shape, geom: line, points: [[444, 433], [500, 433], [500, 705], [605, 705]], stroke: "#7B2C7E", strokeWidth: 3, arrow: end, ports: true, z: 5 }
+      c6: { type: shape, geom: line, points: [[444, 612], [522, 612], [522, 552], [605, 552]], stroke: "#1B6A8A", strokeWidth: 3, arrow: end, ports: true, z: 5 }
+      c7: { type: shape, geom: line, points: [[444, 814], [522, 814], [522, 738], [605, 738]], stroke: "#1E6B2F", strokeWidth: 3, arrow: end, ports: true, z: 5 }
+      ar1: { type: shape, geom: line, points: [[882, 330], [936, 330]], stroke: "#000000", strokeWidth: 5, arrow: end }
+      ar2: { type: shape, geom: line, points: [[882, 526], [936, 526]], stroke: "#000000", strokeWidth: 5, arrow: end }
+      ar3: { type: shape, geom: line, points: [[882, 724], [936, 724]], stroke: "#000000", strokeWidth: 5, arrow: end }
+      sr_res: { type: shape, geom: roundRect, radius: 26, fill: "#CACBE9", frame: [1655, 231, 142, 260], z: 2 }
+      sr_tra: { type: shape, geom: roundRect, radius: 26, fill: "#92D050", frame: [1657, 668, 136, 247], z: 2 }
+      sl_pw: { type: text, size: 36, color: "#F5B800", align: center, valign: middle, lineHeight: 1.2, frame: [1342, 167, 240, 50], text: "Power", z: 2 }
+      sc_pw: { type: shape, geom: ellipse, fill: "#FFC20E", frame: [1405, 215, 114, 114], z: 2 }
+      si_pw: { type: image, src: "assets/part2/power.png", fit: contain, frame: [1420, 230, 84, 84], z: 2 }
+      sl_li: { type: text, size: 36, color: "#595959", align: center, valign: middle, lineHeight: 1.2, frame: [1327, 351, 240, 50], text: "Large Industry", z: 2 }
+      si_li: { type: image, src: "assets/part2/plant.png", fit: contain, frame: [1406, 403, 112, 112], z: 2 }
+      sl_si: { type: text, size: 36, color: "#595959", align: center, valign: middle, lineHeight: 1.2, frame: [1341, 551, 240, 50], text: "Small Industry", z: 2 }
+      sc_si: { type: shape, geom: ellipse, fill: "#B8B8B8", frame: [1405, 608, 114, 114], z: 2 }
+      si_si: { type: image, src: "assets/part2/brick.png", fit: contain, frame: [1420, 623, 84, 84], z: 2 }
+      sl_av: { type: text, size: 36, color: "#396C5B", align: center, valign: middle, lineHeight: 1.2, frame: [1342, 747, 240, 50], text: "Aviation", z: 2 }
+      sc_av: { type: shape, geom: ellipse, fill: "#3B6D5C", frame: [1405, 802, 114, 113], z: 2 }
+      si_av: { type: image, src: "assets/part2/avation.png", fit: contain, frame: [1420, 816, 84, 84], z: 2 }
+      sl_re: { type: text, size: 36, color: "#5463B2", align: center, valign: middle, lineHeight: 1.2, frame: [1605, 185, 240, 50], text: "Residential", z: 2 }
+      si_re: { type: image, src: "assets/part2/residential.png", fit: contain, frame: [1679, 317, 105, 82], z: 2 }
+      sl_gt: { type: text, size: 36, color: "#5BA52F", align: center, valign: middle, lineHeight: 1.2, frame: [1605, 556, 240, 100], text: "Ground\\nTransport", z: 2 }
+      si_gt: { type: image, src: "assets/part2/traffic.png", fit: contain, frame: [1675, 730, 101, 101], z: 2 }
+
+      ttl: { type: text, size: 40, weight: bold, color: accent, valign: middle, frame: [112, 128, 560, 70], text: Sectoral Strategy }
+      ax_u: { type: shape, geom: line, points: [[1260, 552], [1260, 118]], stroke: "#1F3864", strokeWidth: 6, arrow: end, z: 1 }
+      ax_d: { type: shape, geom: line, points: [[1260, 552], [1260, 975]], stroke: "#1F3864", strokeWidth: 6, arrow: end, z: 1 }
+      ax_l: { type: shape, geom: line, points: [[1260, 552], [724, 552]], stroke: "#1F3864", strokeWidth: 6, arrow: end, z: 1 }
+      ax_r: { type: shape, geom: line, points: [[1260, 552], [1788, 552]], stroke: "#1F3864", strokeWidth: 6, arrow: end, z: 1 }
+      dt_off: { type: shape, geom: pentagon, fill: "#F79646", color: "#3B1F0A", size: 34, weight: bold, align: center, valign: middle, padding: 0, rotate: 90, shadow: true, frame: [535, 324, 282, 54], text: Official Data }
+      dt_der: { type: shape, geom: pentagon, fill: "#4BACC6", color: "#10324A", size: 34, weight: bold, align: center, valign: middle, padding: 0, rotate: 270, shadow: true, frame: [537, 746, 278, 54], text: Derived Data }
+      lv_site: { type: shape, geom: rect, fill: "#4BACC6", stroke: "#1F3864", strokeWidth: 4, color: "#1F3864", size: 40, weight: bold, align: center, valign: middle, padding: 0, frame: [819, 133, 273, 69], text: Site-level }
+      lv_site_ic: { type: image, src: "assets/part2/1.png", fit: contain, frame: [1040, 100, 110, 110] }
+      lv_grid: { type: shape, geom: rect, fill: "#8064A2", stroke: "#1F3864", strokeWidth: 4, color: "#FFFFFF", size: 40, weight: bold, align: center, valign: middle, padding: 0, frame: [1486, 139, 228, 69], text: Grid-level }
+      lv_grid_img: { type: image, src: "assets/part2/2.png", fit: cover, shadow: true, frame: [1394, 126, 92, 92] }
+      pa1: { type: shape, geom: line, points: [[1103, 470], [1001, 542]], stroke: "#F0A30A", strokeWidth: 3, arrow: end, z: 3 }
+      pa2: { type: shape, geom: line, points: [[1286, 492], [1338, 525]], stroke: "#F0A30A", strokeWidth: 3, arrow: end, z: 3 }
+
+    states:
+      - transition: { duration: 1100 }
+        show: [ch_dg, ch_hr, ch_ll, s_os, si_os, s_ml, si_ml, s_pn, si_pn, s_sat, si_sat, m1, m2, m3, c1, c2, c3, c4, c5, c6, c7, ar1, ar2, ar3, sr_res, sr_tra, sl_pw, sc_pw, si_pw, sl_li, si_li, sl_si, sc_si, si_si, sl_av, sc_av, si_av, sl_re, si_re, sl_gt, si_gt]
+        notes: The three challenges move over from the previous slide. Each click opens up the method behind one challenge.
+        steps:
+          - [{ enter: [s_os, si_os, s_ml, si_ml], effect: fade-up, stagger: 120 }, { enter: [c1, c3], effect: draw, after: true }, { enter: m1, effect: pop }, { enter: ar1, effect: draw }]
+          - [{ enter: [s_pn, si_pn], effect: fade-up, stagger: 120 }, { enter: [c2, c4, c6], effect: draw, after: true }, { enter: m2, effect: pop }, { enter: ar2, effect: draw }]
+          - [{ enter: [s_sat, si_sat], effect: fade-up, stagger: 120 }, { enter: [c5, c7], effect: draw, after: true }, { enter: m3, effect: pop }, { enter: ar3, effect: draw }]
+          - [{ enter: [sr_res, si_re, sl_re, sr_tra, si_gt, sl_gt], effect: fade-up }, { enter: [sl_pw, sc_pw, si_pw, sl_li, si_li, sl_si, sc_si, si_si, sl_av, sc_av, si_av], effect: fade-up, stagger: 140 }]
+      - transition: { duration: 1100 }
+        show: [ch_dg, ch_hr, ch_ll, ttl, sr_res, sr_tra, sl_pw, sc_pw, si_pw, sl_li, si_li, sl_si, sc_si, si_si, sl_av, sc_av, si_av, sl_re, si_re, sl_gt, si_gt, ax_u, ax_d, ax_l, ax_r, dt_off, dt_der, lv_site, lv_site_ic, lv_grid, lv_grid_img]
+        override:
+          ch_dg: { frame: [119, 288, 355, 75], size: 38, radius: 14 }
+          ch_hr: { frame: [119, 469, 355, 142], size: 36, radius: 14 }
+          ch_ll: { frame: [119, 717, 355, 76], size: 38, radius: 14 }
+          sl_av: { frame: [719, 217, 220, 50], size: 38 }
+          sc_av: { frame: [778, 270, 103, 103] }
+          si_av: { frame: [791, 283, 76, 76] }
+          sl_pw: { frame: [1104, 255, 200, 50], size: 38 }
+          sc_pw: { frame: [1090, 300, 229, 229] }
+          si_pw: { frame: [1120, 330, 169, 169] }
+          sl_li: { frame: [785, 416, 300, 50], size: 38 }
+          si_li: { frame: [845, 467, 181, 181] }
+          sl_si: { frame: [924, 681, 300, 50], size: 38 }
+          sc_si: { frame: [1011, 738, 130, 130] }
+          si_si: { frame: [1028, 755, 96, 96] }
+          sr_res: { frame: [1314, 498, 170, 285] }
+          si_re: { frame: [1337, 594, 135, 86] }
+          sl_re: { frame: [1280, 793, 240, 50], size: 38 }
+          sr_tra: { frame: [1542, 334, 184, 304] }
+          si_gt: { frame: [1570, 420, 126, 113] }
+          sl_gt: { frame: [1517, 217, 240, 100], size: 38 }
+        notes: The challenges move left, the axes appear and every sector slides to its place at the same time; the site-level and grid-level labels follow on their own.
+        steps:
+          - { enter: [lv_site, lv_site_ic, lv_grid, lv_grid_img], effect: fade, auto: true }
+      - transition: { duration: 800 }
+        add: [pa1, pa2]
+        notes: Finally power points to the sectors it feeds.
+        steps:
+          - { enter: [pa1, pa2], effect: draw }
+
+  - id: why-india
+    section: CHETNA - India
+    purpose: Contrast India's four development tensions (urban growth, energy, inequality, data governance) and position CHETNA as India's contribution to the Global South's low-carbon urban transition
+    layout: free
+    chrome: { header: { left: "Why India" } }
+    objects:
+      l1: { type: shape, fill: accent-2-soft, color: accent-2, size: 28, weight: bold, align: center, valign: middle, padding: 10, lineHeight: 1.2, frame: [120, 130, 430, 84], text: "Rapid urban growth" }
+      v1: { type: text, size: 28, weight: bold, color: muted, align: center, valign: middle, frame: [556, 130, 68, 84], text: "vs." }
+      r1: { type: shape, fill: accent-3-soft, color: accent, size: 28, weight: bold, align: center, valign: middle, padding: 10, lineHeight: 1.2, frame: [630, 130, 510, 84], text: "Low-carbon urban development" }
+      s1: { type: text, size: 24, color: muted, align: center, valign: middle, frame: [120, 224, 1020, 44], text: "More housing, mobility and cooling — with lower emissions." }
+      l2: { type: shape, fill: accent-2-soft, color: accent-2, size: 28, weight: bold, align: center, valign: middle, padding: 10, lineHeight: 1.2, frame: [120, 320, 430, 84], text: "Coal-dependent power" }
+      v2: { type: text, size: 28, weight: bold, color: muted, align: center, valign: middle, frame: [556, 320, 68, 84], text: "vs." }
+      r2: { type: shape, fill: accent-3-soft, color: accent, size: 28, weight: bold, align: center, valign: middle, padding: 10, lineHeight: 1.2, frame: [630, 320, 510, 84], text: "Ambitious climate goals" }
+      s2: { type: text, size: 24, color: muted, align: center, valign: middle, frame: [120, 414, 1020, 44], text: "71% coal-fired electricity in 2025 · Net zero by 2070" }
+      l3: { type: shape, fill: accent-2-soft, color: accent-2, size: 28, weight: bold, align: center, valign: middle, padding: 10, lineHeight: 1.2, frame: [120, 510, 430, 84], text: "Income inequality" }
+      v3: { type: text, size: 28, weight: bold, color: muted, align: center, valign: middle, frame: [556, 510, 68, 84], text: "vs." }
+      r3: { type: shape, fill: accent-3-soft, color: accent, size: 28, weight: bold, align: center, valign: middle, padding: 10, lineHeight: 1.2, frame: [630, 510, 510, 84], text: "A fair urban transition" }
+      s3: { type: text, size: 24, color: muted, align: center, valign: middle, frame: [120, 604, 1020, 44], text: "Unequal access to efficient housing, clean energy and affordable transport." }
+      l4: { type: shape, fill: accent-2-soft, color: accent-2, size: 28, weight: bold, align: center, valign: middle, padding: 10, lineHeight: 1.2, frame: [120, 700, 430, 84], text: "Local data silos" }
+      v4: { type: text, size: 28, weight: bold, color: muted, align: center, valign: middle, frame: [556, 700, 68, 84], text: "vs." }
+      r4: { type: shape, fill: accent-3-soft, color: accent, size: 28, weight: bold, align: center, valign: middle, padding: 10, lineHeight: 1.2, frame: [630, 700, 510, 84], text: "Coordinated climate action" }
+      s4: { type: text, size: 24, color: muted, align: center, valign: middle, frame: [120, 794, 1020, 44], text: "Data-sharing barriers across regional administrations." }
+      im1: { type: image, src: "assets/part3/1.png", fit: contain, frame: [1200, 130, 620, 374] }
+      im2: { type: image, src: "assets/part3/2.png", fit: contain, frame: [1200, 540, 620, 213] }
+      src: { type: text, size: 20, color: muted, align: left, frame: [1200, 770, 620, 70], text: "Top: population and urbanization trends · Bottom: CO₂ emission factor, India vs. global mean" }
+      tie: { type: text, size: 40, weight: bold, color: accent, align: center, valign: middle, frame: [120, 880, 1700, 90], text: "India: a key player in the Global South’s low-carbon urban transition." }
+    steps:
+          - [{ enter: l1, effect: fade-right }, { enter: v1, effect: pop, after: true }, { enter: r1, effect: fade-left, after: true }, { enter: s1, effect: fade, after: true }, { enter: [im1, src], effect: fade-up }]
+          - [{ enter: l2, effect: fade-right }, { enter: v2, effect: pop, after: true }, { enter: r2, effect: fade-left, after: true }, { enter: s2, effect: fade, after: true }, { enter: im2, effect: fade-up }]
+          - [{ enter: l3, effect: fade-right }, { enter: v3, effect: pop, after: true }, { enter: r3, effect: fade-left, after: true }, { enter: s3, effect: fade, after: true }]
+          - [{ enter: l4, effect: fade-right }, { enter: v4, effect: pop, after: true }, { enter: r4, effect: fade-left, after: true }, { enter: s4, effect: fade, after: true }]
+          - { enter: tie, effect: fade-up }
+    notes: "Urban growth: more housing, mobility and cooling are needed, ideally with lower emissions. Energy: 71% of 2025 electricity is coal-fired (IEA) while India targets net zero by 2070. Inequality: access to efficient housing, clean energy and affordable transport is unequal. Data: states, cities and departments run different platforms, so sharing and unifying data needs coordination - where CHETNA helps."
+
+  - id: status
+    section: CHETNA - India
+    purpose: Report where the project stands - the timeline from kick-off to expansion, and which data products and papers are published, finished or still in progress
+    layout: free
+    chrome: { header: { left: "Current status" } }
+    objects:
+      tl: { type: shape, geom: line, from: [140, 190], to: [1780, 190], stroke: line, strokeWidth: 6, arrow: end }
+      y1: { type: text, size: 30, weight: bold, color: accent, align: center, valign: middle, frame: [100, 120, 320, 44], text: "2024.11" }
+      d1: { type: shape, geom: ellipse, fill: accent, frame: [246, 176, 28, 28] }
+      t1: { type: text, size: 22, color: ink, align: center, lineHeight: 1.25, frame: [95, 218, 330, 100], text: "Project Kick-off" }
+      y2: { type: text, size: 30, weight: bold, color: accent, align: center, valign: middle, frame: [450, 120, 320, 44], text: "2025" }
+      d2: { type: shape, geom: ellipse, fill: accent, frame: [596, 176, 28, 28] }
+      t2: { type: text, size: 22, color: ink, align: center, lineHeight: 1.25, frame: [445, 218, 330, 100], text: "Data Collection & Model Development" }
+      y3: { type: text, size: 30, weight: bold, color: accent, align: center, valign: middle, frame: [800, 120, 320, 44], text: "2026" }
+      d3: { type: shape, geom: ellipse, fill: accent-2, frame: [946, 176, 28, 28] }
+      t3: { type: text, size: 22, color: ink, align: center, lineHeight: 1.25, frame: [795, 218, 330, 100], text: "Publications & Platform Release" }
+      y4: { type: text, size: 30, weight: bold, color: muted, align: center, valign: middle, frame: [1150, 120, 320, 44], text: "2027 H2" }
+      d4: { type: shape, geom: ellipse, fill: surface, stroke: accent, strokeWidth: 4, frame: [1296, 176, 28, 28] }
+      t4: { type: text, size: 22, color: ink, align: center, lineHeight: 1.25, frame: [1145, 218, 330, 100], text: "Integrated Products, more Publications & Policy Applications" }
+      y5: { type: text, size: 30, weight: bold, color: muted, align: center, valign: middle, frame: [1500, 120, 320, 44], text: "Future" }
+      d5: { type: shape, geom: ellipse, fill: surface, stroke: accent, strokeWidth: 4, frame: [1646, 176, 28, 28] }
+      t5: { type: text, size: 22, color: ink, align: center, lineHeight: 1.25, frame: [1495, 218, 330, 100], text: "Deeper Research & Applications in India · Expansion to other Global South countries" }
+      ms: { type: shape, geom: pill, fill: accent-2, color: "#FFFFFF", size: 20, weight: bold, align: center, valign: middle, padding: 4, frame: [740, 318, 440, 64], text: "★ Maharashtra Governor opens the platform" }
+      h_dp: { type: text, size: 32, weight: bold, color: accent, frame: [120, 406, 820, 54], text: Data Product }
+      h_rs: { type: text, size: 32, weight: bold, color: accent, frame: [1000, 406, 820, 54], text: Research }
+      line_dp: { type: shape, geom: line, from: [120, 458], to: [900, 458], stroke: line, strokeWidth: 3 }
+      line_rs: { type: shape, geom: line, from: [1000, 458], to: [1780, 458], stroke: line, strokeWidth: 3 }
+      dp_pub:
+        type: text
+        size: 21
+        color: ink
+        lineHeight: 1.3
+        frame: [120, 470, 780, 130]
+        text:
+          - "- **Road traffic emissions** · daily, 500 m"
+          - "- **Nationwide brick-kiln maps** · facility level, 2019–2025"
+          - "- **Daily power generation & emissions** · daily, 1,096 units"
+      dp_fin:
+        type: text
+        size: 21
+        color: ink
+        lineHeight: 1.3
+        frame: [120, 612, 780, 130]
+        text:
+          - "- Aviation emissions · daily facility level, 2019–2025"
+          - "- Buildings & residential emissions maps · daily, 500 m"
+          - "- MSME & renewable-energy inventories · facility level"
+      dp_pro:
+        type: text
+        size: 21
+        color: muted
+        lineHeight: 1.3
+        frame: [120, 754, 780, 130]
+        text:
+          - "- Gridded electricity consumption · daily, 1 km"
+          - "- Large industrial emissions inventories"
+          - "- Mining activity & emissions"
+      rs_pub:
+        type: text
+        size: 21
+        color: ink
+        lineHeight: 1.3
+        frame: [1000, 470, 780, 160]
+        text:
+          - "- **Road emissions dataset** · Sci. Data, 2025"
+          - "- **Residential energy drivers** · Energy Build., 2026"
+          - "- **Brick-kiln mapping & technology transitions** · IJAEOG, 2026"
+          - "- **Unit-level power generation & emissions dataset** · Sci. Data (accepted)"
+      rs_fin:
+        type: text
+        size: 21
+        color: ink
+        lineHeight: 1.3
+        frame: [1000, 645, 780, 220]
+        text:
+          - "- Congestion emission drivers · Nat. Cities (target)"
+          - "- Electricity consumption modelling with sectoral disaggregation · Applied Energy (target)"
+          - "- Traffic exposure & health inequalities · TBD"
+          - "- Aviation emissions, 2019–2025 · TBD"
+          - "- Building energy consumption scenario analysis · TBD"
+      rs_pro:
+        type: text
+        size: 21
+        color: muted
+        lineHeight: 1.3
+        frame: [1000, 880, 780, 100]
+        text:
+          - "- Climate impacts on power-sector emissions · TBD"
+          - "- Renewable infrastructure & generation · TBD"
+      lg: { type: text, size: 20, color: muted, frame: [120, 940, 780, 36], text: "**Bold** published / accepted · regular finished · grey in progress" }
+    steps:
+          - [{ enter: tl, effect: draw, duration: 600 }, { enter: [d1, y1], effect: pop, after: true }, { enter: t1, effect: fade-up, after: true }]
+          - [{ enter: [d2, y2], effect: pop }, { enter: t2, effect: fade-up, after: true }]
+          - [{ enter: [d3, y3], effect: pop }, { enter: t3, effect: fade-up, after: true }, { enter: ms, effect: pop, after: true }]
+          - [{ enter: [d4, y4], effect: pop }, { enter: t4, effect: fade-up, after: true }]
+          - [{ enter: [d5, y5], effect: pop }, { enter: t5, effect: fade-up, after: true }]
+          - [{ enter: [h_dp, line_dp], effect: fade }, { enter: dp_pub, effect: fade-up, after: true }, { enter: dp_fin, effect: fade-up, after: true }, { enter: dp_pro, effect: fade-up, after: true }]
+          - [{ enter: [h_rs, line_rs], effect: fade }, { enter: rs_pub, effect: fade-up, after: true }, { enter: rs_fin, effect: fade-up, after: true }, { enter: rs_pro, effect: fade-up, after: true }, { enter: lg, effect: fade, after: true }]
+    notes: "Kick-off in November 2024; 2025 was data collection and model development; 2026 is publications and the platform release, with the Governor of Maharashtra attending the launch; second half of 2027 brings integrated products, more publications and policy applications; beyond that, deeper work in India and expansion to other Global South countries. The matrix shows data products (left) and research outputs (right); bold = published or accepted, regular = finished, grey = in progress."
+
+  - id: sectoral
+    section: Sectoral Results
+    purpose: "Blank placeholder for the Sectoral Results part"
+    layout: free
+    objects: {}
+
+  - id: website
+    section: Website & Database
+    purpose: "Blank placeholder for the Website & Database part"
+    layout: free
+    objects: {}
+
+  - id: team
+    section: Team & Connection
+    purpose: "Blank placeholder for the Team & Connection part"
+    layout: free
+    objects: {}

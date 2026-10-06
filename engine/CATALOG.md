@@ -49,6 +49,7 @@ deck.yaml
 | `steps` | object \| object[][] | 单 State 时的点击构建（等价于 states[0].steps） |
 | `notes` | string |  |
 | `patterns` | string[] | 本页使用的效果库条目 id（showPatterns 时显示在页角） |
+| `continues` | boolean | 与上一个 Scene 共享对象身份：两页里同名 key 的对象在翻页时 morph（上一页的卡片直接移动到本页的位置）；其余对象淡入淡出 |
 | `section` | string | 所属章节名（页眉里的 {section}）；后续 scene 沿用，直到下一个 section |
 | `chrome` | `false` \| object | false = 本页不显示页面元素；对象 = 只覆盖写出的项 |
 
@@ -91,6 +92,7 @@ deck.yaml
 | `delay` | number | ms，额外延迟 |
 | `duration` | number | ms，覆盖 preset 默认时长 |
 | `easing` | string |  |
+| `auto` | boolean | 进入本 State 后自动播放，无需点击；只能写在 steps 最前面的连续几项，各项按顺序间隔播放 |
 
 ## 2. 布局（layout）
 
@@ -117,7 +119,7 @@ deck.yaml
 
 | 字段 | 类型 | 说明 |
 |---|---|---|
-| `text` * | string \| string[] | 文字。字符串按换行分段，数组每项一段。段首 "- " 要点、"1. " 编号、"# " 小标题；行内 **粗体** ==强调色== `代码` |
+| `text` * | string \| string[] | 文字。字符串按换行分段，数组每项一段。段首 "- " 要点、"1. " 编号、"# " 小标题；行内 **粗体** ==强调色== `代码` [[标签\|orange/green/blue]] |
 | `role` | `title` \| `subtitle` \| `kicker` \| `heading` \| `body` \| `bullets` \| `callout` \| `label` \| `caption` \| `quote` \| `code` \| `meta` | 语义角色，决定默认字号/字重/颜色/默认 slot：title / subtitle / kicker / heading / body / bullets / callout / label / caption / quote / code / meta |
 | `size` | number | 字号 px（以 1920 宽舞台计） |
 | `weight` | number \| `normal` \| `bold` |  |
@@ -147,7 +149,7 @@ deck.yaml
 
 | 字段 | 类型 | 说明 |
 |---|---|---|
-| `geom` | `rect` \| `roundRect` \| `pill` \| `ellipse` \| `triangle` \| `diamond` \| `arrow` \| `chevron` \| `line` \| `spotlight` | 形状（默认 roundRect）：rect / roundRect / pill / ellipse / triangle / diamond / arrow / chevron / line / spotlight |
+| `geom` | `rect` \| `roundRect` \| `pill` \| `ellipse` \| `triangle` \| `diamond` \| `arrow` \| `chevron` \| `pentagon` \| `line` \| `spotlight` | 形状（默认 roundRect）：rect / roundRect / pill / ellipse / triangle / diamond / arrow / chevron / pentagon / line / spotlight |
 | `fill` | string | 填充色（默认 surface；line 无填充；spotlight 为遮罩色） |
 | `stroke` | string | 描边色；line 的线条颜色（默认 ink） |
 | `strokeWidth` | number | 描边/线宽 px |
@@ -156,6 +158,8 @@ deck.yaml
 | `shadow` | boolean | 投影 |
 | `from` | [number, number] | line：起点 [x, y]（舞台坐标） |
 | `to` | [number, number] | line：终点 [x, y] |
+| `points` | [number, number][] | line：折线顶点 [[x, y], …]（舞台坐标；转折处为直角时就是"肘形连接线"）；arrow 作用在最后一段 |
+| `ports` | boolean | line：两端画小圆点（端口） |
 | `arrow` | `none` \| `end` \| `start` \| `both` | line：箭头位置（默认 none） |
 | `text` | string \| string[] | 形状内文字（卡片、标签、流程框） |
 | `role` | `title` \| `subtitle` \| `kicker` \| `heading` \| `body` \| `bullets` \| `callout` \| `label` \| `caption` \| `quote` \| `code` \| `meta` | 形状内文字的语义角色（默认 body） |

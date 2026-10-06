@@ -34,6 +34,8 @@ npm run dev                 # 实时预览 http://localhost:5173（含效果库�
 | `npm run agents:sync` | 由 `agents/` 生成 `.claude/` 的 skills 与 subagent |
 | `npm run typecheck` | 引擎类型检查 |
 
+部署到 Netlify：见 [docs/DEPLOY.md](docs/DEPLOY.md) 与根目录 `netlify.toml`（默认构建并发布 `proj/CHETNA`）。
+
 ## 核心概念
 
 - **Scene / State**：Scene 是一页，内含对象池与一串 State；Scene 之间翻页，State 之间 morph 平滑过渡。
