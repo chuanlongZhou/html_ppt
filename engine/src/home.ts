@@ -50,7 +50,7 @@ export function presetData(): PresetData[] {
 export const scriptJson = (v: unknown) => JSON.stringify(v).replace(/</g, '\\u003c');
 
 export function homeData(d: HomeData) {
-  return { items: d.items, decks: d.decks, categories: LIB_CATEGORIES, presets: presetData(), dev: d.dev, base: d.base, deckBase: d.dev ? '/{name}/site/index.html' : '#' };
+  return { items: d.items, decks: d.decks, categories: LIB_CATEGORIES, presets: presetData(), dev: d.dev, base: d.base, deckBase: d.dev ? '/{name}/site/index.html' : d.decks.length ? '{name}/' : '#' };
 }
 
 export function homeHtml(d: HomeData): string {
@@ -59,7 +59,7 @@ export function homeHtml(d: HomeData): string {
   const newCard = d.dev
     ? `<form class="card new" id="new-form"><h4>＋ 新建演示</h4><p>在 decks/ 下创建骨架（deck.yaml + brief.md）。</p><input id="new-name" placeholder="名称，如 my-talk" pattern="[a-z0-9][a-z0-9\\-]*" required><label class="toggle" style="padding:2px 0;font-weight:500;font-size:13px"><input type="checkbox" id="new-theme">套用下方「主题与页面元素」的当前配置</label><button class="btn dark" type="submit">创建</button></form>`
     : `<div class="card new"><h4>新建演示</h4><p>在项目目录运行：</p><button class="btn mono" data-cmd="npm run new -- my-talk" style="text-align:left">npm run new -- my-talk</button><p>带主题：<code>--theme theme.yaml</code></p></div>`;
-  const decksSec = !d.dev ? '' : `<section id="decks" class="sec"><div class="wrap">
+  const decksSec = !d.dev && !d.decks.length ? '' : `<section id="decks" class="sec"><div class="wrap">
     <div class="sec-h"><h2>我的演示</h2><p>decks/ 与 proj/ 下的 deck；点击放映，改 deck.yaml 会自动刷新。</p><span class="n" id="deck-n"></span></div>
     <div class="grid"><span id="deck-cards" style="display:contents"></span>${newCard}</div></div></section>`;
   const studio = `<section id="theme" class="sec"><div class="wrap">
@@ -84,13 +84,13 @@ export function homeHtml(d: HomeData): string {
     <p>用 <code>deck.yaml</code> 写内容，引擎负责版式、动画与检查。先定主题与页面元素，再从下面挑页面和效果，一行 <code>use:</code> 复用。</p>
     <div class="steps">
       <a class="step" href="#theme"><i>1</i><div><b>定主题</b><span>配色 · 页码 · Logo · 页脚，下载 theme.yaml</span></div></a>
-      <a class="step" href="${d.dev ? '#decks' : '#theme'}"><i>2</i><div><b>新建演示</b><span>npm run new -- &lt;名称&gt; --theme theme.yaml</span></div></a>
+      <a class="step" href="${d.dev || d.decks.length ? '#decks' : '#theme'}"><i>2</i><div><b>新建演示</b><span>npm run new -- &lt;名称&gt; --theme theme.yaml</span></div></a>
       <a class="step" href="#pages"><i>3</i><div><b>挑页面结构</b><span>${nPages} 个页面，复制一行 use: 即用</span></div></a>
       <a class="step" href="#effects"><i>4</i><div><b>加动画与交互</b><span>${nFx} 个效果：逐步出现、morph、图表</span></div></a>
     </div></div></section>`;
   const html = `<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>html_ppt</title><link rel="icon" href="data:,"><style>${read('home.css')}</style></head><body id="top">
 <header class="top"><div class="wrap top-in"><a class="brand" href="#top"><b>html_ppt</b><span>演示即代码</span></a>
-<nav class="nav">${d.dev ? '<a href="#decks">演示</a>' : ''}<a href="#theme">主题与页面元素</a><a href="#pages">页面结构</a><a href="#effects">动画与交互</a></nav>
+<nav class="nav">${d.dev || d.decks.length ? '<a href="#decks">演示</a>' : ''}<a href="#theme">主题与页面元素</a><a href="#pages">页面结构</a><a href="#effects">动画与交互</a></nav>
 <input class="search" id="q" placeholder="搜索页面与效果：「逐条出现」「时间线」…"></div></header>
 <main>${hero}${decksSec}${studio}${pages}${effects}</main>
 <div class="wrap foot">用 <code>npm run dev</code> 打开本页；效果库条目在 <code>engine/library/</code>，主题预设在 <code>engine/themes/</code>。</div>

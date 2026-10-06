@@ -13,6 +13,7 @@
     "check": "tsx engine/src/cli.ts check",
     "dev": "tsx watch --clear-screen=false engine/src/cli.ts dev",
     "gallery": "tsx engine/src/cli.ts gallery",
+    "site": "tsx engine/src/cli.ts site",
     "catalog": "tsx engine/src/cli.ts catalog",
     "agents:sync": "tsx engine/src/cli.ts agents-sync",
     "typecheck": "tsc --noEmit -p engine/tsconfig.json",

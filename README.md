@@ -28,6 +28,7 @@ npm run dev                 # 实时预览 http://localhost:5173（含效果库�
 | `npm run check -- <deck> [--scene <id>] [--film] [--no-shots]` | 构建 + 逐步截图 + QA → `output/<deck>/qa/` |
 | `npm run build -- <deck> [--ir]` | 只构建（`--ir` 另存 `ir.json`） |
 | `npm run dev` | 实时预览主页：演示、主题与页面元素（选配色、配页码 / Logo / 页脚，下载 theme.yaml）、页面结构、动画与交互 |
+| `npm run site -- [deck…]` | 组装可部署的整站 `output/_site/`（主页 + 各 deck），见 [docs/DEPLOY.md](docs/DEPLOY.md) |
 | `npm run gallery` | 生成离线效果库浏览器 `output/_gallery/` |
 | `npm run catalog` | 重新生成 `engine/CATALOG.md` 与 `engine/library/INDEX.md` |
 | `npm run agents:sync` | 由 `agents/` 生成 `.claude/` 的 skills 与 subagent |
