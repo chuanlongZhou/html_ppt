@@ -1,0 +1,171 @@
+{
+  "source": "https://chetna-indian.netlify.app/people",
+  "bundle": "https://chetna-indian.netlify.app/assets/people-Cs5SP5p0.js",
+  "retrieved": "2026-10-06",
+  "members": [
+    {
+      "name": "Philippe Ciais",
+      "title": "Principal Investigator",
+      "institute": "LSCE",
+      "former": false,
+      "photo": "philippe-ciais.jpg",
+      "source": "https://chetna-indian.netlify.app/assets/1-C1aqCvs9.jpg"
+    },
+    {
+      "name": "Chuanlong Zhou",
+      "title": "Project Investigator",
+      "institute": "LSCE",
+      "former": false,
+      "photo": "chuanlong-zhou.png",
+      "source": "https://chetna-indian.netlify.app/assets/2-BzumM-zL.png"
+    },
+    {
+      "name": "Rohith Teja Mittakola",
+      "title": "PhD Student/Data Scientist",
+      "institute": "LSCE",
+      "former": false,
+      "photo": "rohith-teja-mittakola.jpeg",
+      "source": "https://chetna-indian.netlify.app/assets/6-Fq715PBf.jpeg"
+    },
+    {
+      "name": "Clément Goldmann",
+      "title": "Data Scientist",
+      "institute": "LSCE",
+      "former": false,
+      "photo": "clement-goldmann.jpg",
+      "source": "https://chetna-indian.netlify.app/assets/9-DHKS-BJo.jpg",
+      "displayFormer": true,
+      "statusSource": "Presenter correction, 2026-10-06: Clément is also a former member."
+    },
+    {
+      "name": "Harish C Phuleria",
+      "title": "Project Investigator",
+      "institute": "IIT Bombay",
+      "former": false,
+      "photo": "harish-c-phuleria.jpg",
+      "source": "https://chetna-indian.netlify.app/assets/3-D4oXWff0.jpg"
+    },
+    {
+      "name": "Arnab Jana",
+      "title": "Project Investigator",
+      "institute": "IIT Bombay",
+      "former": false,
+      "photo": "arnab-jana.jpg",
+      "source": "https://chetna-indian.netlify.app/assets/4-D5YEeOEX.jpg"
+    },
+    {
+      "name": "Ahana Sarkar",
+      "title": "Former Project Manager",
+      "institute": "IIT Bombay",
+      "former": true,
+      "photo": "ahana-sarkar.jpg",
+      "source": "https://chetna-indian.netlify.app/assets/5-CPATXD-w.jpg"
+    },
+    {
+      "name": "Chandra Venkataraman",
+      "title": "Project Investigator",
+      "institute": "IIT Bombay",
+      "former": false,
+      "photo": "chandra-venkataraman.jpg",
+      "source": "https://chetna-indian.netlify.app/assets/10-CWlFv8kN.jpg"
+    },
+    {
+      "name": "Kodimalar Eswar",
+      "title": "Project Manager",
+      "institute": "IIT Bombay",
+      "former": false,
+      "photo": "kodimalar-eswar.jpeg",
+      "source": "https://chetna-indian.netlify.app/assets/Kodimalar_Eswar-eqDm0bu-.jpeg"
+    },
+    {
+      "name": "Madhumitha S",
+      "title": "Project Research Associate",
+      "institute": "IIT Bombay",
+      "former": false,
+      "photo": "madhumitha-s.jpeg",
+      "source": "https://chetna-indian.netlify.app/assets/Madhumitha_S-B7NEWy8N.jpeg"
+    },
+    {
+      "name": "Tanushree Bhattacharya",
+      "title": "Former Project Assistant",
+      "institute": "IIT Bombay",
+      "former": true,
+      "photo": "tanushree-bhattacharya.jpg",
+      "source": "https://chetna-indian.netlify.app/assets/16-DEbwMRnP.jpg"
+    },
+    {
+      "name": "Abhinav Sharma",
+      "title": "PhD. Researcher",
+      "institute": "IIT Bombay",
+      "former": false,
+      "photo": "abhinav-sharma.jpg",
+      "source": "https://chetna-indian.netlify.app/assets/7-n9Mpi6qd.jpg",
+      "displayPhoto": "abhinav-sharma-portrait.jpg",
+      "displayPhotoSource": "https://chetna-indian.netlify.app/assets/Abhinav_sharma-Vi5whWiz.jpg"
+    },
+    {
+      "name": "Kounik De Sarkar",
+      "title": "PhD Student",
+      "institute": "IIT Bombay",
+      "former": false,
+      "photo": "kounik-de-sarkar.jpeg",
+      "source": "https://chetna-indian.netlify.app/assets/8-B_CD3FaL.jpeg"
+    },
+    {
+      "name": "Vipul Parmer",
+      "title": "PhD Student",
+      "institute": "IIT Bombay",
+      "former": false,
+      "photo": "vipul-parmer.jpg",
+      "source": "https://chetna-indian.netlify.app/assets/17-eQLPMt38.jpg"
+    },
+    {
+      "name": "Soumyadeep Haldar",
+      "title": "Former M.Tech Student",
+      "institute": "IIT Bombay",
+      "former": true,
+      "photo": "soumyadeep-haldar.jpg",
+      "source": "https://chetna-indian.netlify.app/assets/18-Djhp7A2D.jpg"
+    },
+    {
+      "name": "Fouzi Benkhelifa",
+      "title": "CEO & Climate Action Planning Expert",
+      "institute": "Nexqt",
+      "former": false,
+      "photo": "fouzi-benkhelifa.webp",
+      "source": "https://chetna-indian.netlify.app/assets/14-C4ZQBtLl.webp"
+    },
+    {
+      "name": "Nicolas Megel",
+      "title": "Data Scientist & AI Specialist",
+      "institute": "Nexqt",
+      "former": false,
+      "photo": "nicolas-megel.webp",
+      "source": "https://chetna-indian.netlify.app/assets/15-SJzo9Szv.webp"
+    },
+    {
+      "name": "Sugandha Arora",
+      "title": "Researcher@University of Münster",
+      "institute": "University of Münster",
+      "former": false,
+      "photo": "sugandha-arora.jpg",
+      "source": "https://chetna-indian.netlify.app/assets/12-BjLdZ9Co.jpg"
+    },
+    {
+      "name": "Kushal Tibrewal",
+      "title": "Methane Scientist@UNEP",
+      "institute": "UNEP (International Methane Emissions Observatory)",
+      "former": false,
+      "photo": "kushal-tibrewal.jpeg",
+      "source": "https://chetna-indian.netlify.app/assets/13-DpR5ctyq.jpeg"
+    },
+    {
+      "name": "Biqing Zhu",
+      "title": "Post-doc Researcher@IIASA",
+      "institute": "IIASA",
+      "former": false,
+      "photo": "biqing-zhu.jpg",
+      "source": "https://chetna-indian.netlify.app/assets/11-DoXlF2AS.jpg"
+    }
+  ]
+}

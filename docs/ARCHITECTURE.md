@@ -41,6 +41,7 @@ output/<deck>/site/（离线可放映） · qa/report.json · qa/shots · qa/con
 ## 核心模型
 
 - **Scene** = 对象池（`objects`，key 即身份）+ State 序列。Scene 之间翻页，State 之间 morph。
+- **独立页**：`kind: opening / closing` 或 `section: false` 不归入 part；封面/结尾模板和常用 id 自动识别，`kind: content` 可覆盖。章节归属在 normalize 决定，底部导航只定位正文入口（ADR-010）。
 - **State** = 可见对象集合（`show / add / remove`）+ 累积的属性覆盖（`override`）+ 可选的布局切换 + 页内点击构建（`steps`）。
 - **两级动画**：steps → Reveal fragments；State → Reveal Auto-Animate（同一 Scene 共享 `data-auto-animate-id`）。
 - **身份**：`data-id = <scene>.<key>`；runtime.js 只按 data-id 匹配（不按文字或图片 src）。

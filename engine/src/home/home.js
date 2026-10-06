@@ -38,7 +38,7 @@
     const bad = d.errors > 0;
     const stat = bad ? `<span class="st bad">${d.errors} 个错误</span>` : `<span class="st ok">通过</span>`;
     return `<a class="card" href="${esc(H.deckBase.replace('{name}', d.name))}">
-      <div class="thumb" style="background-image:url(${H.base}thumbs/deck-${esc(d.name)}.png?v=${v})"><div class="ph">缩略图生成中…</div><span class="badge">${d.pages} 页</span>${bad ? '<span class="badge bad">构建失败</span>' : ''}</div>
+      <div class="thumb" style="background-image:url(${H.base}thumbs/deck-${esc(d.name)}.png?v=${v})"><div class="ph">${H.dev ? '缩略图生成中…' : ''}</div><span class="badge">${d.pages} 页</span>${bad ? '<span class="badge bad">构建失败</span>' : ''}</div>
       <div class="meta"><b>${esc(d.title)}</b><span class="id mono">${esc(d.where)}/${esc(d.name)}</span><div>${stat}${d.warnings ? ` <span class="st" style="color:var(--faint)">· ${d.warnings} 个提示</span>` : ''}</div></div></a>`;
   }
   function renderDecks() {
@@ -55,7 +55,7 @@
     const clicks = i.clicks.reduce((a, b) => a + b, 0);
     const badge = (i.states > 1 ? i.states + ' 个 State' : '') + (clicks ? (i.states > 1 ? ' · ' : '') + clicks + ' 次点击' : '');
     return `<div class="card"><a href="${H.base}view.html#${i.id}" aria-label="${esc(i.title)}">
-      <div class="thumb" style="background-image:url(${H.base}thumbs/${i.id}.png?v=${v})"><div class="ph">缩略图生成中…</div>${badge ? `<span class="badge">${badge}</span>` : ''}${i.ok ? '' : '<span class="badge bad">构建失败</span>'}</div>
+      <div class="thumb" style="background-image:url(${H.base}thumbs/${i.id}.png?v=${v})"><div class="ph">${H.dev ? '缩略图生成中…' : ''}</div>${badge ? `<span class="badge">${badge}</span>` : ''}${i.ok ? '' : '<span class="badge bad">构建失败</span>'}</div>
       <div class="meta"><b>${esc(i.title)}</b><span class="id mono">${esc(i.id)}</span><div class="tags">${i.prompts.slice(0, 3).map((p) => `<span>${esc(p)}</span>`).join('')}</div></div></a>
       <button class="copy" data-use="${esc(i.use)}" title="复制一行调用，粘贴到 deck.yaml 的 scenes: 下">复制调用</button></div>`;
   }

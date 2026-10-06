@@ -53,5 +53,50 @@ Slide flow / 画面流程: `Total Emission` → (click) photo fades in → (clic
 ## 5 · strategy — CHETNA Strategy (CHETNA Methodology · part 2)
 *(script pending / 待补；the three keyword boxes fly over from the previous slide → click 1: Data Gap ← Accurate "Gap Filling" ← open-source data + machine learning → click 2: High Spatial Resolution ← Sophisticated Downscaling ← + physical network model → click 3: Low Latency ← Near-Real Time Activity Proxy ← + satellite imagery → click 4: the sectors enter)*
 
-## 6–8 · sectoral · website · team
+## 6 · research — Four story lines (section: Selected Research)
+
+Slide flow / 画面流程: title block fades in on its own → (4 clicks) one story line per click: 1 Ground transport · 2 Power · 3 Residential · 4 Brick kilns.
+
+- EN (draft): This part presents selected research along four story lines, one per sector: complex systems in ground transport, energy demand and its climate implications in power, building-level models and household-level surveys in the residential sector, and facility-level detection with satellites and AI for brick kilns.
+- 中 (待确认): 这一部分按四条故事线展示代表性研究，每条对应一个部门。
+
+## 6a · st1-method — Reconstructing urban traffic emissions *(Ground transport, page 1)*
+
+Overall theme: Understanding complex systems and their health implications. Animation rule: fixed header title, main figure swaps in the same area with a ~0.4 s cross-fade, one click per step; flow charts keep the full structure and fade the parts not yet discussed.
+
+Question / 本页问题: How do we turn incomplete traffic observations into emission data that can analyse urban systems? 如何把不完整的交通观测，转化为能够分析城市系统的排放数据？
+
+Flow / 画面流程: Fig 1 (A highlighted) → click: Data Scaling outlined → click: B highlighted, emission-factor curve outlined → click: C and D → click: Fig 2 (Mumbai and Delhi panels).
+
+- Sentences on slide: *Statistical and machine-learning methods reconstruct missing traffic observations.* / *Speed-dependent emission factors connect traffic conditions to CO₂ and pollutant emissions.* / *The resulting inventory supports spatial and temporal analysis of urban traffic.*
+- EN: We first solve the problem of incomplete observations: we rebuild traffic activity and correct data coverage. Speed-dependent emission factors then turn real traffic conditions into CO₂ and pollutant emissions. This data foundation lets us study differences between roads, between cities and over time.
+- 中: 我们首先解决观测不完整的问题，重建交通活动并校正数据覆盖。随后，通过速度相关排放因子，把实际交通条件转化为 CO₂ 和污染物排放。这样的数据基础让我们能够研究道路之间、城市之间以及时间上的差异。
+- Transition / 转场: With this base, why does traffic efficiency differ between cities? 有了这一方法基础，我们进一步问：这些城市的交通效率为什么不同？
+
+## 6b · st1-congestion — Understanding congestion across urban contexts *(page 2)*
+
+Figures: 4 → 3 → 5. Flow: Fig 4 (click: national map; click: Mumbai / Surat / Amritsar panels) → Fig 3 (click: top predictors; click: category contributions; maps and histograms faded as backup) → Fig 5 (click: y axis; demand-driven; transitioning; structure-driven; fitted break near 8,300 USD).
+
+- EN: The map first tells us that efficiency differs at road and city scale. The explanatory model links these differences to traffic composition, socioeconomic activity and urban form (model associations, not causal effects). Combining the factors lets us identify urban configurations, so similar congestion can have different urban backgrounds.
+- 中: 地图首先告诉我们，交通效率在道路和城市尺度上都存在差异。解释性模型进一步显示，这些差异与交通构成、社会经济活动和城市空间条件有关。把这些因素组合起来，我们能够识别不同城市配置，从而理解为什么相近的拥堵表现可能对应不同的城市背景。
+- Transition / 转场: Traffic also produces air pollution; next we connect emissions to the exposure of people. 交通系统同时产生空气污染。接下来，我们需要把排放量连接到人群实际所在位置的污染暴露。
+
+## 6c · st1-exposure — Linking traffic emissions to population exposure *(page 3)*
+
+Figures: 6.1 → 6. Flow: Fig 6.1 (CHETNA-Road, ERA5, Gaussian dispersion, initial NOx) → click: monitoring, residual prediction / bias correction → click: NFHS-5 and household exposure assignment → click: Fig 6 (national map; then one city with survey stars and the NOx × wind legend).
+
+- EN: We feed traffic emissions and meteorology into a dispersion model, then use monitoring data to correct the concentration estimates. We then match the concentration map to NFHS survey locations, accounting for location uncertainty, so emission data can support neighbourhood- and household-scale health analysis.
+- 中: 我们将交通排放与气象条件输入扩散模型，再利用监测信息校正浓度估计。随后，把浓度地图与 NFHS 调查位置匹配，并考虑位置不确定性。这样，排放数据就能够支持社区和家庭尺度的健康分析。
+- Transition / 转场: With exposure in place, how do environmental and household conditions together relate to child health, and where do the pathways stand out? 暴露数据建立之后，我们就能分析：环境条件与家庭条件如何共同关联儿童健康，以及这些路径在哪里更突出。
+
+## 6d · st1-health — Health pathways vary within and across cities *(page 4)*
+
+Figures: 7 → 8. Flow: Fig 7 (click: blue pathway; orange; purple; effect bars are backup) → Fig 8 (click: legend; Delhi and Mumbai maps) → click: ternary plot, maps faded → click: closing sentence.
+
+- EN: We distinguish pollution exposure, household vulnerability and double burden. Their relative roles are uneven within a city and differ between cities. This helps identify where pollution deserves attention, where household conditions matter more, and who carries both burdens. The triangle shows relative mix, not an overall risk ranking.
+- 中: 我们区分了污染暴露、家庭脆弱性及双重负担三种路径。它们的相对作用在同一城市内部并不均匀，在城市之间也存在差异。理解这些差异，能够帮助我们识别哪些社区更需要关注污染，哪些地方家庭条件更关键，以及哪些人群同时承受两种负担。
+- Closing / 结束句: Understanding complex urban systems helps identify how environmental and social conditions combine to shape health risks.
+
+## 7–8 · website · team
+
 *(blank placeholders / 空白占位页)*

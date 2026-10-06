@@ -7,13 +7,14 @@ deck:
   theme: theme.yaml
   chrome:
     caps: true
-    rule: true
+    rule: { header: true, footer: false }
     header: { left: "" }
 
 scenes:
   # 开场：首字母缩略词页 morph 成品牌页（C H E T N A 六个字母原地放大并靠拢，其余文字淡出）
   - id: opening
-    section: What is CHETNA
+    kind: opening
+    chrome: false
     purpose: 开场：先交代项目全称与团队，再把首字母收拢成 CHETNA 品牌页
     patterns: [morph.acronym-collapse]
     layout: free
@@ -398,6 +399,42 @@ scenes:
           - { enter: tie, effect: fade-up }
     notes: "Urban growth: more housing, mobility and cooling are needed, ideally with lower emissions. Energy: 71% of 2025 electricity is coal-fired (IEA) while India targets net zero by 2070. Inequality: access to efficient housing, clean energy and affordable transport is unequal. Data: states, cities and departments run different platforms, so sharing and unifying data needs coordination - where CHETNA helps."
 
+  - id: indian-cities
+    section: CHETNA - India
+    purpose: Show how the 100 Indian cities were selected across geography, population and municipal characteristics, covering 36% of India's urban population
+    layout: free
+    chrome: { header: { left: "100 Indian cities" } }
+    objects:
+      # Criteria connect to the maps in image coordinates; the maps cover the inner ends of the blue bands.
+      terrain_link: { type: shape, geom: line, on: population, from: [-0.2156, 0.125], to: [0.08, 0.30], stroke: accent-3, strokeWidth: 28, opacity: 0.4, z: 0 }
+      population_link: { type: shape, geom: line, on: population, from: [-0.3456, 0.36], to: [0.05, 0.50], stroke: accent-3, strokeWidth: 28, opacity: 0.4, z: 0 }
+      density_link: { type: shape, geom: line, on: population, from: [-0.4256, 0.57], to: [0.06, 0.66], stroke: accent-3, strokeWidth: 28, opacity: 0.4, z: 0 }
+      area_link: { type: shape, geom: line, on: population, from: [-0.3956, 0.88], to: [0.05, 0.86], stroke: accent-3, strokeWidth: 28, opacity: 0.4, z: 0 }
+      smart_link: { type: shape, geom: line, on: built, from: [0.60, 0.15], to: [1.3291, -0.50], stroke: accent-3, strokeWidth: 28, opacity: 0.4, z: 0 }
+      mega_link: { type: shape, geom: line, on: built, from: [0.70, 0.33], to: [1.5291, -0.19], stroke: accent-3, strokeWidth: 28, opacity: 0.4, z: 0 }
+      municipal_link: { type: shape, geom: line, on: built, from: [0.85, 0.50], to: [1.4991, 0.15], stroke: accent-3, strokeWidth: 28, opacity: 0.4, z: 0 }
+      airports_link: { type: shape, geom: line, on: built, from: [0.90, 0.70], to: [1.4791, 0.50], stroke: accent-3, strokeWidth: 28, opacity: 0.4, z: 0 }
+      exclusion_link: { type: shape, geom: line, on: built, from: [0.80, 0.79], to: [1.4491, 0.86], stroke: accent-3, strokeWidth: 28, opacity: 0.4, z: 0 }
+      population: { type: image, src: assets/part3/4.png, fit: contain, frame: [460, 100, 720, 767], z: 2, alt: Population of cities in India in 2020 }
+      built: { type: image, src: assets/part3/6.png, fit: contain, frame: [1100, 415, 440, 470], z: 3, alt: Built volume of cities in India }
+      pollutants: { type: image, src: assets/part3/5.png, fit: contain, frame: [965, 140, 430, 459], z: 4, alt: Pollutant index of cities in India }
+      terrain: { type: shape, fill: surface, stroke: accent, strokeWidth: 2, radius: 8, color: accent-3, size: 26, align: center, valign: middle, padding: 8, frame: [210, 160, 235, 85], z: 5, text: "Diverse terrains" }
+      high_population: { type: shape, fill: surface, stroke: accent, strokeWidth: 2, radius: 8, color: accent-3, size: 26, align: center, valign: middle, padding: 8, lineHeight: 1.15, frame: [120, 335, 250, 90], z: 5, text: "High total\\npopulation" }
+      density: { type: shape, fill: surface, stroke: accent, strokeWidth: 2, radius: 8, color: accent-3, size: 26, align: center, valign: middle, padding: 8, lineHeight: 1.15, frame: [100, 505, 245, 90], z: 5, text: "High population\\ndensity" }
+      area: { type: shape, fill: surface, stroke: accent, strokeWidth: 2, radius: 8, color: accent-3, size: 26, align: center, valign: middle, padding: 8, lineHeight: 1.15, frame: [120, 720, 270, 90], z: 5, text: "Large geographical\\narea" }
+      smart: { type: shape, fill: surface, stroke: accent, strokeWidth: 2, radius: 8, color: accent-3, size: 26, align: center, valign: middle, padding: 8, frame: [1550, 135, 250, 85], z: 5, text: "Smart Cities" }
+      mega: { type: shape, fill: surface, stroke: accent, strokeWidth: 2, radius: 8, color: accent-3, size: 26, align: center, valign: middle, padding: 8, lineHeight: 1.15, frame: [1640, 280, 240, 90], z: 5, text: "Mega Urban\\nAreas" }
+      municipal: { type: shape, fill: surface, stroke: accent, strokeWidth: 2, radius: 8, color: accent-3, size: 26, align: center, valign: middle, padding: 8, lineHeight: 1.15, frame: [1585, 435, 295, 95], z: 5, text: "Municipal categories\\n& Classes" }
+      airports: { type: shape, fill: surface, stroke: accent, strokeWidth: 2, radius: 8, color: accent-3, size: 26, align: center, valign: middle, padding: 8, lineHeight: 1.15, frame: [1615, 595, 265, 90], z: 5, text: "Cities with active\\nairports" }
+      exclusion: { type: shape, fill: surface, stroke: accent, strokeWidth: 2, radius: 8, color: accent-3, size: 26, align: center, valign: middle, padding: 8, lineHeight: 1.15, frame: [1585, 760, 295, 90], z: 5, text: "Exclusion of\\nUnion Territories" }
+      coverage: { type: text, size: 62, weight: bold, color: accent-3, align: right, valign: middle, lineHeight: 1.1, frame: [970, 920, 180, 74], text: "36%" }
+      conclusion: { type: text, size: 42, color: ink, valign: middle, frame: [1170, 920, 710, 74], text: "Urban Population Included" }
+    steps:
+      - - { enter: [population, built, pollutants], effect: fade-up, duration: 450, stagger: 100 }
+        - { enter: [terrain_link, population_link, density_link, area_link, smart_link, mega_link, municipal_link, airports_link, exclusion_link], effect: draw, duration: 600, after: true }
+        - { enter: [terrain, high_population, density, area, smart, mega, municipal, airports, exclusion, coverage, conclusion], effect: fade, duration: 600 }
+    notes: "The 100-city selection balances diverse terrains, total population, population density and geographical area. It also spans Smart Cities, mega urban areas, municipal categories and classes, and cities with active airports, while excluding Union Territories. The selected cities cover 36% of India's urban population. Maps show population, pollutant index and built volume."
+
   - id: status
     section: CHETNA - India
     purpose: Report where the project stands - the timeline from kick-off to expansion, and which data products and papers are published, finished or still in progress
@@ -421,16 +458,22 @@ scenes:
       d5: { type: shape, geom: ellipse, fill: surface, stroke: accent, strokeWidth: 4, frame: [1646, 176, 28, 28] }
       t5: { type: text, size: 22, color: ink, align: center, lineHeight: 1.25, frame: [1495, 218, 330, 100], text: "Deeper Research & Applications in India · Expansion to other Global South countries" }
       ms: { type: shape, geom: pill, fill: accent-2, color: "#FFFFFF", size: 20, weight: bold, align: center, valign: middle, padding: 4, frame: [740, 318, 440, 64], text: "★ Maharashtra Governor opens the platform" }
-      h_dp: { type: text, size: 32, weight: bold, color: accent, frame: [120, 406, 820, 54], text: Data Product }
-      h_rs: { type: text, size: 32, weight: bold, color: accent, frame: [1000, 406, 820, 54], text: Research }
-      line_dp: { type: shape, geom: line, from: [120, 458], to: [900, 458], stroke: line, strokeWidth: 3 }
-      line_rs: { type: shape, geom: line, from: [1000, 458], to: [1780, 458], stroke: line, strokeWidth: 3 }
+      platform: { type: image, src: assets/part3/3.png, fit: contain, frame: [580, 400, 760, 567], alt: CHETNA platform with the Indian cities map and emissions trends }
+      platform_link:
+        type: html
+        on: platform
+        box: [0, 0, 1, 1]
+        html: '<a href="https://chetna-indian.netlify.app/" target="_blank" rel="noopener noreferrer" aria-label="Open CHETNA platform" title="Open CHETNA platform" style="display:block;width:100%;height:100%"></a>'
+      h_dp: { type: text, size: 32, weight: bold, color: accent, frame: [120, 156, 820, 54], text: Data Product }
+      h_rs: { type: text, size: 32, weight: bold, color: accent, frame: [1000, 156, 820, 54], text: Research }
+      line_dp: { type: shape, geom: line, from: [120, 208], to: [900, 208], stroke: line, strokeWidth: 3 }
+      line_rs: { type: shape, geom: line, from: [1000, 208], to: [1780, 208], stroke: line, strokeWidth: 3 }
       dp_pub:
         type: text
         size: 21
         color: ink
         lineHeight: 1.3
-        frame: [120, 470, 780, 130]
+        frame: [120, 220, 780, 130]
         text:
           - "- **Road traffic emissions** · daily, 500 m"
           - "- **Nationwide brick-kiln maps** · facility level, 2019–2025"
@@ -440,7 +483,7 @@ scenes:
         size: 21
         color: ink
         lineHeight: 1.3
-        frame: [120, 612, 780, 130]
+        frame: [120, 362, 780, 130]
         text:
           - "- Aviation emissions · daily facility level, 2019–2025"
           - "- Buildings & residential emissions maps · daily, 500 m"
@@ -450,7 +493,7 @@ scenes:
         size: 21
         color: muted
         lineHeight: 1.3
-        frame: [120, 754, 780, 130]
+        frame: [120, 504, 780, 130]
         text:
           - "- Gridded electricity consumption · daily, 1 km"
           - "- Large industrial emissions inventories"
@@ -460,7 +503,7 @@ scenes:
         size: 21
         color: ink
         lineHeight: 1.3
-        frame: [1000, 470, 780, 160]
+        frame: [1000, 220, 780, 160]
         text:
           - "- **Road emissions dataset** · Sci. Data, 2025"
           - "- **Residential energy drivers** · Energy Build., 2026"
@@ -471,7 +514,7 @@ scenes:
         size: 21
         color: ink
         lineHeight: 1.3
-        frame: [1000, 645, 780, 220]
+        frame: [1000, 395, 780, 220]
         text:
           - "- Congestion emission drivers · Nat. Cities (target)"
           - "- Electricity consumption modelling with sectoral disaggregation · Applied Energy (target)"
@@ -483,35 +526,656 @@ scenes:
         size: 21
         color: muted
         lineHeight: 1.3
-        frame: [1000, 880, 780, 100]
+        frame: [1000, 630, 780, 100]
         text:
           - "- Climate impacts on power-sector emissions · TBD"
           - "- Renewable infrastructure & generation · TBD"
-      lg: { type: text, size: 20, color: muted, frame: [120, 940, 780, 36], text: "**Bold** published / accepted · regular finished · grey in progress" }
+      lg: { type: text, size: 20, color: muted, align: center, valign: middle, frame: [120, 960, 1680, 36], text: "**Bold** published / accepted · regular finished · grey in progress" }
     steps:
           - [{ enter: tl, effect: draw, duration: 600 }, { enter: [d1, y1], effect: pop, after: true }, { enter: t1, effect: fade-up, after: true }]
           - [{ enter: [d2, y2], effect: pop }, { enter: t2, effect: fade-up, after: true }]
-          - [{ enter: [d3, y3], effect: pop }, { enter: t3, effect: fade-up, after: true }, { enter: ms, effect: pop, after: true }]
+          - [{ enter: [d3, y3], effect: pop }, { enter: t3, effect: fade-up, after: true }, { enter: ms, effect: pop, after: true }, { enter: [platform, platform_link], effect: fade-up, after: true }]
           - [{ enter: [d4, y4], effect: pop }, { enter: t4, effect: fade-up, after: true }]
           - [{ enter: [d5, y5], effect: pop }, { enter: t5, effect: fade-up, after: true }]
-          - [{ enter: [h_dp, line_dp], effect: fade }, { enter: dp_pub, effect: fade-up, after: true }, { enter: dp_fin, effect: fade-up, after: true }, { enter: dp_pro, effect: fade-up, after: true }]
+          - [{ exit: [tl, d1, y1, t1, d2, y2, t2, d3, y3, t3, d4, y4, t4, d5, y5, t5, ms, platform, platform_link], effect: fade-out }, { enter: [h_dp, line_dp], effect: fade }, { enter: dp_pub, effect: fade-up, after: true }, { enter: dp_fin, effect: fade-up, after: true }, { enter: dp_pro, effect: fade-up, after: true }]
           - [{ enter: [h_rs, line_rs], effect: fade }, { enter: rs_pub, effect: fade-up, after: true }, { enter: rs_fin, effect: fade-up, after: true }, { enter: rs_pro, effect: fade-up, after: true }, { enter: lg, effect: fade, after: true }]
     notes: "Kick-off in November 2024; 2025 was data collection and model development; 2026 is publications and the platform release, with the Governor of Maharashtra attending the launch; second half of 2027 brings integrated products, more publications and policy applications; beyond that, deeper work in India and expansion to other Global South countries. The matrix shows data products (left) and research outputs (right); bold = published or accepted, regular = finished, grey = in progress."
 
-  - id: sectoral
-    section: Sectoral Results
-    purpose: "Blank placeholder for the Sectoral Results part"
+  # Part 4 · Selected Research：part 标题页 + 四条故事线（点击逐条出现）
+  - id: research
+    section: Selected Research
+    purpose: Open the Selected Research part with its four story lines, each card jumping to that story line’s first page
     layout: free
+    chrome: { header: { left: "Four story lines" } }
+    objects:
+      bar: { type: shape, geom: rect, fill: accent-2, frame: [352, 400, 96, 10] }
+      ttl: { type: text, size: 84, weight: bold, color: accent, lineHeight: 1.05, align: center, valign: middle, frame: [120, 430, 560, 230], text: "Selected\nResearch" }
+      tr_card: { type: shape, fill: surface, stroke: line, strokeWidth: 2, radius: 22, shadow: true, frame: [700, 150, 1100, 150] }
+      tr_go: { type: html, z: 10, frame: [700, 150, 1100, 150], html: '<a href="#" data-goto-scene="st1-method" aria-label="Go to Ground transport" style="display:block;width:100%;height:100%;cursor:pointer;border-radius:22px"></a>' }
+      tr_ico: { type: image, src: "assets/part 1/ground transport.svg", fit: contain, frame: [753, 193, 64, 64] }
+      tr_ttl: { type: text, size: 34, weight: bold, color: ink, valign: middle, frame: [870, 172, 900, 56], text: "Complex systems and their health implications" }
+      tr_sub: { type: text, size: 22, color: muted, valign: middle, frame: [870, 238, 900, 36], text: "Street-level traffic · congestion · NOx exposure · children’s health" }
+      pw_card: { type: shape, fill: surface, stroke: line, strokeWidth: 2, radius: 22, shadow: true, frame: [700, 360, 1100, 150] }
+      pw_go: { type: html, z: 10, frame: [700, 360, 1100, 150], html: '<a href="#" data-goto-scene="st2-intro" aria-label="Go to Power" style="display:block;width:100%;height:100%;cursor:pointer;border-radius:22px"></a>' }
+      pw_ico: { type: image, src: "assets/part 1/power.svg", fit: contain, frame: [753, 403, 64, 64] }
+      pw_ttl: { type: text, size: 34, weight: bold, color: ink, valign: middle, frame: [870, 382, 900, 56], text: "Energy demand and its climate implications" }
+      pw_sub: { type: text, size: 22, color: muted, valign: middle, frame: [870, 448, 900, 36], text: "Unit-level power generation & emissions · demand · climate impacts" }
+      rs_card: { type: shape, fill: surface, stroke: line, strokeWidth: 2, radius: 22, shadow: true, frame: [700, 570, 1100, 150] }
+      rs_go: { type: html, z: 10, frame: [700, 570, 1100, 150], html: '<a href="#" data-goto-scene="st3-intro" aria-label="Go to Residential" style="display:block;width:100%;height:100%;cursor:pointer;border-radius:22px"></a>' }
+      rs_ico: { type: image, src: "assets/part 1/residential.svg", fit: contain, frame: [753, 613, 64, 64] }
+      rs_ttl: { type: text, size: 34, weight: bold, color: ink, valign: middle, frame: [870, 592, 900, 56], text: "Building-level and household-level research" }
+      rs_sub: { type: text, size: 22, color: muted, valign: middle, frame: [870, 658, 900, 36], text: "Building stock · household surveys · scenario analysis" }
+      bk_card: { type: shape, fill: surface, stroke: line, strokeWidth: 2, radius: 22, shadow: true, frame: [700, 780, 1100, 150] }
+      bk_go: { type: html, z: 10, frame: [700, 780, 1100, 150], html: '<a href="#" data-goto-scene="st4-intro" aria-label="Go to Brick kilns" style="display:block;width:100%;height:100%;cursor:pointer;border-radius:22px"></a>' }
+      bk_ico: { type: image, src: "assets/part 1/industrial.svg", fit: contain, frame: [753, 823, 64, 64] }
+      bk_ttl: { type: text, size: 34, weight: bold, color: ink, valign: middle, frame: [870, 802, 900, 56], text: "Facility-level detection with satellite and AI" }
+      bk_sub: { type: text, size: 22, color: muted, valign: middle, frame: [870, 868, 900, 36], text: "Nationwide brick-kiln maps · change detection · coal mining fires" }
+    steps:
+      - { enter: [bar, ttl], effect: fade-up, auto: true }
+      - [{ enter: [tr_card, tr_go, tr_ico], effect: fade-right, duration: 300, delay: 0 }, { enter: [tr_ttl, tr_sub], effect: fade-up, duration: 300, delay: 80 }, { enter: [pw_card, pw_go, pw_ico], effect: fade-right, duration: 300, delay: 140 }, { enter: [pw_ttl, pw_sub], effect: fade-up, duration: 300, delay: 220 }, { enter: [rs_card, rs_go, rs_ico], effect: fade-right, duration: 300, delay: 280 }, { enter: [rs_ttl, rs_sub], effect: fade-up, duration: 300, delay: 360 }, { enter: [bk_card, bk_go, bk_ico], effect: fade-right, duration: 300, delay: 420 }, { enter: [bk_ttl, bk_sub], effect: fade-up, duration: 300, delay: 500 }]
+    notes: "Part 4 is organised as four story lines, one per sector. Ground transport: complex systems and their implications. Power: energy demand and its climate implications. Residential: building-level models meet household-level surveys. Brick kilns: facility-level detection with satellites and AI."
+
+  - id: st1-method
+    section: Selected Research
+    purpose: Show how incomplete traffic observations become a spatially and temporally resolved emission dataset
+    layout: free
+    chrome: { header: { left: "Reconstructing urban traffic emissions" } }
+    objects:
+      f1: { type: image, src: assets/part4/s1/1.png, fit: contain, radius: 12, shadow: true, frame: [120, 160, 1180, 769], alt: "CHETNA-Road workflow: data preprocessing, emission modeling, validation and final output" }
+      f2: { type: image, src: assets/part4/s1/2.png, fit: contain, radius: 12, shadow: true, frame: [120, 179, 1180, 732], alt: "Annual road CO2 emissions in six Indian metros" }
+      dA: { type: shape, geom: roundRect, radius: 10, fill: "#FFFFFF", opacity: 0.8, on: f1, box: [0.04, 0.02, 0.93, 0.335], z: 4 }
+      dB: { type: shape, geom: roundRect, radius: 10, fill: "#FFFFFF", opacity: 0.8, on: f1, box: [0.04, 0.34, 0.93, 0.33], z: 4 }
+      dC: { type: shape, geom: roundRect, radius: 10, fill: "#FFFFFF", opacity: 0.8, on: f1, box: [0.04, 0.68, 0.265, 0.31], z: 4 }
+      dD: { type: shape, geom: roundRect, radius: 10, fill: "#FFFFFF", opacity: 0.8, on: f1, box: [0.325, 0.68, 0.65, 0.31], z: 4 }
+      hl_scale: { type: shape, geom: roundRect, radius: 12, fill: transparent, stroke: accent-2, strokeWidth: 6, on: f1, box: [0.77, 0.12, 0.185, 0.16], z: 5 }
+      hl_ef: { type: shape, geom: roundRect, radius: 12, fill: transparent, stroke: accent-2, strokeWidth: 6, on: f1, box: [0.445, 0.355, 0.19, 0.3], z: 5 }
+      g_blr: { type: shape, geom: roundRect, radius: 10, fill: "#FFFFFF", opacity: 0.8, on: f2, box: [0.01, 0.02, 0.32, 0.4], z: 4 }
+      g_hyd: { type: shape, geom: roundRect, radius: 10, fill: "#FFFFFF", opacity: 0.8, on: f2, box: [0.32, 0.03, 0.34, 0.36], z: 4 }
+      g_kol: { type: shape, geom: roundRect, radius: 10, fill: "#FFFFFF", opacity: 0.8, on: f2, box: [0.665, 0.03, 0.32, 0.36], z: 4 }
+      g_che: { type: shape, geom: roundRect, radius: 10, fill: "#FFFFFF", opacity: 0.8, on: f2, box: [0.32, 0.43, 0.26, 0.56], z: 4 }
+      lab1: { type: text, size: 24, weight: bold, color: accent-2, lineHeight: 1.2, frame: [1340, 130, 460, 36], text: "A · Data reconstruction" }
+      sen1: { type: text, size: 34, weight: bold, color: accent, lineHeight: 1.25, frame: [1340, 182, 460, 400], text: "Statistical and machine-learning methods reconstruct missing traffic observations." }
+      note1: { type: text, size: 24, color: muted, lineHeight: 1.45, frame: [1340, 470, 460, 330], text: ["Street-level GPS speed and flow", "Statistical imputation + LightGBM fill the gaps", "Scaling corrects partial fleet coverage"] }
+      lab2: { type: text, size: 24, weight: bold, color: accent-2, lineHeight: 1.2, frame: [1340, 130, 460, 36], text: "B · Emission modelling" }
+      sen2: { type: text, size: 34, weight: bold, color: accent, lineHeight: 1.25, frame: [1340, 182, 460, 400], text: "Speed-dependent emission factors connect traffic conditions to CO₂ and pollutant emissions." }
+      note2: { type: text, size: 24, color: muted, lineHeight: 1.45, frame: [1340, 470, 460, 330], text: "Operating speed enters the emission calculation, so changing traffic conditions show up in the estimates." }
+      lab3: { type: text, size: 24, weight: bold, color: accent-2, lineHeight: 1.2, frame: [1340, 130, 460, 36], text: "C–D · Consistency and data product" }
+      sen3: { type: text, size: 34, weight: bold, color: accent, lineHeight: 1.25, frame: [1340, 182, 460, 400], text: "The resulting inventory supports spatial and temporal analysis of urban traffic." }
+      note3: { type: text, size: 24, color: muted, lineHeight: 1.45, frame: [1340, 470, 460, 330], text: ["Consistency comparison with other inventories", "Daily gridded product, city by city"] }
+      lab4: { type: text, size: 24, weight: bold, color: accent-2, lineHeight: 1.2, frame: [1340, 130, 460, 36], text: "D · Data product" }
+      note4: { type: text, size: 24, color: muted, lineHeight: 1.45, frame: [1340, 470, 460, 330], text: "Result form: annual road CO₂ on a 0.005° grid, Mumbai and Delhi in focus." }
+    states:
+      - show: [f1, dB, dC, dD, hl_scale, lab1, sen1, note1]
+        notes: "GPS speed and flow from streets are incomplete; imputation fills gaps, scaling corrects the covered fleet."
+        steps:
+          - [{ enter: hl_scale, effect: fade, duration: 400 }]
+      - show: [f1, dA, dC, dD, hl_ef, lab2, sen2, note2]
+        transition: { duration: 400 }
+        notes: "Highlight the speed-dependent emission factor curve."
+        steps:
+          - [{ enter: hl_ef, effect: fade, duration: 400 }]
+      - show: [f1, dA, dB, lab3, sen3, note3]
+        transition: { duration: 400 }
+        notes: "Consistency comparison and the final daily gridded product."
+      - show: [f2, g_blr, g_hyd, g_kol, g_che, lab4, sen3, note4]
+        transition: { duration: 400 }
+        notes: "Result form: city panels of the gridded product."
+    notes: "Question: how do we turn incomplete traffic observations into emission data that can be used to analyse urban systems? We first rebuild traffic activity and correct data coverage. Speed-dependent emission factors then turn real traffic conditions into CO₂ and pollutant emissions. This foundation lets us study differences between roads, between cities and over time. Transition: with this base, why does traffic efficiency differ between these cities?"
+
+
+  - id: st1-congestion
+    section: Selected Research
+    purpose: Observe differences in congestion emissions, explain them with urban factors and summarise them as urban configurations
+    layout: free
+    chrome: { header: { left: "Understanding congestion across urban contexts" } }
+    objects:
+      f4: { type: image, src: assets/part4/s1/4.png, fit: contain, radius: 12, shadow: true, frame: [211, 130, 997, 830], alt: "CO2 congestion per vehicle-km across Indian cities with road-level panels of Mumbai, Surat and Amritsar" }
+      f3: { type: image, src: assets/part4/s1/3.png, fit: contain, radius: 12, shadow: true, frame: [120, 161, 1180, 767], alt: "Predictor importance for modelled differences" }
+      f5: { type: image, src: assets/part4/s1/5.png, fit: contain, radius: 12, shadow: true, frame: [233, 130, 954, 830], alt: "Regime transition pattern across GDP per capita levels" }
+      h4_nat: { type: shape, geom: roundRect, radius: 12, fill: transparent, stroke: accent-2, strokeWidth: 6, on: f4, box: [0.3, 0.06, 0.69, 0.575], z: 5 }
+      h4_a: { type: shape, geom: roundRect, radius: 12, fill: transparent, stroke: accent-2, strokeWidth: 6, on: f4, box: [0.0325, 0.069, 0.236, 0.553], z: 5 }
+      h4_b: { type: shape, geom: roundRect, radius: 12, fill: transparent, stroke: accent-2, strokeWidth: 6, on: f4, box: [0.306, 0.638, 0.2585, 0.353], z: 5 }
+      h4_c: { type: shape, geom: roundRect, radius: 12, fill: transparent, stroke: accent-2, strokeWidth: 6, on: f4, box: [0.579, 0.64, 0.406, 0.35], z: 5 }
+      d3_maps: { type: shape, geom: roundRect, radius: 10, fill: "#FFFFFF", opacity: 0.85, on: f3, box: [0.485, 0.0, 0.515, 1.0], z: 4 }
+      h3_top: { type: shape, geom: roundRect, radius: 12, fill: transparent, stroke: accent-2, strokeWidth: 6, on: f3, box: [0.012, 0.085, 0.455, 0.14], z: 5 }
+      h3_cat: { type: shape, geom: roundRect, radius: 12, fill: transparent, stroke: accent-2, strokeWidth: 6, on: f3, box: [0.275, 0.515, 0.195, 0.3], z: 5 }
+      h5_y: { type: shape, geom: roundRect, radius: 12, fill: transparent, stroke: accent-2, strokeWidth: 6, on: f5, box: [0.0, 0.08, 0.115, 0.78], z: 5 }
+      h5_c1: { type: shape, geom: roundRect, radius: 12, fill: transparent, stroke: "#E6A800", strokeWidth: 6, on: f5, box: [0.14, 0.12, 0.83, 0.21], z: 5 }
+      h5_l1: { type: shape, geom: roundRect, radius: 12, fill: transparent, stroke: "#E6A800", strokeWidth: 6, on: f5, box: [0.567, 0.722, 0.39, 0.042], z: 5 }
+      h5_c2: { type: shape, geom: roundRect, radius: 12, fill: transparent, stroke: "#3B3BE0", strokeWidth: 6, on: f5, box: [0.2, 0.31, 0.45, 0.42], z: 5 }
+      h5_l2: { type: shape, geom: roundRect, radius: 12, fill: transparent, stroke: "#3B3BE0", strokeWidth: 6, on: f5, box: [0.567, 0.759, 0.39, 0.042], z: 5 }
+      h5_c3: { type: shape, geom: roundRect, radius: 12, fill: transparent, stroke: "#2E8B3A", strokeWidth: 6, on: f5, box: [0.14, 0.6, 0.32, 0.27], z: 5 }
+      h5_l3: { type: shape, geom: roundRect, radius: 12, fill: transparent, stroke: "#2E8B3A", strokeWidth: 6, on: f5, box: [0.567, 0.796, 0.39, 0.042], z: 5 }
+      h5_brk: { type: shape, geom: roundRect, radius: 12, fill: transparent, stroke: accent-2, strokeWidth: 6, on: f5, box: [0.385, 0.11, 0.06, 0.77], z: 5 }
+      lab1: { type: text, size: 24, weight: bold, color: accent-2, lineHeight: 1.2, frame: [1340, 130, 460, 36], text: "Observe · what differs" }
+      sen1: { type: text, size: 34, weight: bold, color: accent, lineHeight: 1.25, frame: [1340, 182, 460, 400], text: "Congestion emission intensity varies within and across cities." }
+      note1: { type: text, size: 24, color: muted, lineHeight: 1.45, frame: [1340, 470, 460, 330], text: ["CO₂ congestion: extra CO₂ emitted at actual speed relative to free-flow conditions, per vehicle-km.", "Below each city average, road-level differences stand out."] }
+      lab2: { type: text, size: 24, weight: bold, color: accent-2, lineHeight: 1.2, frame: [1340, 130, 460, 36], text: "Explain · what is associated" }
+      sen2: { type: text, size: 34, weight: bold, color: accent, lineHeight: 1.25, frame: [1340, 182, 460, 400], text: "Mobility, socioeconomic conditions and urban form jointly explain modelled differences." }
+      note2: { type: text, size: 24, color: muted, lineHeight: 1.45, frame: [1340, 470, 460, 330], text: ["Fleet diversity, night-time light and road-related indicators rank highest.", "Model associations, not causal effects."] }
+      lab3: { type: text, size: 24, weight: bold, color: accent-2, lineHeight: 1.2, frame: [1340, 130, 460, 36], text: "Summarise · what patterns emerge" }
+      sen3: { type: text, size: 32, weight: bold, color: accent, lineHeight: 1.25, frame: [1340, 182, 460, 400], text: "Distinct urban configurations are associated with different congestion regimes." }
+      note3: { type: text, size: 24, color: muted, lineHeight: 1.45, frame: [1340, 470, 460, 330], text: ["Demand-driven, transitioning and structure-driven configurations.", "The fitted break near 8,300 USD per capita is a supporting, in-sample finding across cities; cities at similar income still differ widely."] }
+    states:
+      - show: [f4, h4_nat, h4_a, h4_b, h4_c, lab1, sen1, note1]
+        notes: "Define the metric, then national distribution, then road-level panels."
+        steps:
+          - [{ enter: h4_nat, effect: fade, duration: 400 }]
+          - [{ exit: h4_nat, effect: fade-out, duration: 400 }, { enter: [h4_a, h4_b, h4_c], effect: fade, duration: 400 }]
+      - show: [f3, d3_maps, h3_top, h3_cat, lab2, sen2, note2]
+        transition: { duration: 400 }
+        notes: "Panel A and the category contribution; maps and histograms are backup."
+        steps:
+          - [{ enter: h3_top, effect: fade, duration: 400 }]
+          - [{ exit: h3_top, effect: fade-out, duration: 400 }, { enter: h3_cat, effect: fade, duration: 400 }]
+      - show: [f5, h5_y, h5_c1, h5_l1, h5_c2, h5_l2, h5_c3, h5_l3, h5_brk, lab3, sen3, note3]
+        transition: { duration: 400 }
+        notes: "Explain the y axis, then the three configurations, then the fitted break."
+        steps:
+          - [{ enter: h5_y, effect: fade, duration: 400 }]
+          - [{ exit: h5_y, effect: fade-out, duration: 400 }, { enter: [h5_c1, h5_l1], effect: fade, duration: 400 }]
+          - [{ exit: [h5_c1, h5_l1], effect: fade-out, duration: 400 }, { enter: [h5_c2, h5_l2], effect: fade, duration: 400 }]
+          - [{ exit: [h5_c2, h5_l2], effect: fade-out, duration: 400 }, { enter: [h5_c3, h5_l3], effect: fade, duration: 400 }]
+          - [{ exit: [h5_c3, h5_l3], effect: fade-out, duration: 400 }, { enter: h5_brk, effect: fade, duration: 400 }]
+    notes: "Question: how does congestion emission vary, which factors relate to the differences, and what urban types do they form? The map shows that efficiency differs at road and city scale. The explanatory model links the differences to traffic composition, socioeconomic activity and urban form. Combining these factors reveals different urban configurations, so similar congestion can have different urban backgrounds. Transition: traffic also produces air pollution, so next we connect emissions to the exposure of the people who live there."
+
+
+  - id: st1-exposure
+    section: Selected Research
+    purpose: Show how traffic emissions become NOx exposure estimates that can be matched with health surveys
+    layout: free
+    chrome: { header: { left: "Linking traffic emissions to population exposure" } }
+    objects:
+      f61: { type: image, src: assets/part4/s1/6.1.png, fit: contain, radius: 12, shadow: true, frame: [120, 165, 1180, 761], alt: "Exposure modeling workflow from CHETNA-Road emissions to household exposure assignment" }
+      f6: { type: image, src: assets/part4/s1/6.png, fit: contain, radius: 12, shadow: true, frame: [223, 130, 974, 830], alt: "Traffic NOx concentration map with Mumbai, Delhi and Bengaluru panels" }
+      e_road: { type: shape, geom: roundRect, radius: 12, fill: transparent, stroke: accent-2, strokeWidth: 6, on: f61, box: [0.286, 0.055, 0.205, 0.085], z: 5 }
+      e_era: { type: shape, geom: roundRect, radius: 12, fill: transparent, stroke: accent-2, strokeWidth: 6, on: f61, box: [0.643, 0.055, 0.205, 0.085], z: 5 }
+      e_gdm: { type: shape, geom: roundRect, radius: 12, fill: transparent, stroke: accent-2, strokeWidth: 6, on: f61, box: [0.375, 0.24, 0.225, 0.085], z: 5 }
+      e_ini: { type: shape, geom: roundRect, radius: 12, fill: transparent, stroke: accent-2, strokeWidth: 6, on: f61, box: [0.38, 0.39, 0.215, 0.085], z: 5 }
+      e1_l: { type: shape, geom: roundRect, radius: 10, fill: "#FFFFFF", opacity: 0.8, on: f61, box: [0.035, 0.225, 0.225, 0.26], z: 4 }
+      e1_r: { type: shape, geom: roundRect, radius: 10, fill: "#FFFFFF", opacity: 0.8, on: f61, box: [0.72, 0.385, 0.215, 0.09], z: 4 }
+      e1_low: { type: shape, geom: roundRect, radius: 10, fill: "#FFFFFF", opacity: 0.8, on: f61, box: [0.03, 0.52, 0.93, 0.46], z: 4 }
+      e_cpcb: { type: shape, geom: roundRect, radius: 12, fill: transparent, stroke: accent-2, strokeWidth: 6, on: f61, box: [0.04, 0.225, 0.215, 0.255], z: 5 }
+      e_res: { type: shape, geom: roundRect, radius: 12, fill: transparent, stroke: accent-2, strokeWidth: 6, on: f61, box: [0.38, 0.535, 0.215, 0.09], z: 5 }
+      e_met2: { type: shape, geom: roundRect, radius: 12, fill: transparent, stroke: accent-2, strokeWidth: 6, on: f61, box: [0.72, 0.385, 0.215, 0.09], z: 5 }
+      e2_top: { type: shape, geom: roundRect, radius: 10, fill: "#FFFFFF", opacity: 0.8, on: f61, box: [0.03, 0.03, 0.93, 0.17], z: 4 }
+      e2_low: { type: shape, geom: roundRect, radius: 10, fill: "#FFFFFF", opacity: 0.8, on: f61, box: [0.03, 0.655, 0.95, 0.33], z: 4 }
+      e_nfhs: { type: shape, geom: roundRect, radius: 12, fill: transparent, stroke: accent-2, strokeWidth: 6, on: f61, box: [0.675, 0.655, 0.255, 0.31], z: 5 }
+      e_hh: { type: shape, geom: roundRect, radius: 12, fill: transparent, stroke: accent-2, strokeWidth: 6, on: f61, box: [0.35, 0.84, 0.27, 0.1], z: 5 }
+      e3_up: { type: shape, geom: roundRect, radius: 10, fill: "#FFFFFF", opacity: 0.8, on: f61, box: [0.03, 0.03, 0.93, 0.62], z: 4 }
+      x_nat: { type: shape, geom: roundRect, radius: 12, fill: transparent, stroke: accent-2, strokeWidth: 6, on: f6, box: [0.335, 0.085, 0.58, 0.5], z: 5 }
+      x_city: { type: shape, geom: roundRect, radius: 12, fill: transparent, stroke: accent-2, strokeWidth: 6, on: f6, box: [0.3, 0.615, 0.33, 0.365], z: 5 }
+      x_leg: { type: shape, geom: roundRect, radius: 12, fill: transparent, stroke: accent-2, strokeWidth: 6, on: f6, box: [0.03, 0.64, 0.27, 0.34], z: 5 }
+      lab1: { type: text, size: 24, weight: bold, color: accent-2, lineHeight: 1.2, frame: [1340, 130, 460, 36], text: "Physical dispersion" }
+      sen1: { type: text, size: 34, weight: bold, color: accent, lineHeight: 1.25, frame: [1340, 182, 460, 400], text: "Traffic emissions and meteorology determine the initial dispersion estimates." }
+      note1: { type: text, size: 24, color: muted, lineHeight: 1.45, frame: [1340, 470, 460, 330], text: "Emissions are spread under real weather conditions into a spatial concentration field: the physical link between emission and exposure." }
+      lab2: { type: text, size: 24, weight: bold, color: accent-2, lineHeight: 1.2, frame: [1340, 130, 460, 36], text: "Observation constraint" }
+      sen2: { type: text, size: 34, weight: bold, color: accent, lineHeight: 1.25, frame: [1340, 182, 460, 400], text: "Monitoring observations support correction of modelled NOₓ concentrations." }
+      note2: { type: text, size: 24, color: muted, lineHeight: 1.45, frame: [1340, 470, 460, 330], text: "Station measurements and meteorological predictors correct the model bias, giving final 500 m concentration maps." }
+      lab3: { type: text, size: 24, weight: bold, color: accent-2, lineHeight: 1.2, frame: [1340, 130, 460, 36], text: "Matching with health surveys" }
+      sen3: { type: text, size: 34, weight: bold, color: accent, lineHeight: 1.25, frame: [1340, 182, 460, 400], text: "Exposure estimates are assigned to survey locations with uncertainty considered." }
+      note3: { type: text, size: 24, color: muted, lineHeight: 1.45, frame: [1340, 470, 460, 330], text: "NFHS-5 records are matched to the exposure map; Monte Carlo handles uncertainty in survey locations." }
+      lab4: { type: text, size: 24, weight: bold, color: accent-2, lineHeight: 1.2, frame: [1340, 130, 460, 36], text: "Exposure estimates" }
+      sen4: { type: text, size: 34, weight: bold, color: accent, lineHeight: 1.25, frame: [1340, 182, 460, 400], text: "The framework resolves exposure differences across cities and neighbourhoods." }
+      note4: { type: text, size: 24, color: muted, lineHeight: 1.45, frame: [1340, 470, 460, 330], text: ["Colour combines NOₓ concentration and wind speed.", "Red stars mark survey locations."] }
+    states:
+      - show: [f61, e1_l, e1_r, e1_low, e_road, e_era, e_gdm, e_ini, lab1, sen1, note1]
+        notes: "CHETNA-Road emissions and ERA5 feed the Gaussian dispersion model, giving initial NOx concentrations."
+      - show: [f61, e2_top, e2_low, e_cpcb, e_res, e_met2, lab2, sen2, note2]
+        transition: { duration: 400 }
+        notes: "Monitoring and source apportionment; residual prediction and bias correction."
+      - show: [f61, e3_up, e_nfhs, e_hh, lab3, sen3, note3]
+        transition: { duration: 400 }
+        notes: "NFHS-5 and household exposure assignment with Monte Carlo."
+      - show: [f6, x_nat, x_city, x_leg, lab4, sen4, note4]
+        transition: { duration: 400 }
+        notes: "National map first, then one city with its survey points."
+        steps:
+          - [{ enter: x_nat, effect: fade, duration: 400 }]
+          - [{ exit: x_nat, effect: fade-out, duration: 400 }, { enter: [x_city, x_leg], effect: fade, duration: 400 }]
+    notes: "Question: how do we turn traffic emissions into exposure estimates that can be matched with health surveys? We feed traffic emissions and meteorology into a dispersion model, then correct the concentrations with monitoring data. We then match the concentration map to NFHS survey locations while accounting for location uncertainty. Emission data can therefore support neighbourhood- and household-scale health analysis. Transition: with exposure in place, how do environmental and household conditions together relate to child health, and where do the pathways stand out?"
+
+
+  - id: st1-health
+    section: Selected Research
+    purpose: Show how the balance between exposure, household vulnerability and double burden varies within and across cities
+    layout: free
+    chrome: { header: { left: "Health pathways vary within and across cities" } }
+    objects:
+      f7: { type: image, src: assets/part4/s1/7.png, fit: contain, radius: 12, shadow: true, frame: [120, 232, 1180, 625], alt: "Path model of neighbourhood exposure, household vulnerability and children ARI" }
+      f8: { type: image, src: assets/part4/s1/8.png, fit: contain, radius: 12, shadow: true, frame: [228, 130, 963, 830], alt: "ARI prevalence and neighbourhood SES in Delhi and Mumbai, and the ternary classification of cities" }
+      d7_b: { type: shape, geom: roundRect, radius: 10, fill: "#FFFFFF", opacity: 0.85, on: f7, box: [0.565, 0.4, 0.43, 0.6], z: 4 }
+      h7_1a: { type: shape, geom: roundRect, radius: 12, fill: transparent, stroke: "#1F77B4", strokeWidth: 6, on: f7, box: [0.215, 0.04, 0.145, 0.11], z: 5 }
+      h7_1b: { type: shape, geom: roundRect, radius: 12, fill: transparent, stroke: "#1F77B4", strokeWidth: 6, on: f7, box: [0.418, 0.315, 0.14, 0.105], z: 5 }
+      h7_1c: { type: shape, geom: roundRect, radius: 12, fill: transparent, stroke: "#1F77B4", strokeWidth: 6, on: f7, box: [0.34, 0.76, 0.14, 0.105], z: 5 }
+      h7_l1: { type: shape, geom: roundRect, radius: 12, fill: transparent, stroke: "#1F77B4", strokeWidth: 6, on: f7, box: [0.612, 0.062, 0.378, 0.07], z: 5 }
+      h7_2a: { type: shape, geom: roundRect, radius: 12, fill: transparent, stroke: "#E08A1E", strokeWidth: 6, on: f7, box: [0.015, 0.315, 0.14, 0.105], z: 5 }
+      h7_2b: { type: shape, geom: roundRect, radius: 12, fill: transparent, stroke: "#E08A1E", strokeWidth: 6, on: f7, box: [0.092, 0.76, 0.14, 0.105], z: 5 }
+      h7_2c: { type: shape, geom: roundRect, radius: 12, fill: transparent, stroke: "#E08A1E", strokeWidth: 6, on: f7, box: [0.34, 0.76, 0.14, 0.105], z: 5 }
+      h7_l2: { type: shape, geom: roundRect, radius: 12, fill: transparent, stroke: "#E08A1E", strokeWidth: 6, on: f7, box: [0.612, 0.15, 0.378, 0.075], z: 5 }
+      h7_3a: { type: shape, geom: roundRect, radius: 12, fill: transparent, stroke: "#7B3FA0", strokeWidth: 6, on: f7, box: [0.34, 0.67, 0.19, 0.31], z: 5 }
+      h7_l3: { type: shape, geom: roundRect, radius: 12, fill: transparent, stroke: "#7B3FA0", strokeWidth: 6, on: f7, box: [0.612, 0.24, 0.378, 0.125], z: 5 }
+      d8_tri: { type: shape, geom: roundRect, radius: 10, fill: "#FFFFFF", opacity: 0.85, on: f8, box: [0.03, 0.62, 0.56, 0.37], z: 4 }
+      d8_tri2: { type: shape, geom: roundRect, radius: 10, fill: "#FFFFFF", opacity: 0.85, on: f8, box: [0.03, 0.5, 0.33, 0.12], z: 4 }
+      h8_leg: { type: shape, geom: roundRect, radius: 12, fill: transparent, stroke: accent-2, strokeWidth: 6, on: f8, box: [0.5, 0.66, 0.46, 0.32], z: 5 }
+      h8_maps: { type: shape, geom: roundRect, radius: 12, fill: transparent, stroke: accent-2, strokeWidth: 6, on: f8, box: [0.07, 0.0, 0.88, 0.64], z: 5 }
+      d8_maps: { type: shape, geom: roundRect, radius: 10, fill: "#FFFFFF", opacity: 0.85, on: f8, box: [0.07, 0.0, 0.88, 0.47], z: 4 }
+      d8_maps2: { type: shape, geom: roundRect, radius: 10, fill: "#FFFFFF", opacity: 0.85, on: f8, box: [0.36, 0.47, 0.62, 0.19], z: 4 }
+      d8_leg: { type: shape, geom: roundRect, radius: 10, fill: "#FFFFFF", opacity: 0.85, on: f8, box: [0.5, 0.66, 0.46, 0.32], z: 4 }
+      h8_tri: { type: shape, geom: roundRect, radius: 12, fill: transparent, stroke: accent-2, strokeWidth: 6, on: f8, box: [0.03, 0.48, 0.56, 0.515], z: 5 }
+      lab1: { type: text, size: 24, weight: bold, color: accent-2, lineHeight: 1.2, frame: [1340, 130, 460, 36], text: "Define · three pathways" }
+      sen1: { type: text, size: 32, weight: bold, color: accent, lineHeight: 1.25, frame: [1340, 182, 460, 400], text: "Neighbourhood exposure and household vulnerability are linked to child health through distinct pathways." }
+      note1: { type: text, size: 24, color: muted, lineHeight: 1.45, frame: [1340, 470, 460, 330], text: "Blue: neighbourhood → pollution. Orange: household → vulnerability. Purple: double burden." }
+      lab2: { type: text, size: 24, weight: bold, color: accent-2, lineHeight: 1.2, frame: [1340, 130, 460, 36], text: "Within cities" }
+      sen2: { type: text, size: 34, weight: bold, color: accent, lineHeight: 1.25, frame: [1340, 182, 460, 400], text: "The balance between these pathways differs across neighbourhoods." }
+      note2: { type: text, size: 24, color: muted, lineHeight: 1.45, frame: [1340, 470, 460, 330], text: ["Colour = pathway, size = ARI prevalence, contours = neighbourhood SES.", "City averages hide neighbourhood differences."] }
+      lab3: { type: text, size: 24, weight: bold, color: accent-2, lineHeight: 1.2, frame: [1340, 130, 460, 36], text: "Between cities" }
+      sen3: { type: text, size: 32, weight: bold, color: accent, lineHeight: 1.25, frame: [1340, 182, 460, 400], text: "Cities differ in the relative prominence of pollution, household vulnerability and double burden." }
+      note3: { type: text, size: 24, color: muted, lineHeight: 1.45, frame: [1340, 470, 460, 330], text: "The triangle shows the relative mix of pathways, not an overall health-risk ranking." }
+      closing: { type: text, size: 24, weight: bold, color: accent-2, lineHeight: 1.35, frame: [1340, 800, 460, 160], text: "Understanding complex urban systems helps identify how environmental and social conditions combine to shape health risks." }
+    states:
+      - show: [f7, d7_b, h7_1a, h7_1b, h7_1c, h7_l1, h7_2a, h7_2b, h7_2c, h7_l2, h7_3a, h7_l3, lab1, sen1, note1]
+        notes: "Blue, orange, then purple pathway. Direct and indirect effect bars are backup."
+        steps:
+          - [{ enter: [h7_1a, h7_1b, h7_1c, h7_l1], effect: fade, duration: 400 }]
+          - [{ exit: [h7_1a, h7_1b, h7_1c, h7_l1], effect: fade-out, duration: 400 }, { enter: [h7_2a, h7_2b, h7_2c, h7_l2], effect: fade, duration: 400 }]
+          - [{ exit: [h7_2a, h7_2b, h7_2c, h7_l2], effect: fade-out, duration: 400 }, { enter: [h7_3a, h7_l3], effect: fade, duration: 400 }]
+      - show: [f8, d8_tri, d8_tri2, h8_leg, h8_maps, lab2, sen2, note2]
+        transition: { duration: 400 }
+        notes: "Explain dot colour, size and contours, then compare Delhi and Mumbai."
+        steps:
+          - [{ enter: h8_leg, effect: fade, duration: 400 }]
+          - [{ exit: h8_leg, effect: fade-out, duration: 400 }, { enter: h8_maps, effect: fade, duration: 400 }]
+      - show: [f8, d8_maps, d8_maps2, d8_leg, h8_tri, lab3, sen3, note3, closing]
+        transition: { duration: 400 }
+        notes: "Explain the three vertices with a few example cities; closing sentence on the final click."
+        steps:
+          - [{ enter: closing, effect: fade, duration: 400 }]
+    notes: "Question: how does the relative role of pollution exposure and household vulnerability change across neighbourhoods and cities? We distinguish pollution exposure, household vulnerability and double burden. Their relative importance is uneven within a city and differs between cities. This helps identify where pollution deserves attention, where household conditions matter more, and who carries both burdens. Closing: Understanding complex urban systems helps identify how environmental and social conditions combine to shape health risks."
+
+
+  - id: st2-intro
+    section: Selected Research
+    purpose: First page of the Power story line (blank placeholder)
+    layout: free
+    chrome: { header: { left: "Power" } }
     objects: {}
+
+  - id: st3-intro
+    section: Selected Research
+    purpose: First page of the Residential story line (blank placeholder)
+    layout: free
+    chrome: { header: { left: "Residential" } }
+    objects: {}
+
+  - id: "st4-intro"
+    use: "build.diagram-flow"
+    section: "Selected Research"
+    purpose: "Show the reusable industrial facility pipeline from Indian partnerships through satellite preprocessing and validated deep learning to annual datasets"
+    layout: "free"
+    chrome: { header: { left: "From Local knowledge to National dataset" } }
+    objects:
+      title: null
+      note: null
+      b1: { fill: "accent-3-soft", shadow: false, stroke: "line", radius: 12, padding: 12, size: 27, lineHeight: 1.2, color: "ink", frame: [ 120, 88, 350, 148 ], text: "**Indian partnerships**\nLocal knowledge" }
+      b2: { fill: "surface", shadow: false, stroke: "line", radius: 12, padding: 10, size: 26, lineHeight: 1.15, color: "ink", frame: [ 555, 88, 350, 148 ], text: "**Satellite**\nPreprocessing &\nground-truth labeling" }
+      b3: { fill: "accent", shadow: false, stroke: "accent", radius: 12, padding: 12, size: 27, lineHeight: 1.2, color: "#FFFFFF", frame: [ 990, 88, 350, 148 ], text: "**Deep learning**\nTraining & validation" }
+      b4: { type: "shape", fill: "accent-3", color: "#FFFFFF", stroke: "accent-3", radius: 12, padding: 12, size: 27, lineHeight: 1.2, align: "center", valign: "middle", frame: [ 1425, 88, 350, 148 ], text: "**Facility datasets**\nAnnual maps" }
+      a1: { from: [ 485, 162 ], to: [ 540, 162 ], stroke: "accent-3", strokeWidth: 4 }
+      a2: { from: [ 920, 162 ], to: [ 975, 162 ], stroke: "accent-3", strokeWidth: 4 }
+      a3: { type: "shape", geom: "line", from: [ 1355, 162 ], to: [ 1410, 162 ], arrow: "end", stroke: "accent-3", strokeWidth: 4 }
+      workflow_title: { type: "text", size: 28, lineHeight: 1.2, weight: "bold", color: "ink", frame: [ 120, 255, 1160, 40 ], text: "Facility mapping workflow" }
+      workflow: { type: "image", src: "assets/part4/s4/1.png", fit: "contain", frame: [ 120, 305, 1160, 640 ], alt: "Dataset preparation, cost-regularized deep learning, object-level evaluation and nationwide annual inference" }
+      labels_title: { type: "text", size: 28, lineHeight: 1.2, weight: "bold", color: "ink", frame: [ 1360, 255, 440, 40 ], text: "Manual facility labels" }
+      labels: { type: "image", src: "assets/part4/s4/4.png", fit: "contain", frame: [ 1370, 310, 400, 480 ], alt: "Satellite imagery with manually annotated brick-kiln boundaries" }
+      local_note: { type: "text", size: 27, color: "muted", lineHeight: 1.35, frame: [ 1360, 812, 440, 110 ], text: "Local records · labels\nPartner validation" }
+      prep: { type: "shape", geom: "roundRect", radius: 8, fill: "transparent", stroke: "accent-3", strokeWidth: 4, on: "workflow", box: [ 0.025, 0.02, 0.95, 0.2 ] }
+      model: { type: "shape", geom: "roundRect", radius: 8, fill: "transparent", stroke: "accent-3", strokeWidth: 4, on: "workflow", box: [ 0.025, 0.26, 0.95, 0.47 ] }
+      inference: { type: "shape", geom: "roundRect", radius: 8, fill: "transparent", stroke: "accent-3", strokeWidth: 4, on: "workflow", box: [ 0.025, 0.775, 0.95, 0.205 ] }
+      references: { type: "text", role: "meta", size: 20, font: "mono", weight: "normal", lineHeight: 1.16, color: "muted", align: "right", frame: [ 1140, 952, 660, 62 ], text: "Dataset · Brick-kiln maps, 2019–2025\nPaper · IJAEOG, 2026" }
+    steps:
+      - { enter: [ "workflow_title", "workflow" ], effect: "fade", auto: true }
+      - [ { enter: "b1", effect: "fade-up" }, { enter: [ "labels_title", "labels", "local_note" ], effect: "fade", after: true } ]
+      - [ { enter: "a1", effect: "draw" }, { enter: [ "b2", "prep" ], effect: "fade-up", after: true } ]
+      - [ { exit: "prep", effect: "fade-out" }, { enter: "a2", effect: "draw" }, { enter: [ "b3", "model" ], effect: "fade-up", after: true } ]
+      - [ { exit: "model", effect: "fade-out" }, { enter: "a3", effect: "draw" }, { enter: [ "b4", "inference" ], effect: "fade-up", after: true } ]
+    notes: "Sources: presenter-supplied research brief and assets/part4/s4/1.png and 4.png. Indian partners provide facility records, technology knowledge, labels and expert review. The workflow uses Sentinel-2 preprocessing, cost-regularized deep learning, object-level validation and nationwide annual inference. Brick kilns demonstrate a reusable framework; new sectors still need adapted labels, sensors and models."
+  - id: "st4-kilns"
+    use: "image.zoom-region"
+    section: "Selected Research"
+    purpose: "Present the nationwide brick-kiln map and validation, with brief sector context and dataset/paper attribution in the lower-right corner"
+    layout: "free"
+    chrome: { header: { left: "Nationwide brick-kiln mapping" } }
+    objects:
+      title: null
+      ring: null
+      note: null
+      shot: { src: "assets/part4/s4/2.png", fit: "contain", radius: 0, shadow: false, frame: [ 120, 191, 820, 660 ], alt: "Nationwide 2025 brick-kiln distribution with satellite examples of five technologies" }
+      map_title: { type: "text", size: 28, lineHeight: 1.2, weight: "bold", frame: [ 120, 142, 810, 42 ], text: "Five kiln technologies" }
+      count: { type: "text", size: 68, weight: "bold", color: "accent-3", lineHeight: 1.1, frame: [ 1035, 163, 360, 82 ], text: "48,928" }
+      count_label: { type: "text", size: 30, lineHeight: 1.2, frame: [ 1035, 256, 740, 44 ], text: "Detected in 2025" }
+      f1: { type: "text", size: 27, lineHeight: 1.2, color: "ink", frame: [ 1035, 319, 755, 80 ], text: "Detection F1: **93.79%**\nTechnology macro F1: **81.8%**" }
+      cm_title: { type: "text", size: 28, lineHeight: 1.2, weight: "bold", frame: [ 1035, 409, 740, 42 ], text: "Technology classification" }
+      cm: { type: "image", src: "assets/part4/s4/3.png", fit: "contain", frame: [ 1035, 464, 635, 377 ], alt: "Confusion matrix for FCBTK, Zigzag, CBTK, RBTK, DDK and background" }
+      impact: { type: "text", size: 28, color: "ink", lineHeight: 1.25, frame: [ 120, 883, 1680, 42 ], text: "**~150 MtCO₂/year** · early estimate · same order of magnitude as the steel industry" }
+      background: { type: "text", size: 30, lineHeight: 1.2, color: "ink", frame: [ 120, 89, 1680, 46 ], text: "• Brick kilns: **widespread, high-emitting, and under-regulated**" }
+      references: { type: "text", role: "meta", size: 20, font: "mono", weight: "normal", lineHeight: 1.16, color: "muted", align: "right", frame: [ 1140, 952, 660, 62 ], text: "Dataset · Brick-kiln maps, 2019–2025\nPaper · IJAEOG, 2026" }
+    steps:
+      - { enter: [ "background", "shot", "map_title", "count", "count_label" ], effect: "fade", auto: true }
+      - { enter: [ "f1", "cm_title", "cm" ], effect: "fade-up", stagger: 100 }
+      - { enter: "impact", effect: "fade-up" }
+    notes: "Sources: presenter brief and assets/part4/s4/2.png and 3.png. Dataset: Nationwide brick-kiln maps, facility level, 2019–2025. Paper: Brick-kiln mapping & technology transitions, IJAEOG, 2026 (presenter supplied). 48,928 detected kilns in 2025; detection F1 93.79%, technology classification macro F1 81.8%. The background description is presenter supplied. ~150 MtCO2/year is an early CHETNA estimate, separate from this mapping validation; same order of magnitude as steel, not higher. No separate output-matrix state: attribution stays quietly at the lower right."
+  - id: "st4-changes"
+    use: "image.zoom-region"
+    section: "Selected Research"
+    purpose: "Compare FCBTK and Zigzag kiln forms and measured PM/CO2 emission factors before showing annual technology maps and regional change detection"
+    layout: "free"
+    chrome: { header: { left: "Kiln technologies change detection" } }
+    objects:
+      title: null
+      ring: null
+      note: null
+      shot: { src: "assets/part4/s4/5.png", fit: "contain", radius: 0, shadow: false, frame: [ 120, 182, 1090, 745 ], alt: "FCBTK and Zigzag kiln maps in 2019 and 2025, with regional difference maps" }
+      map_title: { type: "text", size: 28, lineHeight: 1.2, weight: "bold", frame: [ 120, 125, 1090, 42 ], text: "FCBTK & Zigzag · 2019 → 2025" }
+      mask: { type: "shape", fill: "#FFFFFF", on: "shot", box: [ 0.641, 0, 0.359, 1 ] }
+      why: { type: "text", size: 32, weight: "bold", lineHeight: 1.3, frame: [ 1275, 180, 510, 150 ], text: "Static inventories cannot\ntrack technology adoption." }
+      total: { type: "text", size: 34, color: "ink", lineHeight: 1.4, frame: [ 1275, 383, 510, 115 ], text: "**49,231 → 48,928**\nTotal kilns · broadly stable" }
+      zigzag: { type: "text", size: 34, color: "accent-3", lineHeight: 1.4, frame: [ 1275, 540, 510, 115 ], text: "**22,157 → 23,018**\nZigzag kilns · increasing" }
+      regional: { type: "text", size: 29, color: "ink", lineHeight: 1.3, frame: [ 1275, 734, 510, 110 ], text: "Technology transitions\nvary across regions." }
+      diff_title: { type: "text", size: 28, lineHeight: 1.2, weight: "bold", frame: [ 835, 160, 650, 42 ], text: "Zigzag · regional change" }
+      diff: { type: "image", src: "assets/part4/s4/5.png", fit: "contain", zoom: { at: [ 0.835, 0.72 ], scale: 2.85 }, frame: [ 835, 220, 650, 630 ], alt: "Regional change in Zigzag brick kilns between 2019 and 2025" }
+      legend: { type: "text", size: 25, lineHeight: 1.2, color: "muted", align: "center", frame: [ 120, 855, 1365, 36 ], text: "2019 → 2025 · red: increase · blue: decrease" }
+      impact: { type: "text", size: 32, lineHeight: 1.2, color: "ink", frame: [ 120, 901, 1680, 45 ], text: "Track technology adoption → assess emission reductions & fuel savings" }
+      references: { type: "text", role: "meta", size: 20, font: "mono", weight: "normal", lineHeight: 1.16, color: "muted", align: "right", frame: [ 1140, 952, 660, 62 ], text: "Dataset · Brick-kiln maps, 2019–2025\nPaper · IJAEOG, 2026" }
+      fcbtk: { type: "image", src: "assets/part4/s4/4.png", fit: "cover", frame: [ 120, 175, 800, 460 ], zoom: { at: [ 0.5, 0.74 ], scale: 1 }, alt: "Oval fixed-chimney Bull’s trench kiln example, lower image from the supplied manual-labeling figure" }
+      zigzag_example: { type: "image", src: "assets/part4/s4/4.png", fit: "cover", frame: [ 1000, 175, 800, 460 ], zoom: { at: [ 0.5, 0.265 ], scale: 1 }, alt: "Rectangular Zigzag kiln example, upper image from the supplied manual-labeling figure" }
+      fcbtk_title: { type: "text", size: 30, lineHeight: 1.2, color: "ink", frame: [ 120, 114, 800, 45 ], text: "FCBTK · oval kiln", weight: "bold" }
+      zigzag_title: { type: "text", size: 30, lineHeight: 1.2, color: "ink", frame: [ 1000, 114, 800, 45 ], text: "Zigzag · rectangular kiln", weight: "bold" }
+      compare_claim: { type: "text", size: 36, lineHeight: 1.2, color: "ink", frame: [ 120, 704, 1680, 60 ], text: "Technology determines emission intensity", weight: "bold", align: "center" }
+      pm_title: { type: "text", size: 30, lineHeight: 1.2, color: "ink", frame: [ 1040, 162, 750, 44 ], text: "PM (SPM) · g/kg fired brick", weight: "bold" }
+      co2_title: { type: "text", size: 30, lineHeight: 1.2, color: "ink", frame: [ 1040, 499, 750, 44 ], text: "CO₂ · g/kg fired brick", weight: "bold" }
+      pm: { type: "chart", kind: "hbar", categories: [ "FCBTK", "Zigzag" ], series: { Measured mean: [ 0.86, 0.26 ] }, colors: [ "accent" ], labels: true, legend: false, interactive: true, unit: "g/kg", min: 0, max: 1.05, size: 26, frame: [ 1040, 228, 750, 230 ], source: "Greentech et al., 2012 · Table 8-2" }
+      co2: { type: "chart", kind: "hbar", categories: [ "FCBTK", "Zigzag" ], series: { Measured mean: [ 115, 103 ] }, colors: [ "accent" ], labels: true, legend: false, interactive: true, unit: "g/kg", min: 0, max: 140, size: 26, frame: [ 1040, 566, 750, 230 ], source: "Greentech et al., 2012 · Table 8-2" }
+      ratio: { type: "text", size: 31, lineHeight: 1.2, color: "ink", frame: [ 1040, 821, 750, 52 ], text: "FCBTK: **3.3× PM** · **1.12× CO₂**" }
+      basis: { type: "text", size: 23, lineHeight: 1.2, color: "muted", frame: [ 1040, 887, 750, 38 ], text: "Measured sample means · per kg of fired brick" }
+      measure_source: { type: "text", role: "meta", size: 20, font: "mono", weight: "normal", lineHeight: 1.16, color: "muted", align: "right", frame: [ 1080, 952, 720, 62 ], text: "Emission factors · Greentech et al., 2012 · Table 8-2\n2011 monitored kilns · 3 FCBTK and 2 Zigzag kilns" }
+    states:
+      - show:
+          - "fcbtk"
+          - "zigzag_example"
+          - "fcbtk_title"
+          - "zigzag_title"
+          - "compare_claim"
+          - "references"
+        steps:
+          - { enter: [ "fcbtk", "zigzag_example", "fcbtk_title", "zigzag_title", "compare_claim" ], effect: "fade", auto: true }
+        notes: "Reuse assets/part4/s4/4.png as confirmed by the presenter: the lower oval kiln and upper rectangular kiln are compared. Form-based labels are interpreted as FCBTK and Zigzag respectively, consistent with standard technology descriptions; the satellite footprints themselves do not measure emissions."
+      - show:
+          - "fcbtk"
+          - "zigzag_example"
+          - "fcbtk_title"
+          - "zigzag_title"
+          - "pm_title"
+          - "co2_title"
+          - "pm"
+          - "co2"
+          - "ratio"
+          - "basis"
+          - "measure_source"
+        override:
+          fcbtk: { frame: [ 120, 176, 730, 338 ] }
+          zigzag_example: { frame: [ 120, 575, 730, 338 ] }
+          fcbtk_title: { frame: [ 120, 115, 730, 45 ] }
+          zigzag_title: { frame: [ 120, 519, 730, 45 ] }
+        transition: { intent: "fade", duration: 700 }
+        steps:
+          - { enter: [ "pm_title", "co2_title", "pm", "co2", "ratio", "basis", "measure_source" ], effect: "fade-up", stagger: 80, auto: true }
+        notes: "Primary source: https://shaktifoundation.in/wp-content/uploads/2017/06/CATF-2012-Brick-Kiln-Performance-Assessment.pdf, Table 8-2, printed p.104 (PDF page130), monitored in 2011, published April2012. Sample mean factors in g/kg fired brick: SPM 0.86 (FCBTK) and 0.26 (Zigzag); CO2 115 and103. Ratios calculated as 0.86/0.26=3.31 and115/103=1.12. SPM is suspended particulate matter, not PM2.5. Samples: three FCBTK and two Zigzag kilns; means are technology examples rather than universal emission factors. Reported SPM variability: ±0.74 and ±0.26 g/kg. The comparison uses production-normalized, not fuel-normalized factors."
+      - show:
+          - "shot"
+          - "map_title"
+          - "mask"
+          - "why"
+          - "total"
+          - "zigzag"
+          - "regional"
+          - "references"
+        steps:
+          - { enter: [ "shot", "map_title", "mask", "why" ], effect: "fade", auto: true }
+          - { enter: [ "total", "zigzag" ], effect: "fade-up", stagger: 150 }
+          - [ { exit: "mask", effect: "fade-out" }, { enter: "regional", effect: "fade-up", after: true } ]
+        transition: { intent: "fade", duration: 700 }
+      - show:
+          - "shot"
+          - "map_title"
+          - "diff_title"
+          - "diff"
+          - "total"
+          - "zigzag"
+          - "legend"
+          - "impact"
+          - "references"
+        override:
+          shot: { frame: [ 120, 220, 650, 630 ], zoom: { at: [ 0.835, 0.218 ], scale: 2.85 } }
+          map_title: { frame: [ 120, 160, 650, 42 ], text: "FCBTK · regional change" }
+          total: { size: 26, lineHeight: 1.2, frame: [ 1545, 315, 255, 180 ], text: "**49,231**\n**→ 48,928**\nTotal kilns" }
+          zigzag: { size: 26, lineHeight: 1.2, frame: [ 1545, 530, 255, 180 ], text: "**22,157**\n**→ 23,018**\nZigzag kilns" }
+        transition: { duration: 850 }
+        steps:
+          - { enter: [ "diff_title", "diff", "legend", "impact" ], effect: "fade-up", stagger: 80, auto: true }
+    notes: "Sources: assets/part4/s4/5.png and presenter brief. Total detected kilns: 49,231 in 2019 and 48,928 in 2025. Zigzag: 22,157 to 23,018. Reveal the two annual distributions before the difference maps; native image zoom then crops the two difference panels for regional comparison. Mapping shows spatially heterogeneous technology changes, not a verified causal estimate of emission savings. Production, fuel use, emission factors and propagated classification uncertainty are needed for those assessments. The first two states add the presenter-requested kiln form comparison and a primary-source emission-factor comparison; the existing annual/difference maps follow. Emission factors: https://shaktifoundation.in/wp-content/uploads/2017/06/CATF-2012-Brick-Kiln-Performance-Assessment.pdf"
+    patterns:
+      - "page.comparison"
+      - "interact.hbar-ranking"
+      - "image.zoom-region"
+  - id: "st4-mining"
+    use: "image.zoom-region"
+    section: "Selected Research"
+    purpose: "Extend facility monitoring to coal mine fires, distinguish the site database from 15 compared study units, and present persistent hotspots and FRP as preliminary results"
+    layout: "free"
+    chrome: { header: { left: "Coal mine fires: preliminary results" } }
+    objects:
+      title: null
+      ring: null
+      note: null
+      shot: { src: "assets/part4/s4/6.png", fit: "contain", radius: 0, shadow: false, frame: [ 120, 185, 920, 765 ], alt: "Map of Indian coal mine locations and annual coal production" }
+      map_title: { type: "text", size: 28, lineHeight: 1.2, weight: "bold", frame: [ 120, 130, 920, 42 ], text: "Coal mine locations & production" }
+      photo_title: { type: "text", size: 28, lineHeight: 1.2, weight: "bold", frame: [ 1170, 153, 630, 42 ], text: "Uncontrolled coal combustion" }
+      photo: { type: "image", src: "assets/part4/s4/7.jpg", fit: "contain", frame: [ 1170, 212, 630, 420 ], alt: "Burning coal exposed in a surface mine with an excavator" }
+      loss: { type: "text", size: 32, lineHeight: 1.3, frame: [ 1170, 675, 630, 125 ], text: "**CO₂ · air pollutants**\nCoal resource loss" }
+      database: { type: "text", size: 28, color: "muted", lineHeight: 1.4, frame: [ 1170, 837, 630, 110 ], text: "Operating surface mines / coalfields\nSite database → thermal monitoring" }
+      hotspot_title: { type: "text", size: 28, lineHeight: 1.2, weight: "bold", frame: [ 545, 135, 575, 42 ], text: "Talchir · persistent hotspots" }
+      hotspot: { type: "image", src: "assets/part4/s4/8.png", fit: "contain", frame: [ 545, 193, 575, 575 ], alt: "Talchir thermal hotspots, coloured by number of days with detected fire activity" }
+      hotspot_note: { type: "text", size: 27, lineHeight: 1.2, color: "muted", align: "center", frame: [ 560, 790, 545, 90 ], text: "Persistent thermal hotspots" }
+      frp_title: { type: "text", size: 28, lineHeight: 1.2, weight: "bold", frame: [ 1160, 135, 640, 42 ], text: "Peak fire radiative power (FRP)" }
+      frp: { type: "image", src: "assets/part4/s4/9.png", fit: "contain", frame: [ 1160, 200, 640, 480 ], alt: "Maximum FRP across 15 coal mine or coalfield study units; Singrauli 86.14 MW and Jharia 12.53 MW" }
+      frp_values: { type: "text", size: 32, lineHeight: 1.4, frame: [ 1160, 712, 640, 100 ], text: "Singrauli **86.14 MW** · Jharia **12.53 MW**" }
+      frp_scope: { type: "text", size: 25, lineHeight: 1.2, color: "muted", frame: [ 1160, 831, 640, 42 ], text: "15 study units" }
+      next: { type: "text", size: 31, lineHeight: 1.2, color: "ink", frame: [ 120, 920, 1680, 50 ], text: "**Ongoing:** thermal monitoring → emission & coal-loss assessment" }
+      frp_note: { type: "text", size: 20, lineHeight: 1.2, color: "muted", frame: [ 120, 972, 900, 34 ], text: "FRP ≠ CO₂ emissions or coal loss" }
+      references: { type: "text", role: "meta", size: 20, font: "mono", weight: "normal", lineHeight: 1.16, color: "muted", align: "right", frame: [ 1080, 972, 720, 34 ], text: "Preliminary project results · coal mine fire monitoring" }
+    states:
+      - show:
+          - "shot"
+          - "map_title"
+          - "photo_title"
+          - "photo"
+          - "loss"
+          - "database"
+          - "references"
+        steps:
+          - { enter: [ "shot", "map_title", "database" ], effect: "fade", auto: true }
+          - { enter: [ "photo_title", "photo", "loss" ], effect: "fade-up", stagger: 100 }
+      - show:
+          - "shot"
+          - "map_title"
+          - "hotspot_title"
+          - "hotspot"
+          - "hotspot_note"
+          - "frp_title"
+          - "frp"
+          - "frp_values"
+          - "frp_scope"
+          - "next"
+          - "frp_note"
+          - "references"
+        override:
+          shot: { frame: [ 120, 192, 365, 420 ] }
+          map_title: { size: 26, lineHeight: 1.2, frame: [ 120, 121, 390, 80 ], text: "Coal mine locations\n& production" }
+        transition: { duration: 800 }
+        steps:
+          - { enter: [ "hotspot_title", "hotspot", "frp_title", "frp" ], effect: "fade-up", stagger: 100, auto: true }
+          - { enter: [ "hotspot_note", "frp_values", "frp_scope", "next", "frp_note" ], effect: "fade-up" }
+    notes: "Sources: presenter brief and assets/part4/s4/6.png–9.png. The database's nationwide mine count and statistical unit were not supplied; do not substitute the 15 units in the FRP comparison for a national total. Talchir shows persistent thermal hotspots. Use figure 9's Singrauli value of 86.14 MW (not the 83.14 MW in an older workshop text), and Jharia 12.53 MW. FRP is fire radiative power, not a direct estimate of CO2 emissions or coal loss. Ongoing work connects thermal observations with emission estimates, resource losses and independent validation."
 
   - id: website
-    section: Website & Database
-    purpose: "Blank placeholder for the Website & Database part"
+    section: CHETNA platform
+    purpose: Show how the CHETNA platform connects city emission visualization, project updates, city-level comparisons and open data downloads
     layout: free
-    objects: {}
+    chrome: { header: { left: "CHETNA Website & Database" } }
+    objects:
+      overall_panel: { type: shape, fill: surface, stroke: line, strokeWidth: 2, radius: 22, shadow: true, frame: [120, 100, 660, 540] }
+      overall_title: { type: text, size: 28, color: muted, lineHeight: 1.2, frame: [144, 115, 612, 44], text: "Overall Visualization" }
+      overall: { type: image, src: assets/part5/1.png, fit: contain, frame: [138, 165, 624, 465], alt: CHETNA overview of 100 Indian cities and their emission time series }
+      progress_panel: { type: shape, fill: surface, stroke: line, strokeWidth: 2, radius: 22, shadow: true, frame: [800, 100, 1000, 540] }
+      progress_title: { type: text, size: 28, color: muted, lineHeight: 1.2, frame: [824, 115, 952, 44], text: "Project Progress and Events" }
+      news: { type: image, src: assets/part5/2.png, fit: contain, frame: [824, 176, 451, 432], alt: "CHETNA news, research findings and project updates" }
+      gallery: { type: image, src: assets/part5/3.png, fit: contain, frame: [1291, 176, 485, 432], alt: "Galleries of conferences, industrial surveys, traffic surveys and research" }
+      city_panel: { type: shape, fill: surface, stroke: line, strokeWidth: 2, radius: 22, shadow: true, frame: [120, 665, 1090, 320] }
+      city_title: { type: text, size: 28, color: muted, lineHeight: 1.2, frame: [144, 676, 1042, 44], text: "City-wise Details" }
+      city_comparison: { type: image, src: assets/part5/4.png, fit: contain, frame: [140, 729, 350, 245], alt: Delhi emission changes between two years }
+      years_title: { type: text, size: 22, color: ink, align: center, lineHeight: 1.2, frame: [500, 713, 370, 36], text: "Year-to-year compare" }
+      years: { type: image, src: assets/part5/5.png, fit: contain, frame: [500, 753, 370, 221], alt: "Daily Delhi carbon emissions in 2022, 2023 and 2024" }
+      emission_map: { type: image, src: assets/part5/6.png, fit: contain, frame: [874, 717, 313, 237], alt: Gridded Delhi carbon dioxide emissions map }
+      map_title: { type: text, size: 22, color: ink, align: center, lineHeight: 1.2, frame: [874, 944, 313, 32], text: "Emission Map" }
+      dataset_panel: { type: shape, fill: surface, stroke: line, strokeWidth: 2, radius: 22, shadow: true, frame: [1240, 665, 560, 320] }
+      dataset_title: { type: text, size: 28, color: muted, lineHeight: 1.2, frame: [1264, 676, 512, 44], text: "Open Dataset" }
+      dataset: { type: image, src: assets/part5/7.png, fit: contain, frame: [1264, 736, 512, 237], alt: Download CHETNA emission datasets by city as time series or gridded maps }
+    steps:
+      - - { enter: [overall_panel, overall_title, overall], effect: fade-up, duration: 450 }
+        - { enter: [progress_panel, progress_title, news, gallery], effect: fade-up, duration: 450, after: true }
+        - { enter: [city_panel, city_title, city_comparison, years_title, years, emission_map, map_title], effect: fade-up, duration: 450, after: true }
+        - { enter: [dataset_panel, dataset_title, dataset], effect: fade-up, duration: 450, after: true }
+    notes: "Platform screenshots supplied in assets/part5. The four panels present overall visualization, project news and galleries, city-level year-to-year comparisons and emission maps, and the open dataset download interface. The platform is available at https://chetna-indian.netlify.app/."
 
   - id: team
-    section: Team & Connection
-    purpose: "Blank placeholder for the Team & Connection part"
+    section: CHETNA Team
+    purpose: Introduce 20 CHETNA team members by role and institution, with all four former members at the end
     layout: free
-    objects: {}
+    chrome: { header: { left: "Team member" } }
+    objects:
+      philippe_ciais_photo: {"type":"image","src":"assets/part6/philippe-ciais.jpg","fit":"cover","radius":92,"frame":[148,118,184,184],"alt":"Philippe Ciais"}
+      philippe_ciais_name: {"type":"text","size":21,"weight":"bold","color":"ink","align":"center","valign":"middle","lineHeight":1.15,"frame":[122,314,236,34],"text":"Philippe Ciais"}
+      philippe_ciais_role: {"type":"text","size":20,"color":"muted","align":"center","lineHeight":1.2,"frame":[122,350,236,50],"text":"Principal Investigator"}
+      chuanlong_zhou_photo: {"type":"image","src":"assets/part6/chuanlong-zhou.png","fit":"cover","radius":92,"frame":[388,118,184,184],"alt":"Chuanlong Zhou"}
+      chuanlong_zhou_name: {"type":"text","size":21,"weight":"bold","color":"ink","align":"center","valign":"middle","lineHeight":1.15,"frame":[362,314,236,34],"text":"Chuanlong Zhou"}
+      chuanlong_zhou_role: {"type":"text","size":20,"color":"muted","align":"center","lineHeight":1.2,"frame":[362,350,236,50],"text":"Project Investigator"}
+      harish_c_phuleria_photo: {"type":"image","src":"assets/part6/harish-c-phuleria.jpg","fit":"cover","radius":92,"frame":[628,118,184,184],"alt":"Harish C Phuleria"}
+      harish_c_phuleria_name: {"type":"text","size":21,"weight":"bold","color":"ink","align":"center","valign":"middle","lineHeight":1.15,"frame":[602,314,236,34],"text":"Harish C Phuleria"}
+      harish_c_phuleria_role: {"type":"text","size":20,"color":"muted","align":"center","lineHeight":1.2,"frame":[602,350,236,50],"text":"Project Investigator"}
+      arnab_jana_photo: {"type":"image","src":"assets/part6/arnab-jana.jpg","fit":"cover","radius":92,"frame":[868,118,184,184],"alt":"Arnab Jana"}
+      arnab_jana_name: {"type":"text","size":21,"weight":"bold","color":"ink","align":"center","valign":"middle","lineHeight":1.15,"frame":[842,314,236,34],"text":"Arnab Jana"}
+      arnab_jana_role: {"type":"text","size":20,"color":"muted","align":"center","lineHeight":1.2,"frame":[842,350,236,50],"text":"Project Investigator"}
+      chandra_venkataraman_photo: {"type":"image","src":"assets/part6/chandra-venkataraman.jpg","fit":"cover","radius":92,"frame":[1108,118,184,184],"alt":"Chandra Venkataraman"}
+      chandra_venkataraman_name: {"type":"text","size":21,"weight":"bold","color":"ink","align":"center","valign":"middle","lineHeight":1.15,"frame":[1082,314,236,34],"text":"Chandra Venkataraman"}
+      chandra_venkataraman_role: {"type":"text","size":20,"color":"muted","align":"center","lineHeight":1.2,"frame":[1082,350,236,50],"text":"Project Investigator"}
+      fouzi_benkhelifa_photo: {"type":"image","src":"assets/part6/fouzi-benkhelifa.webp","fit":"cover","radius":92,"frame":[1348,118,184,184],"alt":"Fouzi Benkhelifa"}
+      fouzi_benkhelifa_name: {"type":"text","size":21,"weight":"bold","color":"ink","align":"center","valign":"middle","lineHeight":1.15,"frame":[1322,314,236,34],"text":"Fouzi Benkhelifa"}
+      fouzi_benkhelifa_role: {"type":"text","size":20,"color":"muted","align":"center","lineHeight":1.2,"frame":[1322,350,236,50],"text":"CEO · NEXQT"}
+      kodimalar_eswar_photo: {"type":"image","src":"assets/part6/kodimalar-eswar.jpeg","fit":"cover","radius":92,"frame":[1588,118,184,184],"alt":"Kodimalar Eswar","position":"50% 30%"}
+      kodimalar_eswar_name: {"type":"text","size":21,"weight":"bold","color":"ink","align":"center","valign":"middle","lineHeight":1.15,"frame":[1562,314,236,34],"text":"Kodimalar Eswar"}
+      kodimalar_eswar_role: {"type":"text","size":20,"color":"muted","align":"center","lineHeight":1.2,"frame":[1562,350,236,50],"text":"Project Manager"}
+      madhumitha_s_photo: {"type":"image","src":"assets/part6/madhumitha-s.jpeg","fit":"cover","radius":92,"frame":[148,410,184,184],"alt":"Madhumitha S","position":"50% 35%"}
+      madhumitha_s_name: {"type":"text","size":21,"weight":"bold","color":"ink","align":"center","valign":"middle","lineHeight":1.15,"frame":[122,606,236,34],"text":"Madhumitha S"}
+      madhumitha_s_role: {"type":"text","size":20,"color":"muted","align":"center","lineHeight":1.2,"frame":[122,642,236,50],"text":"Project Research Associate"}
+      nicolas_megel_photo: {"type":"image","src":"assets/part6/nicolas-megel.webp","fit":"cover","radius":92,"frame":[388,410,184,184],"alt":"Nicolas Megel"}
+      nicolas_megel_name: {"type":"text","size":21,"weight":"bold","color":"ink","align":"center","valign":"middle","lineHeight":1.15,"frame":[362,606,236,34],"text":"Nicolas Megel"}
+      nicolas_megel_role: {"type":"text","size":20,"color":"muted","align":"center","lineHeight":1.2,"frame":[362,642,236,50],"text":"Data Scientist / AI Specialist"}
+      sugandha_arora_photo: {"type":"image","src":"assets/part6/sugandha-arora.jpg","fit":"cover","radius":92,"frame":[628,410,184,184],"alt":"Sugandha Arora"}
+      sugandha_arora_name: {"type":"text","size":21,"weight":"bold","color":"ink","align":"center","valign":"middle","lineHeight":1.15,"frame":[602,606,236,34],"text":"Sugandha Arora"}
+      sugandha_arora_role: {"type":"text","size":20,"color":"muted","align":"center","lineHeight":1.2,"frame":[602,642,236,50],"text":"Researcher · Münster"}
+      kushal_tibrewal_photo: {"type":"image","src":"assets/part6/kushal-tibrewal.jpeg","fit":"cover","radius":92,"frame":[868,410,184,184],"alt":"Kushal Tibrewal","position":"65% 45%"}
+      kushal_tibrewal_name: {"type":"text","size":21,"weight":"bold","color":"ink","align":"center","valign":"middle","lineHeight":1.15,"frame":[842,606,236,34],"text":"Kushal Tibrewal"}
+      kushal_tibrewal_role: {"type":"text","size":20,"color":"muted","align":"center","lineHeight":1.2,"frame":[842,642,236,50],"text":"Methane Scientist · UNEP"}
+      biqing_zhu_photo: {"type":"image","src":"assets/part6/biqing-zhu.jpg","fit":"cover","radius":92,"frame":[1108,410,184,184],"alt":"Biqing Zhu"}
+      biqing_zhu_name: {"type":"text","size":21,"weight":"bold","color":"ink","align":"center","valign":"middle","lineHeight":1.15,"frame":[1082,606,236,34],"text":"Biqing Zhu"}
+      biqing_zhu_role: {"type":"text","size":20,"color":"muted","align":"center","lineHeight":1.2,"frame":[1082,642,236,50],"text":"Post-doc Researcher · IIASA"}
+      rohith_teja_mittakola_photo: {"type":"image","src":"assets/part6/rohith-teja-mittakola.jpeg","fit":"cover","radius":92,"frame":[1348,410,184,184],"alt":"Rohith Teja Mittakola"}
+      rohith_teja_mittakola_name: {"type":"text","size":21,"weight":"bold","color":"ink","align":"center","valign":"middle","lineHeight":1.15,"frame":[1322,606,236,34],"text":"Rohith Teja Mittakola"}
+      rohith_teja_mittakola_role: {"type":"text","size":20,"color":"muted","align":"center","lineHeight":1.2,"frame":[1322,642,236,50],"text":"PhD Student / Data Scientist"}
+      abhinav_sharma_photo: {"type":"image","src":"assets/part6/abhinav-sharma-portrait.jpg","fit":"cover","radius":92,"frame":[1588,410,184,184],"alt":"Abhinav Sharma"}
+      abhinav_sharma_name: {"type":"text","size":21,"weight":"bold","color":"ink","align":"center","valign":"middle","lineHeight":1.15,"frame":[1562,606,236,34],"text":"Abhinav Sharma"}
+      abhinav_sharma_role: {"type":"text","size":20,"color":"muted","align":"center","lineHeight":1.2,"frame":[1562,642,236,50],"text":"PhD. Researcher"}
+      kounik_de_sarkar_photo: {"type":"image","src":"assets/part6/kounik-de-sarkar.jpeg","fit":"cover","radius":92,"frame":[268,702,184,184],"alt":"Kounik De Sarkar"}
+      kounik_de_sarkar_name: {"type":"text","size":21,"weight":"bold","color":"ink","align":"center","valign":"middle","lineHeight":1.15,"frame":[242,898,236,34],"text":"Kounik De Sarkar"}
+      kounik_de_sarkar_role: {"type":"text","size":20,"color":"muted","align":"center","lineHeight":1.2,"frame":[242,934,236,50],"text":"PhD Student"}
+      vipul_parmer_photo: {"type":"image","src":"assets/part6/vipul-parmer.jpg","fit":"cover","radius":92,"frame":[508,702,184,184],"alt":"Vipul Parmer"}
+      vipul_parmer_name: {"type":"text","size":21,"weight":"bold","color":"ink","align":"center","valign":"middle","lineHeight":1.15,"frame":[482,898,236,34],"text":"Vipul Parmar"}
+      vipul_parmer_role: {"type":"text","size":20,"color":"muted","align":"center","lineHeight":1.2,"frame":[482,934,236,50],"text":"PhD Student"}
+      ahana_sarkar_photo: {"type":"image","src":"assets/part6/ahana-sarkar.jpg","zoom":{"at":[0.52,0.355],"scale":3.8},"fit":"cover","radius":92,"frame":[748,702,184,184],"alt":"Ahana Sarkar"}
+      ahana_sarkar_name: {"type":"text","size":21,"weight":"bold","color":"ink","align":"center","valign":"middle","lineHeight":1.15,"frame":[722,898,236,34],"text":"Ahana Sarkar"}
+      ahana_sarkar_role: {"type":"text","size":20,"color":"muted","align":"center","lineHeight":1.2,"frame":[722,934,236,50],"text":"Former Project Manager"}
+      clement_goldmann_photo: {"type":"image","src":"assets/part6/clement-goldmann.jpg","fit":"cover","radius":92,"frame":[988,702,184,184],"alt":"Clément Goldmann"}
+      clement_goldmann_name: {"type":"text","size":21,"weight":"bold","color":"ink","align":"center","valign":"middle","lineHeight":1.15,"frame":[962,898,236,34],"text":"Clément Goldmann"}
+      clement_goldmann_role: {"type":"text","size":20,"color":"muted","align":"center","lineHeight":1.2,"frame":[962,934,236,50],"text":"Former Data Scientist"}
+      tanushree_bhattacharya_photo: {"type":"image","src":"assets/part6/tanushree-bhattacharya.jpg","fit":"cover","radius":92,"frame":[1228,702,184,184],"alt":"Tanushree Bhattacharya"}
+      tanushree_bhattacharya_name: {"type":"text","size":21,"weight":"bold","color":"ink","align":"center","valign":"middle","lineHeight":1.15,"frame":[1202,898,236,34],"text":"Tanushree Bhattacharya"}
+      tanushree_bhattacharya_role: {"type":"text","size":20,"color":"muted","align":"center","lineHeight":1.2,"frame":[1202,934,236,50],"text":"Former Project Assistant"}
+      soumyadeep_haldar_photo: {"type":"image","src":"assets/part6/soumyadeep-haldar.jpg","fit":"cover","radius":92,"frame":[1468,702,184,184],"alt":"Soumyadeep Haldar"}
+      soumyadeep_haldar_name: {"type":"text","size":21,"weight":"bold","color":"ink","align":"center","valign":"middle","lineHeight":1.15,"frame":[1442,898,236,34],"text":"Soumyadeep Haldar"}
+      soumyadeep_haldar_role: {"type":"text","size":20,"color":"muted","align":"center","lineHeight":1.2,"frame":[1442,934,236,50],"text":"Former M.Tech Student"}
+    steps:
+      - - {"enter":["philippe_ciais_photo","philippe_ciais_name","philippe_ciais_role","chuanlong_zhou_photo","chuanlong_zhou_name","chuanlong_zhou_role","harish_c_phuleria_photo","harish_c_phuleria_name","harish_c_phuleria_role","arnab_jana_photo","arnab_jana_name","arnab_jana_role","chandra_venkataraman_photo","chandra_venkataraman_name","chandra_venkataraman_role","fouzi_benkhelifa_photo","fouzi_benkhelifa_name","fouzi_benkhelifa_role","kodimalar_eswar_photo","kodimalar_eswar_name","kodimalar_eswar_role"],"effect":"fade-up","duration":500}
+        - {"enter":["madhumitha_s_photo","madhumitha_s_name","madhumitha_s_role","nicolas_megel_photo","nicolas_megel_name","nicolas_megel_role","sugandha_arora_photo","sugandha_arora_name","sugandha_arora_role","kushal_tibrewal_photo","kushal_tibrewal_name","kushal_tibrewal_role","biqing_zhu_photo","biqing_zhu_name","biqing_zhu_role","rohith_teja_mittakola_photo","rohith_teja_mittakola_name","rohith_teja_mittakola_role","abhinav_sharma_photo","abhinav_sharma_name","abhinav_sharma_role"],"effect":"fade-up","duration":500,"delay":160}
+        - {"enter":["kounik_de_sarkar_photo","kounik_de_sarkar_name","kounik_de_sarkar_role","vipul_parmer_photo","vipul_parmer_name","vipul_parmer_role","ahana_sarkar_photo","ahana_sarkar_name","ahana_sarkar_role","clement_goldmann_photo","clement_goldmann_name","clement_goldmann_role","tanushree_bhattacharya_photo","tanushree_bhattacharya_name","tanushree_bhattacharya_role","soumyadeep_haldar_photo","soumyadeep_haldar_name","soumyadeep_haldar_role"],"effect":"fade-up","duration":500,"delay":160}
+    notes: "Roster and photos: https://chetna-indian.netlify.app/people (retrieved 2026-10-06). Active members are ordered by role group: investigators and leadership, project management, researchers and data scientists, then PhD researchers; within each group the institution order is LSCE, IIT Bombay, NEXQT, Other. Former members come last, ordered by role using the same institution tie-break. Ahana Sarkar, Tanushree Bhattacharya and Soumyadeep Haldar are former according to the website; Clément Goldmann is former according to the presenter. Vipul Parmar follows the website biography and supplied reference spelling."
+
+  - id: connections
+    section: CHETNA Team
+    purpose: Explain the research, data and funding connections behind CHETNA, including Tsinghua University and the Grantham Foundation
+    layout: free
+    chrome: { header: { left: "Connections" } }
+    objects:
+      lsce_panel: {"type":"shape","fill":"surface","stroke":"line","strokeWidth":1,"radius":20,"frame":[120,120,520,395]}
+      lsce_logo: {"type":"image","src":"assets/logos/lsce.png","fit":"contain","frame":[155,145,450,95],"alt":"LSCE logo"}
+      lsce_title: {"type":"text","text":"LSCE","size":31,"weight":"bold","color":"ink","lineHeight":1.2,"frame":[155,266,450,45]}
+      lsce_body: {"type":"text","text":"Develops emission models using satellite observations, machine learning and analysis of urban activity.","size":28,"color":"muted","lineHeight":1.4,"frame":[155,330,450,155]}
+      iit_panel: {"type":"shape","fill":"surface","stroke":"line","strokeWidth":1,"radius":20,"frame":[700,120,520,395]}
+      iit_logo: {"type":"image","src":"assets/logos/iit.png","fit":"contain","frame":[735,145,450,95],"alt":"IIT Bombay logo"}
+      iit_title: {"type":"text","text":"IIT Bombay","size":31,"weight":"bold","color":"ink","lineHeight":1.2,"frame":[735,266,450,45]}
+      iit_body: {"type":"text","text":"Collects and validates city data, with local surveys and emission models tailored to Indian cities.","size":28,"color":"muted","lineHeight":1.4,"frame":[735,330,450,155]}
+      nexqt_panel: {"type":"shape","fill":"surface","stroke":"line","strokeWidth":1,"radius":20,"frame":[1280,120,520,395]}
+      nexqt_logo: {"type":"image","src":"assets/logos/nexqt.png","fit":"contain","frame":[1315,145,450,95],"alt":"NEXQT logo"}
+      nexqt_title: {"type":"text","text":"NEXQT","size":31,"weight":"bold","color":"ink","lineHeight":1.2,"frame":[1315,266,450,45]}
+      nexqt_body: {"type":"text","text":"Provides traffic data and urban decarbonization expertise to support emission modeling and city climate strategies.","size":28,"color":"muted","lineHeight":1.4,"frame":[1315,330,450,155]}
+      other_panel: {"type":"shape","fill":"surface","stroke":"line","strokeWidth":1,"radius":20,"frame":[120,550,520,395]}
+      other_logo: {"type":"image","src":"assets/logos/um.png","fit":"contain","frame":[155,575,450,95],"alt":"Other collaborators logo"}
+      other_title: {"type":"text","text":"Other collaborators","size":31,"weight":"bold","color":"ink","lineHeight":1.2,"frame":[155,696,450,45]}
+      other_body: {"type":"text","text":"Researchers from University of Münster, UNEP and IIASA contribute to understanding and reducing urban emissions.","size":28,"color":"muted","lineHeight":1.4,"frame":[155,760,450,155]}
+      tsinghua_panel: {"type":"shape","fill":"surface","stroke":"line","strokeWidth":1,"radius":20,"frame":[700,550,520,395]}
+      tsinghua_logo: {"type":"image","src":"assets/logos/tsinghua.png","fit":"contain","frame":[735,575,450,95],"alt":"Tsinghua University logo"}
+      tsinghua_title: {"type":"text","text":"Tsinghua University","size":31,"weight":"bold","color":"ink","lineHeight":1.2,"frame":[735,696,450,45]}
+      tsinghua_body: {"type":"text","text":"Builds Carbon Monitor for near-real-time CO₂ emission tracking with LSCE and international research partners.","size":28,"color":"muted","lineHeight":1.4,"frame":[735,760,450,155]}
+      grantham_panel: {"type":"shape","fill":"surface","stroke":"line","strokeWidth":1,"radius":20,"frame":[1280,550,520,395]}
+      grantham_logo: {"type":"image","src":"assets/logos/grantham.png","fit":"contain","frame":[1315,575,450,95],"alt":"Grantham Foundation logo"}
+      grantham_title: {"type":"text","text":"Grantham Foundation","size":31,"weight":"bold","color":"ink","lineHeight":1.2,"frame":[1315,696,450,45]}
+      grantham_body: {"type":"text","text":"Supports CHETNA through climate philanthropy, funding research and solutions that address climate change.","size":28,"color":"muted","lineHeight":1.4,"frame":[1315,760,450,155]}
+    steps:
+      -
+        - {"enter":["lsce_panel","lsce_logo","lsce_title","lsce_body"],"effect":"fade-up","duration":500}
+        - {"enter":["iit_panel","iit_logo","iit_title","iit_body"],"effect":"fade-up","duration":500,"delay":120}
+        - {"enter":["nexqt_panel","nexqt_logo","nexqt_title","nexqt_body"],"effect":"fade-up","duration":500,"delay":120}
+        - {"enter":["other_panel","other_logo","other_title","other_body"],"effect":"fade-up","duration":500,"delay":120}
+        - {"enter":["tsinghua_panel","tsinghua_logo","tsinghua_title","tsinghua_body"],"effect":"fade-up","duration":500,"delay":120}
+        - {"enter":["grantham_panel","grantham_logo","grantham_title","grantham_body"],"effect":"fade-up","duration":500,"delay":120}
+    notes: "Sources: CHETNA institution descriptions and funding acknowledgement, https://chetna-indian.netlify.app/people and https://chetna-indian.netlify.app/assets/app-DIRSCy0f.js (retrieved 2026-10-06). Tsinghua University Department of Earth System Science describes Carbon Monitor research with LSCE and international institutions: https://www.dess.tsinghua.edu.cn/en/info/1080/1010.htm. Grantham Foundation mission: https://granthamfoundation.org/about/. Tsinghua describes a research connection through Carbon Monitor; CHETNA funding support is attributed to Grantham by the CHETNA website."
+
+  - id: thanks
+    use: page.closing
+    kind: closing
+    chrome: false
+    purpose: Thank the CHETNA team, collaborators and funder at the close of the presentation
+    objects:
+      title: { text: "Thank you", size: 110, weight: bold, color: accent, align: center }
+      subtitle: null
+      meta: { text: "chetna-indian.netlify.app", size: 26, color: accent-3, align: center }

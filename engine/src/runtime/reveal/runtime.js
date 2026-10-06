@@ -103,7 +103,7 @@
     }
     var navAt = null;
     var names = sectionNames();
-    if (c.sections && names.length > 1) {
+    if (c.sections && names.length > 1 && sec.getAttribute('data-section')) {
       navAt = (c.sections === true || !c.sections.at) ? 'footer' : c.sections.at;
       var nav = el('div', 'ch-it ch-nav ch-still');
       nav.setAttribute('data-active', names.indexOf(sec.getAttribute('data-section') || ''));
@@ -130,7 +130,8 @@
     ['header', 'footer'].forEach(function (band) {
       var parts = ['left', 'center', 'right'].map(function (p) { return cells[band + '-' + p]; });
       if (!parts[0].length && !parts[1].length && !parts[2].length) return;
-      var b = el('div', 'ch-band ch-' + band + (c.rule ? ' ch-rule' : '') + (navAt === band ? ' ch-hasnav' : ''));
+      var bandRule = c.rule && typeof c.rule === 'object' ? c.rule[band] : c.rule;
+      var b = el('div', 'ch-band ch-' + band + (bandRule ? ' ch-rule' : '') + (navAt === band ? ' ch-hasnav' : '') + (!navAt || navAt !== band ? (!parts[1].length && !parts[2].length ? ' ch-solo' : '') : ''));
       parts.forEach(function (items, i) {
         var cell = el('div', 'ch-cell ch-' + ['l', 'c', 'r'][i]);
         items.forEach(function (it) { cell.appendChild(it); });
@@ -185,8 +186,71 @@
     });
   }
 
+  /* 页内跳转：任意元素带 data-goto-scene="<scene id>" 即可点击跳到该页（用 html 组件放一个覆盖层）。 */
+  function wireGoto() {
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest && e.target.closest('[data-goto-scene]');
+      if (!a) return;
+      e.preventDefault();
+      var sec = document.querySelector('.reveal .slides section.sc[data-scene="' + a.getAttribute('data-goto-scene') + '"]');
+      if (sec) window.Reveal.slide(window.Reveal.getIndices(sec).h);
+    });
+  }
+
   function buildAllChrome(cfg) {
     document.querySelectorAll('.reveal .slides section.sc').forEach(function (sec) { buildChrome(sec, cfg); });
+  }
+
+  /* Esc 概览沿用 Reveal 的状态与跳转，改为可纵向滚动的缩略图矩阵。 */
+  function wireOverview(cfg) {
+    var root = Reveal.getRevealElement(), slides = Reveal.getSlidesElement();
+    var pages = [].slice.call(slides.querySelectorAll(':scope > section.sc'));
+    var header = el('div', 'overview-header');
+    header.appendChild(el('span', '', '页面概览 · 上下滚动，点击跳转'));
+    var close = el('button', 'overview-close', '返回放映 · Esc');
+    close.type = 'button';
+    close.addEventListener('click', function () { Reveal.toggleOverview(false); });
+    header.appendChild(close);
+    root.appendChild(header);
+    pages.forEach(function (sec, i) {
+      var heading = sec.querySelector('.ch-header .ch-tx') || sec.querySelector('.obj.role-title');
+      var title = heading && heading.textContent.trim() || sec.getAttribute('data-scene').replace(/-/g, ' ');
+      sec.appendChild(el('div', 'overview-caption', (i + 1) + ' · ' + title));
+      sec.style.setProperty('--overview-bg', sec.getAttribute('data-background-color'));
+      sec.addEventListener('keydown', function (e) {
+        if (!Reveal.isOverview() || (e.key !== 'Enter' && e.key !== ' ')) return;
+        e.preventDefault();
+        e.stopPropagation();
+        var at = Reveal.getIndices(sec);
+        Reveal.slide(at.h, at.v, -1);
+        Reveal.toggleOverview(false);
+      });
+    });
+    function layout() {
+      if (!Reveal.isOverview()) return;
+      pages.forEach(function (sec) {
+        var scale = sec.clientWidth / cfg.stage.w;
+        sec.style.setProperty('--overview-scale', scale);
+        sec.style.setProperty('--overview-stage-w', cfg.stage.w + 'px');
+        sec.style.setProperty('--overview-stage-h', cfg.stage.h + 'px');
+        sec.style.setProperty('--overview-card-h', (cfg.stage.h * scale + 34) + 'px');
+      });
+    }
+    function revealCurrent() {
+      var current = Reveal.getCurrentSlide();
+      if (current) current.scrollIntoView({ block: 'center', inline: 'nearest' });
+    }
+    Reveal.on('overviewshown', function () {
+      layout();
+      pages.forEach(function (sec) { sec.tabIndex = 0; });
+      revealCurrent();
+    });
+    Reveal.on('overviewhidden', function () {
+      slides.scrollTop = 0;
+      pages.forEach(function (sec) { sec.removeAttribute('tabindex'); });
+    });
+    Reveal.on('slidechanged', function () { if (Reveal.isOverview()) revealCurrent(); });
+    window.addEventListener('resize', layout);
   }
 
   /* ---------------- 换主题预览：主页的「主题与页面元素」通过 postMessage 驱动 ---------------- */
@@ -266,19 +330,33 @@
     if (params.has('embed')) { opts.controls = false; opts.progress = false; embedded = true; }
     window.__htmlppt = { ready: false, cfg: cfg };
     // steps 里 auto: true 的前几次点击：进入该 State 后按时间表自动播放（只在向前翻页、尚无片段显示时；QA 截图模式不触发）
-    var autoTimers = [];
+    var autoTimers = [], autoQueue = [], autoEpoch = 0, autoSlide;
+    function pauseAuto() {
+      var elapsed = Date.now() - autoEpoch;
+      autoTimers.forEach(clearTimeout);
+      autoTimers = [];
+      autoQueue.forEach(function (job) { job.delay = Math.max(0, job.delay - elapsed); });
+    }
+    function resumeAuto() {
+      autoEpoch = Date.now();
+      autoQueue.forEach(function (job) {
+        autoTimers.push(setTimeout(function () {
+          autoQueue = autoQueue.filter(function (other) { return other !== job; });
+          if (Reveal.getCurrentSlide() === autoSlide && !Reveal.isOverview()) Reveal.nextFragment();
+        }, job.delay));
+      });
+    }
     function playAuto(slide) {
       autoTimers.forEach(clearTimeout);
       autoTimers = [];
+      autoQueue = [];
+      autoSlide = slide;
       var at = slide && slide.getAttribute('data-auto-at');
       if (!at || qa) return;
       var idx = Reveal.getIndices();
       if (idx.f !== undefined && idx.f >= 0) return;
-      at.split(',').forEach(function (t) {
-        autoTimers.push(setTimeout(function () {
-          if (Reveal.getCurrentSlide() === slide) Reveal.nextFragment();
-        }, Number(t)));
-      });
+      autoQueue = at.split(',').map(function (t) { return { delay: Number(t) }; });
+      if (!Reveal.isOverview()) resumeAuto();
     }
     Reveal.initialize(opts).then(function () {
       syncNav(Reveal.getCurrentSlide(), null);
@@ -286,6 +364,10 @@
       Reveal.on('slidechanged', function (e) { syncNav(e.currentSlide, e.previousSlide); playAuto(e.currentSlide); });
       if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { syncNav(Reveal.getCurrentSlide(), null); });
       wireNav();
+      wireGoto();
+      wireOverview(cfg);
+      Reveal.on('overviewshown', pauseAuto);
+      Reveal.on('overviewhidden', resumeAuto);
       if (window.HtmlPptCharts) {
         window.HtmlPptCharts.init();
         window.HtmlPptCharts.enter(Reveal.getCurrentSlide(), null);
