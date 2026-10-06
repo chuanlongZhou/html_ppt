@@ -50,7 +50,8 @@ deck.yaml
 | `notes` | string |  |
 | `patterns` | string[] | 本页使用的效果库条目 id（showPatterns 时显示在页角） |
 | `continues` | boolean | 与上一个 Scene 共享对象身份：两页里同名 key 的对象在翻页时 morph（上一页的卡片直接移动到本页的位置）；其余对象淡入淡出 |
-| `section` | string | 所属章节名（页眉里的 {section}）；后续 scene 沿用，直到下一个 section |
+| `kind` | `content` \| `opening` \| `closing` | 页面类型。opening / closing 独立于 part；默认从封面/结尾模板或 opening、cover、closing、thanks 等 id 识别，content 可显式覆盖 |
+| `section` | string \| `false` | 所属章节名（页眉里的 {section}）；后续正文沿用。false = 本页独立于 part；opening / closing 始终不归入 part |
 | `chrome` | `false` \| object | false = 本页不显示页面元素；对象 = 只覆盖写出的项 |
 
 **states[i]**

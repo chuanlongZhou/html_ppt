@@ -66,7 +66,10 @@ deck:
     hideOn: [first, last]   # first / last / scene id
 ```
 
-- 占位符：`{n}` `{N}`（按 Scene 计数）`{title}` `{subtitle}` `{author}` `{date}` `{section}`。`section` 写在 scene 上，往后沿用到下一个；章节导航至少需要两个不同的 section，点标签可跳到该章。
+- 占位符：`{n}` `{N}`（按 Scene 计数）`{title}` `{subtitle}` `{author}` `{date}` `{section}`。`section` 写在 scene 上，往后正文沿用到下一个；章节导航至少需要两个不同的 section，点标签可跳到该章的正文首页。
+- Opening / cover 和 closing / thanks 默认独立于 part（封面、结尾模板也自动识别）。可显式写 `kind: opening` / `kind: closing`；任意独立页可写 `section: false`。特殊情况下用 `kind: content` 覆盖自动识别。独立页不显示章节导航，也不会成为 part 跳转入口，仍可正常翻页访问。
+- 点击跳转到某一页：在目标位置放一个 `html` 对象，内容 `<a href="#" data-goto-scene="<scene id>" style="display:block;width:100%;height:100%;cursor:pointer"></a>`（frame 盖住要点击的卡片，随卡片一起 `enter`）。
+- Esc / O 打开可上下滚动的矩阵概览；缩略图显示每个 State 的最终构建，点击缩略图定位，再按 Esc 返回原放映进度。
 - 单页覆盖：`chrome: false`（关掉）或 `chrome: { footer: { left: … } }`（只改写出的项）。
 - 页面元素占上下边距（页眉 y<64、页脚 y>1016），内容留在 y≈84–984 之内；压到会有 `CHROME_OVERLAP` 警告。
 - 颜色微调：`deck.tokens`（浅色）/ `deck.tokensDark`（深色页）逐项覆盖主题。用户想"挑颜色"时，让他打开 `npm run dev` 首页的「主题与页面元素」，选好后下载 `theme.yaml`，放进 deck 目录并写 `theme: theme.yaml`；或 `npm run new -- <name> --theme <预设名|theme.yaml>`。

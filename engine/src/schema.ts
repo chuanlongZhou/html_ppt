@@ -101,7 +101,16 @@ export const Chrome = z.strictObject({
     .optional()
     .describe('章节导航：一排章节标签，当前章节高亮，翻到新章节时高亮块滑动过去。章节名来自 scene 的 section（至少两个不同的 section）；占用页脚（或页眉）的中间'),
   progress: z.enum(['none', 'bar', 'dots']).optional().describe('进度：bar 底部细条 / dots 页脚圆点'),
-  rule: z.boolean().optional().describe('页眉页脚与内容之间的细分隔线'),
+  rule: z
+    .union([
+      z.boolean(),
+      z.strictObject({
+        header: z.boolean().optional().describe('页眉下方的细分隔线；省略时关闭'),
+        footer: z.boolean().optional().describe('页脚上方的细分隔线；省略时关闭'),
+      }),
+    ])
+    .optional()
+    .describe('页眉页脚分隔线：true / false 同时控制两处，或 { header: true, footer: false } 分别控制'),
   caps: z.boolean().optional().describe('页眉页脚文字全部大写；文字里的 **强调** 显示为主色加粗（如项目名）'),
   hideOn: z.array(z.string()).optional().describe('不显示的 scene id；first / last 代表第一页 / 最后一页（封面、结尾）'),
 });
@@ -121,7 +130,8 @@ export const Scene = z.strictObject({
   notes: z.string().optional(),
   patterns: z.array(z.string()).optional().describe('本页使用的效果库条目 id（showPatterns 时显示在页角）'),
   continues: z.boolean().optional().describe('与上一个 Scene 共享对象身份：两页里同名 key 的对象在翻页时 morph（上一页的卡片直接移动到本页的位置）；其余对象淡入淡出'),
-  section: z.string().optional().describe('所属章节名（页眉里的 {section}）；后续 scene 沿用，直到下一个 section'),
+  kind: z.enum(['content', 'opening', 'closing']).optional().describe('页面类型。opening / closing 独立于 part；默认从封面/结尾模板或 opening、cover、closing、thanks 等 id 识别，content 可显式覆盖'),
+  section: z.union([z.string(), z.literal(false)]).optional().describe('所属章节名（页眉里的 {section}）；后续正文沿用。false = 本页独立于 part；opening / closing 始终不归入 part'),
   chrome: z.union([z.literal(false), Chrome]).optional().describe('false = 本页不显示页面元素；对象 = 只覆盖写出的项'),
 });
 export type SceneSrc = z.infer<typeof Scene>;

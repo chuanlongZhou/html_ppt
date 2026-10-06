@@ -43,6 +43,7 @@ interface Origin {
   assetDir: string;
   caption?: IRScene['caption'];
   library?: boolean;
+  template?: string;
 }
 
 /** use: 模板继承。scene 字段覆盖模板；objects 按 key 浅合并；states/steps 写了就整体替换 */
@@ -121,7 +122,7 @@ export function compileDeck(file: string): CompileResult {
         files.push(e.file);
         const sceneData = { id: libSceneId(e.id), purpose: `效果库演示：${e.title}`, ...e.demo };
         const caption = r.data.caption === false ? undefined : { id: e.id, title: e.title, prompts: e.prompts, category: e.categoryLabel, group: e.groupLabel };
-        normScene(sceneData, { src: e.src, base: ['demo'], assetDir: path.join(LIBRARY, 'assets'), caption, library: true }, ctx, defaultTransition);
+        normScene(sceneData, { src: e.src, base: ['demo'], assetDir: path.join(LIBRARY, 'assets'), caption, library: true, template: e.id }, ctx, defaultTransition);
       }
     } else if (item && typeof item.use === 'string') {
       lib ??= loadLibrary(issues);
@@ -131,7 +132,7 @@ export function compileDeck(file: string): CompileResult {
         return;
       }
       files.push(e.file);
-      normScene(inherit(e.demo, item), { src, base, assetDir: deckDir }, ctx, defaultTransition);
+      normScene(inherit(e.demo, item), { src, base, assetDir: deckDir, template: e.id }, ctx, defaultTransition);
     } else {
       normScene(item, { src, base, assetDir: deckDir }, ctx, defaultTransition);
     }
@@ -212,6 +213,11 @@ function normScene(data: any, o: Origin, ctx: Ctx, defaultTransition: string) {
   }
   const group = s.continues && ctx.group ? ctx.group : s.id;
   ctx.group = group;
+  const template = o.template;
+  const kind = s.kind ?? (template === 'page.cover' || ['opening', 'cover'].includes(s.id) ? 'opening'
+    : template === 'page.closing' || ['closing', 'thanks', 'thank-you', 'thankyou', 'acknowledgements', 'acknowledgments'].includes(s.id) ? 'closing' : 'content');
+  if (typeof s.section === 'string') ctx.section = s.section;
+  const section = kind !== 'content' || s.section === false ? undefined : ctx.section;
   const scene: IRScene = {
     id: s.id,
     group,
@@ -219,7 +225,7 @@ function normScene(data: any, o: Origin, ctx: Ctx, defaultTransition: string) {
     theme,
     background: colorValue(style, s.background ?? 'bg', theme),
     bgToken: s.background ?? 'bg',
-    chrome: { off: s.chrome === false, n: ctx.ir.scenes.length + 1, section: (ctx.section = s.section ?? ctx.section), override: chromeOverride },
+    chrome: { off: s.chrome === false, n: ctx.ir.scenes.length + 1, section, override: chromeOverride },
     transition: (s.transition ?? defaultTransition) as IRScene['transition'],
     states: [],
     file: rel(o.src.file),

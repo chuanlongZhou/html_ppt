@@ -15,7 +15,8 @@
     "gallery": "tsx engine/src/cli.ts gallery",
     "catalog": "tsx engine/src/cli.ts catalog",
     "agents:sync": "tsx engine/src/cli.ts agents-sync",
-    "typecheck": "tsc --noEmit -p engine/tsconfig.json"
+    "typecheck": "tsc --noEmit -p engine/tsconfig.json",
+    "test:navigation": "node --import tsx --test engine/tests/navigation.test.ts"
   },
   "dependencies": {
     "playwright-core": "1.63.0",

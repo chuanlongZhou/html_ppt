@@ -78,9 +78,67 @@ html.qa .reveal *, html.qa .reveal *::before, html.qa .reveal *::after { transit
 .reveal .ch-bar i { display: block; height: 100%; }
 
 /* 章节导航（chrome.sections）：占满页脚 / 页眉的中间，两侧留给左右文字与页码 */
+.reveal .ch-band.ch-solo { grid-template-columns: minmax(0, 1fr); }
+.reveal .ch-solo > .ch-c, .reveal .ch-solo > .ch-r { display: none; }
 .reveal .ch-band.ch-hasnav { grid-template-columns: auto minmax(0, 1fr) auto; }
 .reveal .ch-hasnav .ch-c { justify-content: stretch; min-width: 0; }
 .reveal .ch-nav { position: relative; display: flex; gap: 10px; width: 100%; pointer-events: auto; }
 .reveal .ch-tab { position: relative; z-index: 1; flex: 1 1 0; min-width: 0; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; transition: color .35s; }
 .reveal .ch-pill { position: absolute; z-index: 0; left: 0; top: 0; width: 0; height: 0; opacity: 0; pointer-events: none; transition: left .5s cubic-bezier(.45, 0, .2, 1), width .5s cubic-bezier(.45, 0, .2, 1), opacity .3s; }
 .reveal .ch-nav.ch-still .ch-pill, .reveal .ch-nav.ch-still .ch-tab { transition: none; }
+
+/* Esc / O：多列缩略图矩阵，使用原页面而非复制 DOM，不影响放映状态。 */
+.reveal .overview-header, .reveal .overview-caption { display: none; }
+.reveal.overview { perspective: none; touch-action: pan-y; }
+.reveal.overview .slides {
+  position: absolute !important; inset: 0 !important; width: 100% !important; height: 100% !important;
+  margin: 0 !important; padding: 84px 32px 40px; box-sizing: border-box;
+  transform: none !important; perspective: none; display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); gap: 24px;
+  align-content: start; overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain;
+  pointer-events: auto; touch-action: pan-y;
+  background: var(--c-surface-2); scrollbar-gutter: stable;
+}
+.reveal.overview .slides > section.sc {
+  position: relative !important; top: auto !important; left: auto !important;
+  display: block !important; width: 100% !important; height: var(--overview-card-h, 190px) !important;
+  min-height: 0; margin: 0; transform: none !important; opacity: 1 !important;
+  visibility: visible !important; overflow: hidden; background: var(--overview-bg, var(--c-bg));
+  outline: 2px solid var(--c-line); outline-offset: 0; border-radius: 6px;
+}
+.reveal.overview .slides > section.sc:hover,
+.reveal.overview .slides > section.sc.present,
+.reveal.overview .slides > section.sc:focus-visible { outline: 3px solid var(--c-accent-3); outline-offset: 0; }
+.reveal.overview .slides > section.sc > .stage {
+  position: absolute; top: 0; left: 0; width: var(--overview-stage-w) !important;
+  height: var(--overview-stage-h) !important; transform: scale(var(--overview-scale));
+  transform-origin: top left; pointer-events: none;
+}
+.reveal.overview .slides > .backgrounds,
+.reveal.overview .controls, .reveal.overview .progress, .reveal.overview .slide-number { display: none !important; }
+.reveal.overview .overview-header {
+  position: absolute; inset: 0 0 auto; z-index: 40; height: 60px; box-sizing: border-box;
+  padding: 0 32px; display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  background: var(--c-surface); color: var(--c-ink); font-size: 18px; line-height: 1.3;
+  border-bottom: 1px solid var(--c-line);
+}
+.reveal.overview .overview-close {
+  font: inherit; color: inherit; background: transparent; border: 0; padding: 8px; cursor: pointer;
+}
+.reveal.overview .overview-caption {
+  position: absolute; inset: auto 0 0; height: 34px; padding: 0 10px; box-sizing: border-box;
+  display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  background: var(--c-surface); color: var(--c-ink); font-size: 14px; line-height: 34px;
+}
+.reveal.overview .stage *, .reveal.overview .stage *::before, .reveal.overview .stage *::after {
+  transition: none !important; animation: none !important;
+}
+.reveal.overview .stage .fx.fragment {
+  opacity: 1 !important; visibility: visible !important; transform: none !important;
+  clip-path: none !important; filter: none !important;
+}
+.reveal.overview .stage .fx.fx-fade-out,
+.reveal.overview .stage .fx.fx-fly-out,
+.reveal.overview .stage .fx.fx-zoom-out { opacity: 0 !important; visibility: hidden !important; }
+.reveal.overview .stage .fx.fx-draw .stroke { stroke-dashoffset: 0 !important; }
+.reveal.overview .stage .fx.fx-draw .head, .reveal.overview .stage .fx.fx-draw .port { opacity: 1 !important; }
