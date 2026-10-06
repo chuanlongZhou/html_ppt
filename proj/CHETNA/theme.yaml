@@ -1,0 +1,45 @@
+# html_ppt 主题配置 —— 由主页「主题与页面元素」生成
+# 用法：放进 decks/<name>/，并在 deck.yaml 的 deck: 下加一行   theme: theme.yaml
+# 或用命令新建：npm run new -- <name> --theme theme.yaml
+# 种子色  主色 #1F2933 · 辅色 #F2542D / #3E7CB1 / #7A8CA3 · 背景 #F5F5F4 · 文字 #111827
+label: "石墨"
+tokens:
+  bg: "#F5F5F4"
+  surface: "#FFFFFF"
+  surface-2: "#EAEAEA"
+  ink: "#111827"
+  muted: "#555A65"
+  line: "#DADADB"
+  accent: "#1F2933"
+  accent-soft: "#DDDFE0"
+  accent-2: "#F2542D"
+  accent-2-soft: "#FDE5E0"
+  accent-3: "#3E7CB1"
+  accent-3-soft: "#E2EBF3"
+  accent-4: "#7A8CA3"
+  accent-4-soft: "#EBEEF1"
+  success: "#0F9F78"
+  danger: "#D83A3A"
+  code-bg: "#111827"
+  code-ink: "#F5F5F4"
+tokensDark:
+  bg: "#0F1520"
+  surface: "#1B212B"
+  surface-2: "#252A34"
+  ink: "#F9F9F8"
+  muted: "#A7A9AC"
+  line: "#343943"
+  accent: "#587490"
+  accent-soft: "#1B2432"
+  accent-2: "#F79077"
+  accent-2-soft: "#34292E"
+  accent-3: "#7DAAD1"
+  accent-3-soft: "#212D3C"
+  accent-4: "#A9B4C3"
+  accent-4-soft: "#282E3A"
+  code-bg: "#1B212B"
+chrome:
+  header: { left: "每一页属于的主题" }
+  pageNumber: { format: "{n} / {N}", at: footer-right }
+  sections: { at: footer }
+  hideOn: [first]
