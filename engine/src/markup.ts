@@ -43,6 +43,7 @@ export function inline(s: string): string {
   out = out
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
     .replace(/==(.+?)==/g, '<mark>$1</mark>')
+    .replace(/\^\^(.+?)\^\^/g, '<span class="tr">$1</span>')
     .replace(/\[\[(.+?)(?:\|(\w+))?\]\]/g, (_, t, c) => `<span class="chip${c ? ' chip-' + c : ''}">${t}</span>`)
     .replace(/(^|[^*])\*([^*\s][^*]*?)\*(?!\*)/g, '$1<em>$2</em>')
     .replace(/\\n/g, '<br>')

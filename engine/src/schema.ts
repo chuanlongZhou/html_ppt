@@ -183,6 +183,15 @@ export const LIB_CATEGORIES = {
 } as const;
 export type LibCategory = keyof typeof LIB_CATEGORIES;
 
+/** LIB_CATEGORIES 的英文标签（主页与效果库说明条用；键与 LIB_CATEGORIES 一一对应） */
+export const LIB_CATEGORIES_EN: Record<LibCategory, { label: string; desc: string; groups: Record<string, string> }> = {
+  page: { label: 'Page layouts', desc: 'Common slide layouts: cover, agenda, section, bullets, comparison, data, timeline, summary', groups: { structure: 'Structure', text: 'Text', visual: 'Visual & comparison', data: 'Data', diagram: 'Process & frameworks' } },
+  build: { label: 'Builds', desc: 'Click-by-click within one slide: reveal, emphasize, assemble', groups: { reveal: 'Reveal', emphasis: 'Emphasis', diagram: 'Assemble' } },
+  morph: { label: 'Morphs', desc: 'One canvas moving smoothly between States', groups: { layout: 'Layout change', focus: 'Focus', data: 'Data & progress' } },
+  interact: { label: 'Interactive data', desc: 'Charts and panels you can hover, click and toggle; narration and free exploration share the same states', groups: { chart: 'Interactive charts', linked: 'Linked views', narrative: 'Narrate + explore' } },
+  image: { label: 'Image tools', desc: 'Zoom, annotate, spotlight and compare screenshots and photos', groups: { focus: 'Zoom & spotlight', annotate: 'Annotate', compare: 'Compare' } },
+};
+
 export const LibraryEntry = z.strictObject({
   id: z.string().regex(/^(page|build|morph|interact|image)\.[a-z0-9-]+$/, 'id 格式为 <category>.<name>，category 为 page / build / morph / interact / image'),
   group: z.string().describe('所属分组（见 schema.ts 的 LIB_CATEGORIES）'),
@@ -192,6 +201,15 @@ export const LibraryEntry = z.strictObject({
   avoid_when: z.string().optional().describe('不适合什么情况'),
   tags: z.array(z.string()).optional(),
   order: z.number().optional().describe('同类条目中的排序（小的在前）'),
+  en: z
+    .strictObject({
+      title: z.string().describe('英文名'),
+      prompts: z.array(z.string()).min(1).describe('英文触发词'),
+      use_when: z.string(),
+      avoid_when: z.string().optional(),
+    })
+    .optional()
+    .describe('英文说明：主页、效果库浏览器与说明条中英双语显示'),
   demo: z.record(z.string(), z.any()).describe('一个可直接复制进 deck.yaml 的 scene（不含 id）'),
 });
 export type LibraryEntrySrc = z.infer<typeof LibraryEntry>;

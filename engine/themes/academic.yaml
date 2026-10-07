@@ -1,3 +1,4 @@
 label: 学术蓝金
 desc: 米白底、深蓝主色、金色点缀，适合学术报告与科研汇报
+en: { label: Academic, desc: "Ivory, navy and gold — for academic and research talks" }
 seeds: { accent: "#123A84", accent2: "#B7791F", accent3: "#2F855A", accent4: "#805AD5", bg: "#FBFAF6", ink: "#14213D" }

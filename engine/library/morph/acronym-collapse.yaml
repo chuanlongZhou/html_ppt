@@ -5,6 +5,11 @@ order: 7
 prompts: [首字母缩写, 缩略词展开, 项目全称收拢成名字, 字母合并, 开场 morph 成 logo 字, acronym]
 use_when: 开场先展开项目全称（大写首字母 + 小字），点击后首字母放大靠拢成品牌名，其余文字淡出、副标题与 logo 进场
 avoid_when: 首字母不在同一基线上，或全称很长、小字挤不下
+en:
+  title: Acronym collapse
+  prompts: [acronym, collapse to brand name, initials merge, opening morph to logo]
+  use_when: Open with the full project name (big initials + small words); on click the initials grow and close up into the brand name, the rest fades out and a tagline appears
+  avoid_when: Initials not on one baseline, or a name too long for the small words
 demo:
   layout: free
   theme: dark
@@ -16,7 +21,7 @@ demo:
     wa: { type: text, size: 36, color: "#FFFFFF", lineHeight: 1, frame: [430, 453, 330, 50], text: lpha study }
     wb: { type: text, size: 36, color: "#FFFFFF", lineHeight: 1, frame: [950, 453, 330, 50], text: road survey }
     wc: { type: text, size: 36, color: "#FFFFFF", lineHeight: 1, frame: [1470, 453, 330, 50], text: ity analysis }
-    tag: { type: text, size: 50, weight: bold, color: "#FFFFFF", align: center, frame: [160, 640, 1600, 90], text: 一句话说明这个项目 }
+    tag: { type: text, size: 50, weight: bold, color: "#FFFFFF", align: center, frame: [160, 630, 1600, 140], text: "The project in one line ^^一句话说明这个项目^^" }
   states:
     - show: [shade, a, b, c, wa, wb, wc]
     - show: [shade, a, b, c, tag]

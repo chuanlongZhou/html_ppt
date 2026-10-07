@@ -1,3 +1,4 @@
 label: 石墨
 desc: 中性灰白底、近黑主色、橙色点缀，克制专业，适合汇报与咨询
+en: { label: Graphite, desc: "Neutral grey, near-black and orange — restrained, for reports and consulting" }
 seeds: { accent: "#1F2933", accent2: "#F2542D", accent3: "#3E7CB1", accent4: "#7A8CA3", bg: "#F5F5F4", ink: "#111827" }

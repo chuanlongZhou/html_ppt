@@ -8,7 +8,7 @@ export const Point = z.tuple([z.number(), z.number()]);
 export const Color = z.string().describe('颜色 token（ink / muted / accent / accent-2 / surface …）或任意 CSS 颜色');
 export const TextContent = z
   .union([z.string(), z.array(z.string())])
-  .describe('文字。字符串按换行分段，数组每项一段。段首 "- " 要点、"1. " 编号、"# " 小标题；行内 **粗体** ==强调色== `代码` [[标签|orange/green/blue]]');
+  .describe('文字。字符串按换行分段，数组每项一段。段首 "- " 要点、"1. " 编号、"# " 小标题；行内 **粗体** ==强调色== `代码` [[标签|orange/green/blue]] ^^译文（另起一行、缩小，用于双语）^^');
 
 export const ROLES = ['title', 'subtitle', 'kicker', 'heading', 'body', 'bullets', 'callout', 'label', 'caption', 'quote', 'code', 'meta'] as const;
 

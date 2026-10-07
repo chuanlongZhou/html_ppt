@@ -121,7 +121,7 @@ deck.yaml
 
 | 字段 | 类型 | 说明 |
 |---|---|---|
-| `text` * | string \| string[] | 文字。字符串按换行分段，数组每项一段。段首 "- " 要点、"1. " 编号、"# " 小标题；行内 **粗体** ==强调色== `代码` [[标签\|orange/green/blue]] |
+| `text` * | string \| string[] | 文字。字符串按换行分段，数组每项一段。段首 "- " 要点、"1. " 编号、"# " 小标题；行内 **粗体** ==强调色== `代码` [[标签\|orange/green/blue]] ^^译文（另起一行、缩小，用于双语）^^ |
 | `role` | `title` \| `subtitle` \| `kicker` \| `heading` \| `body` \| `bullets` \| `callout` \| `label` \| `caption` \| `quote` \| `code` \| `meta` | 语义角色，决定默认字号/字重/颜色/默认 slot：title / subtitle / kicker / heading / body / bullets / callout / label / caption / quote / code / meta |
 | `size` | number | 字号 px（以 1920 宽舞台计） |
 | `weight` | number \| `normal` \| `bold` |  |

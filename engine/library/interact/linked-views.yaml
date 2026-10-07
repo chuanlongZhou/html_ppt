@@ -5,30 +5,35 @@ order: 1
 prompts: [联动图表, 图表联动, 点一个另一个跟着变, 联动高亮, linked views, crossfilter]
 use_when: 同一组对象有两种视角（构成 + 趋势）：在一张图里选中，另一张图同步高亮
 avoid_when: 两张图的分类 / 系列名不一致（联动按名字匹配）
+en:
+  title: Linked views
+  prompts: [linked views, crossfilter, linked highlight, click one chart to update the other]
+  use_when: Two views of the same things (composition + trend) — select in one chart, the other highlights in sync
+  avoid_when: Category / series names differ between the charts (linking matches by name)
 demo:
   layout: { type: split, ratio: 48 }
   objects:
-    title: { type: text, role: title, text: 点左边的柱子，右边的折线同步高亮 }
+    title: { type: text, role: title, text: "Click a bar; the matching line lights up ^^点左边的柱子，右边的折线同步高亮^^" }
     bars:
       type: chart
       slot: left
       kind: bar
-      categories: [电力, 工业, 交通, 建筑]
+      categories: [Power · 电力, Industry · 工业, Transport · 交通, Buildings · 建筑]
       series: { "2024": [600, 380, 280, 210] }
       link: sector
       unit: Mt
-      source: 2024 年构成（示例数据）
+      source: Mix in 2024 (sample) · 2024 年构成（示例）
     lines:
       type: chart
       slot: right
       kind: line
       categories: [2016, 2018, 2020, 2022, 2024]
       series:
-        - { name: 电力, values: [420, 470, 480, 560, 600] }
-        - { name: 工业, values: [330, 345, 300, 360, 380] }
-        - { name: 交通, values: [210, 235, 200, 255, 280] }
-        - { name: 建筑, values: [170, 180, 180, 200, 210] }
+        - { name: Power · 电力, values: [420, 470, 480, 560, 600] }
+        - { name: Industry · 工业, values: [330, 345, 300, 360, 380] }
+        - { name: Transport · 交通, values: [210, 235, 200, 255, 280] }
+        - { name: Buildings · 建筑, values: [170, 180, 180, 200, 210] }
       legend: false
       link: sector
       unit: Mt
-      source: 历年趋势（示例数据）
+      source: Trend (sample) · 历年趋势（示例）

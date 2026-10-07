@@ -5,21 +5,26 @@ order: 10
 prompts: [代码页, 展示代码, 配置示例, 代码讲解, code]
 use_when: 展示一段代码或配置，并在旁边解释关键行
 avoid_when: 代码超过 15 行（只截取关键部分）
+en:
+  title: Code + notes
+  prompts: [code slide, show code, config example, walk through code]
+  use_when: Show a snippet of code or config and explain the key lines beside it
+  avoid_when: More than 15 lines of code (show only the key part)
 demo:
   layout: { type: split, ratio: 56 }
   objects:
-    title: { type: text, role: title, text: 一段 YAML 就是一页演示 }
+    title: { type: text, role: title, text: "A few lines of YAML make a slide ^^一段 YAML 就是一页演示^^" }
     code:
       type: text
       role: code
       slot: left
       text: |
-        - id: india            # 一个 scene
+        - id: india            # one scene
           layout: split
-          objects:             # 对象池：key 即身份
+          objects:             # key = identity
             map:   { type: image, src: map.svg }
             total: { type: metric, value: 3100 }
-          states:              # State 之间 morph
+          states:              # morph between
             - show: [map]
             - add: [total]
     notes:
@@ -27,7 +32,7 @@ demo:
       role: bullets
       slot: right
       text:
-        - "**objects**：每个对象定义一次"
-        - "**states**：同一画面的多个状态"
-        - "**steps**：State 内的点击构建"
-        - 坐标、动画参数由引擎计算
+        - "**objects**: define each once ^^每个对象定义一次^^"
+        - "**states**: views of one canvas ^^同一画面的多个状态^^"
+        - "**steps**: clicks within a State ^^State 内的点击构建^^"
+        - "The engine does the math ^^坐标、动画参数由引擎计算^^"

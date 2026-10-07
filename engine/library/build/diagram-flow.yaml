@@ -5,16 +5,21 @@ order: 5
 prompts: [流程图, 逐步搭建, 箭头画出来, 一步一步连起来, 流程逐步出现, flow diagram]
 use_when: 讲一个有先后顺序的流程：节点弹出，箭头沿方向画出
 avoid_when: 节点超过 5 个（拆成两页，或用 morph 推进镜头）
+en:
+  title: Flow diagram, step by step
+  prompts: [flow diagram, build a process, draw arrows, connect step by step]
+  use_when: A process in order — nodes pop in, arrows draw along the direction
+  avoid_when: More than 5 nodes (split into two slides, or move the camera with a morph)
 demo:
   layout: title-body
   objects:
-    title: { type: text, role: title, text: 节点弹出，箭头画出，下一节点接着出现 }
-    b1: { type: shape, fill: surface, shadow: true, frame: [120, 420, 420, 240], align: center, valign: middle, text: ["# 解析", "YAML → 校验"] }
-    b2: { type: shape, fill: surface, shadow: true, frame: [750, 420, 420, 240], align: center, valign: middle, text: ["# 编译", "布局 · 动画"] }
-    b3: { type: shape, fill: accent, color: "#FFFFFF", shadow: true, frame: [1380, 420, 420, 240], align: center, valign: middle, text: ["# 渲染", "Reveal.js 网页"] }
+    title: { type: text, role: title, text: "Node pops, arrow draws, next node follows ^^节点弹出，箭头画出，下一节点接着出现^^" }
+    b1: { type: shape, fill: surface, shadow: true, frame: [120, 420, 420, 240], align: center, valign: middle, text: ["# Parse ^^解析^^", "YAML → validate"] }
+    b2: { type: shape, fill: surface, shadow: true, frame: [750, 420, 420, 240], align: center, valign: middle, text: ["# Compile ^^编译^^", "Layout · motion"] }
+    b3: { type: shape, fill: accent, color: "#FFFFFF", shadow: true, frame: [1380, 420, 420, 240], align: center, valign: middle, text: ["# Render ^^渲染^^", "Reveal.js page"] }
     a1: { type: shape, geom: line, from: [560, 540], to: [730, 540], arrow: end, stroke: muted, strokeWidth: 5 }
     a2: { type: shape, geom: line, from: [1190, 540], to: [1360, 540], arrow: end, stroke: muted, strokeWidth: 5 }
-    note: { type: text, role: caption, frame: [120, 760, 1680, 60], align: center, text: "箭头用 effect: draw，下一个节点用 after: true 等箭头画完再弹出" }
+    note: { type: text, role: caption, frame: [120, 740, 1680, 100], align: center, text: "Arrows use `effect: draw`; the next node waits with `after: true` ^^箭头用 effect: draw，下一个节点用 after: true 等箭头画完再弹出^^" }
   steps:
     - { enter: b1, effect: pop }
     - [{ enter: a1, effect: draw }, { enter: b2, effect: pop, after: true }]

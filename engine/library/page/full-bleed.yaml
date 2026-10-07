@@ -5,11 +5,16 @@ order: 11
 prompts: [全屏图片, 背景图, 图片铺满, 大图配标题, full bleed]
 use_when: 用一张有冲击力的图片定调；文字压在图上
 avoid_when: 图片细节本身是要讲的内容（不要压字）
+en:
+  title: Full-bleed image
+  prompts: [full bleed, background image, full-screen photo, big image with title]
+  use_when: Set the tone with one striking image; text sits on top
+  avoid_when: The image details are the content (don't cover them with text)
 demo:
   layout: free
   theme: dark
   objects:
     bg: { type: image, src: "@lib/landscape.svg", frame: [0, 0, 1920, 1080] }
     shade: { type: shape, geom: rect, fill: "rgba(10,12,30,.35)", frame: [0, 0, 1920, 1080] }
-    title: { type: text, role: title, size: 96, color: "#FFFFFF", frame: [120, 560, 1300, 240], valign: bottom, text: 用一张图定调 }
-    sub: { type: text, role: subtitle, color: "rgba(255,255,255,.85)", frame: [120, 820, 1300, 80], text: 图片铺满舞台，叠一层半透明遮罩保证文字可读 }
+    title: { type: text, role: title, size: 96, color: "#FFFFFF", frame: [120, 520, 1300, 280], valign: bottom, text: "One image sets the tone ^^用一张图定调^^" }
+    sub: { type: text, role: subtitle, color: "rgba(255,255,255,.85)", frame: [120, 820, 1500, 130], text: "Full-stage image with a translucent shade for legible text ^^图片铺满舞台，叠一层半透明遮罩保证文字可读^^" }

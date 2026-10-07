@@ -5,20 +5,25 @@ order: 1
 prompts: [放大图片局部, 截图放大, 推镜头, 放大看细节, zoom in on image, 图片 zoom]
 use_when: 截图或照片里只有一小块是重点：先看全局，再把镜头推到细节，标注框跟着图片一起移动
 avoid_when: 图片本身分辨率太低，放大后会糊（换高清图或截取局部）
+en:
+  title: Zoom into a region
+  prompts: [zoom in on image, push in on a screenshot, enlarge a detail, image zoom]
+  use_when: Only a small part of a screenshot or photo matters — show the whole, then push the camera in; markers move with the image
+  avoid_when: Low-resolution images that blur when enlarged (use a sharper image or a crop)
 demo:
   layout: free
   objects:
-    title: { type: text, role: title, frame: [120, 70, 1680, 110], text: 先看全局，再推到细节 }
+    title: { type: text, role: title, frame: [120, 50, 1680, 150], text: "Whole first, then the detail ^^先看全局，再推到细节^^" }
     shot: { type: image, src: "@lib/sample-ui.png", frame: [120, 230, 1120, 700], radius: 20, shadow: true }
     ring: { type: shape, geom: roundRect, radius: 18, fill: transparent, stroke: accent-2, strokeWidth: 6, on: shot, box: [0.575, 0.1, 0.205, 0.16] }
-    note: { type: text, role: body, frame: [1300, 230, 500, 700], text: ["# 全局", "整张截图：听众先知道自己在看什么"] }
+    note: { type: text, role: body, frame: [1300, 230, 500, 700], text: ["# Overview ^^全局^^", "The whole screenshot: show what we're looking at ^^整张截图：听众先知道自己在看什么^^"] }
   states:
     - show: [title, shot, note]
     - add: [ring]
       override:
         shot: { zoom: { at: [0.678, 0.18], scale: 2.6 } }
-        note: { text: ["# 放大细节", "zoom: { at: [u, v], scale }\n标注用 on + box 写在图片坐标里，会跟着放大"] }
+        note: { text: ["# Zoom in ^^放大细节^^", "`zoom: { at: [u, v], scale }`", "Markers use `on` + `box` in image coordinates and zoom along ^^标注写在图片坐标里，会跟着放大^^"] }
     - override:
         shot: { zoom: { at: [0.633, 0.42], scale: 2.2 } }
         ring: { geom: ellipse, box: [0.6, 0.355, 0.066, 0.09] }
-        note: { text: ["# 换一处", "再写一个 zoom，镜头平移过去；同一个 ring 也会移动过去"] }
+        note: { text: ["# Another spot ^^换一处^^", "Add another zoom; the camera pans and the same ring follows ^^再写一个 zoom，镜头平移过去，ring 也跟着移动^^"] }

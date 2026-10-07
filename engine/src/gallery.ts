@@ -13,9 +13,9 @@ import { stringify } from 'yaml';
 import { loadLibrary, type LibEntry } from './library.ts';
 import { buildDeck, copyReveal } from './build.ts';
 import { Issues } from './issues.ts';
-import { LIB_CATEGORIES } from './schema.ts';
+import { LIB_CATEGORIES, LIB_CATEGORIES_EN } from './schema.ts';
 import { ENGINE, OUTPUT, rel, type DeckPaths } from './paths.ts';
-import { homeHtml } from './home.ts';
+import { homeHtml, LANG_BOOT } from './home.ts';
 import { escapeHtml } from './markup.ts';
 import { printIssues } from './report.ts';
 
@@ -31,6 +31,8 @@ export interface GalleryItem {
   prompts: string[];
   use_when: string;
   avoid_when?: string;
+  /** 英文说明（有则中英双语显示） */
+  en?: { title: string; prompts: string[]; use_when: string; avoid_when?: string };
   file: string;
   use: string;
   yaml: string;
@@ -89,6 +91,7 @@ function item(e: LibEntry, clicks: number[], ok: boolean, errors: string[]): Gal
     prompts: e.prompts,
     use_when: e.use_when,
     avoid_when: e.avoid_when,
+    en: e.en,
     file: rel(e.file),
     use: `- { id: my-${name}, use: ${e.id} }`,
     yaml: stringify([{ id: `my-${name}`, ...e.demo }], { lineWidth: 0 }).trim(),
@@ -148,13 +151,13 @@ export async function deckThumbnails(names: string[]) {
 /* ---------------- 页面 ---------------- */
 
 function writePages(items: GalleryItem[]) {
-  const data = JSON.stringify({ items, categories: LIB_CATEGORIES }).replace(/</g, '\\u003c');
+  const data = JSON.stringify({ items, categories: LIB_CATEGORIES, categoriesEn: LIB_CATEGORIES_EN }).replace(/</g, '\\u003c');
   fs.writeFileSync(path.join(GALLERY, 'index.html'), homeHtml({ items, decks: [], dev: false, base: '' }));
-  fs.writeFileSync(path.join(GALLERY, 'view.html'), page('效果库 · 预览', VIEW_CSS, `<script>window.GALLERY=${data};</script>${VIEW_BODY}`));
+  fs.writeFileSync(path.join(GALLERY, 'view.html'), page('Library · html_ppt', VIEW_CSS, `<script>window.GALLERY=${data};</script>${VIEW_BODY}`));
 }
 
 function page(title: string, css: string, body: string) {
-  return `<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${escapeHtml(title)}</title><link rel="icon" href="data:,"><style>${BASE_CSS}${css}</style></head><body>${body}</body></html>`;
+  return `<!doctype html><html lang="en" data-lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${escapeHtml(title)}</title><link rel="icon" href="data:,"><script>${LANG_BOOT}</script><style>${BASE_CSS}${css}</style></head><body>${body}</body></html>`;
 }
 
 const BASE_CSS = `
@@ -162,6 +165,7 @@ const BASE_CSS = `
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 "Segoe UI","Microsoft YaHei UI","Microsoft YaHei","PingFang SC",sans-serif}
 a{color:inherit;text-decoration:none}code,.mono{font-family:"Cascadia Code",Consolas,monospace}
 button{font:inherit;cursor:pointer}
+html[data-lang="en"] [data-l="zh"],html[data-lang="zh"] [data-l="en"]{display:none!important}
 `;
 
 const VIEW_CSS = `
@@ -175,7 +179,8 @@ const VIEW_CSS = `
 .vw-ctl .prog{color:var(--muted);margin-left:6px}.vw-ctl .hint{margin-left:auto;color:var(--muted);font-size:13px}
 .vw-ctl button.pri{background:var(--ink);color:#fff;border-color:var(--ink)}
 .vw-side{background:#fff;box-shadow:0 2px 4px rgba(22,24,29,.05),0 8px 22px rgba(22,24,29,.09);border-radius:16px;padding:22px;align-self:start;position:sticky;top:18px;max-height:calc(100vh - 36px);overflow:auto}
-.vw-side h1{font-size:24px;margin:0}.vw-side .id{color:var(--muted);font-size:13px}
+.vw-side h1{font-size:24px;margin:0}.vw-side .zh{font-size:17px;color:var(--muted);font-weight:600}.vw-side .id{color:var(--muted);font-size:13px}
+.vw-side .p2{color:var(--muted);margin-top:4px}
 .vw-side h3{font-size:13px;color:var(--muted);margin:18px 0 6px;letter-spacing:.04em}
 .vw-pr{display:flex;flex-wrap:wrap;gap:6px}.vw-pr span{background:var(--soft);color:var(--accent);padding:3px 10px;border-radius:8px;font-size:13px}
 .vw-side p{margin:0}
@@ -185,26 +190,34 @@ const VIEW_CSS = `
 @media (max-width:1100px){.vw{grid-template-columns:1fr}.vw-side{position:static;max-height:none}}
 `;
 
-const VIEW_BODY = `<div class="vw"><div class="vw-top"><a class="back" id="vw-back" href="index.html">← 返回主页</a><span class="crumb" id="vw-crumb"></span><span class="sp"></span><button id="vw-prevE">上一个条目</button><button id="vw-nextE">下一个条目</button></div>
-<div><div class="vw-stage"><iframe id="vw-frame" title="预览"></iframe></div>
-<div class="vw-ctl"><button id="vw-replay">⟲ 重播</button><button id="vw-prev">◀ 上一步</button><button id="vw-next" class="pri">下一步 ▶</button><span class="prog" id="vw-prog"></span><span class="hint">方向键 ← → 也可以；图表类条目可直接在预览中点击、悬停</span></div><div id="vw-err"></div></div>
+/** 界面文字中英各一份（由 data-lang 切换）；条目内容（标题、提示词、适用场景）有英文时中英同时显示 */
+const L = (en: string, zh: string) => `<span data-l="en">${en}</span><span data-l="zh">${zh}</span>`;
+
+const VIEW_BODY = `<div class="vw"><div class="vw-top"><a class="back" id="vw-back" href="index.html">${L('← Home', '← 返回主页')}</a><span class="crumb" id="vw-crumb"></span><span class="sp"></span><button id="vw-prevE">${L('Previous entry', '上一个条目')}</button><button id="vw-nextE">${L('Next entry', '下一个条目')}</button><button id="vw-lang" title="Language / 语言">${L('中文', 'EN')}</button></div>
+<div><div class="vw-stage"><iframe id="vw-frame" title="Preview"></iframe></div>
+<div class="vw-ctl"><button id="vw-replay">${L('⟲ Replay', '⟲ 重播')}</button><button id="vw-prev">${L('◀ Back', '◀ 上一步')}</button><button id="vw-next" class="pri">${L('Next ▶', '下一步 ▶')}</button><span class="prog" id="vw-prog"></span><span class="hint">${L('Arrow keys work too; charts respond to clicks and hover in the preview', '方向键 ← → 也可以；图表类条目可直接在预览中点击、悬停')}</span></div><div id="vw-err"></div></div>
 <aside class="vw-side" id="vw-side"></aside></div>
 <script>(function(){var G=window.GALLERY;var frame=document.getElementById('vw-frame'),side=document.getElementById('vw-side');var cur=null,idx={h:0,f:-1};
+var lang=document.documentElement.getAttribute('data-lang')==='zh'?'zh':'en';function t(en,zh){return lang==='zh'?zh:en}
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
 function post(method,args){frame.contentWindow&&frame.contentWindow.postMessage(JSON.stringify({method:method,args:args||[]}),'*')}
-function prog(){if(!cur)return;var c=cur.clicks[idx.h]||0;document.getElementById('vw-prog').textContent=(cur.states>1?'State '+(idx.h+1)+' / '+cur.states:'单个 State')+(c?' · 点击 '+(idx.f+1)+' / '+c:'')}
-function copyBtn(id){return '<button data-copy="'+id+'">复制</button>'}
+function prog(){if(!cur)return;var c=cur.clicks[idx.h]||0;document.getElementById('vw-prog').textContent=(cur.states>1?'State '+(idx.h+1)+' / '+cur.states:t('Single State','单个 State'))+(c?t(' · click ',' · 点击 ')+(idx.f+1)+' / '+c:'')}
+function copyBtn(id){return '<button data-copy="'+id+'">'+t('Copy','复制')+'</button>'}
+function both(en,zh){return en?'<p>'+esc(en)+'</p><p class="p2">'+esc(zh)+'</p>':'<p>'+esc(zh)+'</p>'}
+function crumb(){var C=lang==='zh'||!G.categoriesEn?G.categories[cur.category]:G.categoriesEn[cur.category];document.getElementById('vw-crumb').textContent=C.label+' › '+C.groups[cur.group]}
+function renderSide(){var E=cur.en||{};var zhP=cur.prompts.filter(function(p){return /[^\\x00-\\x7F]/.test(p)});var prompts=cur.en?E.prompts.concat(zhP):cur.prompts;
+side.innerHTML='<h1>'+esc(E.title||cur.title)+'</h1>'+(cur.en?'<div class="zh">'+esc(cur.title)+'</div>':'')+'<div class="id mono">'+esc(cur.id)+'</div>'+
+'<h3>'+t('Prompts — say this to call it','提示词（这样说就能调用）')+'</h3><div class="vw-pr">'+prompts.map(function(p){return '<span>'+esc(p)+'</span>'}).join('')+'</div>'+
+'<h3>'+t('Use when','适合')+'</h3>'+both(E.use_when,cur.use_when)+(cur.avoid_when?'<h3>'+t('Avoid when','不适合')+'</h3>'+both(E.avoid_when,cur.avoid_when):'')+
+'<h3>'+t('One-line call (inherit, then change the text)','一行调用（继承后改文字）')+'</h3><div class="code" id="c-use">'+copyBtn('c-use')+esc(cur.use)+'</div>'+
+'<h3>'+t('Full YAML (paste under scenes: in deck.yaml)','完整 YAML（复制到 deck.yaml 的 scenes:）')+'</h3><div class="code" id="c-yaml">'+copyBtn('c-yaml')+esc(cur.yaml)+'</div>'+
+'<h3>'+t('Source file','源文件')+'</h3><p class="mono" style="font-size:13px">'+esc(cur.file)+'</p>';
+document.getElementById('vw-err').innerHTML=cur.ok?'':'<div class="vw-err">'+t('This entry failed to build: ','此条目构建失败：')+esc(cur.errors.join('；'))+'</div>';crumb();prog()}
 function load(){var id=decodeURIComponent(location.hash.slice(1))||G.items[0].id;cur=G.items.find(function(i){return i.id===id})||G.items[0];idx={h:0,f:-1};
-var home=location.protocol==='file:'?'index.html':'/';document.getElementById('vw-back').href=home+'#'+(cur.category==='page'?'pages':'effects');var C=G.categories[cur.category];document.getElementById('vw-crumb').textContent=C.label+' › '+C.groups[cur.group];document.title=cur.title+' · 效果库';
-frame.src='e/'+cur.id+'/site/index.html';
-side.innerHTML='<h1>'+esc(cur.title)+'</h1><div class="id mono">'+esc(cur.id)+'</div>'+
-'<h3>提示词（这样说就能调用）</h3><div class="vw-pr">'+cur.prompts.map(function(p){return '<span>'+esc(p)+'</span>'}).join('')+'</div>'+
-'<h3>适合</h3><p>'+esc(cur.use_when)+'</p>'+(cur.avoid_when?'<h3>不适合</h3><p>'+esc(cur.avoid_when)+'</p>':'')+
-'<h3>一行调用（继承后改文字）</h3><div class="code" id="c-use">'+copyBtn('c-use')+esc(cur.use)+'</div>'+
-'<h3>完整 YAML（复制到 deck.yaml 的 scenes:）</h3><div class="code" id="c-yaml">'+copyBtn('c-yaml')+esc(cur.yaml)+'</div>'+
-'<h3>源文件</h3><p class="mono" style="font-size:13px">'+esc(cur.file)+'</p>';
-document.getElementById('vw-err').innerHTML=cur.ok?'':'<div class="vw-err">此条目构建失败：'+esc(cur.errors.join('；'))+'</div>';prog()}
-side.onclick=function(e){var b=e.target.closest('button[data-copy]');if(!b)return;var el=document.getElementById(b.dataset.copy);var t=el.textContent.replace(/^复制|^已复制/,'');navigator.clipboard&&navigator.clipboard.writeText(t).then(function(){b.textContent='已复制';setTimeout(function(){b.textContent='复制'},1200)})};
+var home=location.protocol==='file:'?'index.html':'/';document.getElementById('vw-back').href=home+'#'+(cur.category==='page'?'pages':'effects');document.title=(cur.en?cur.en.title+' · ':'')+cur.title+' · html_ppt';
+frame.src='e/'+cur.id+'/site/index.html';renderSide()}
+document.getElementById('vw-lang').onclick=function(){lang=lang==='zh'?'en':'zh';document.documentElement.setAttribute('data-lang',lang);document.documentElement.lang=lang==='zh'?'zh-CN':'en';try{localStorage.setItem('htmlppt.lang',lang)}catch(e){}renderSide()};
+side.onclick=function(e){var b=e.target.closest('button[data-copy]');if(!b)return;var el=document.getElementById(b.dataset.copy);var t0=el.textContent.slice(b.textContent.length);navigator.clipboard&&navigator.clipboard.writeText(t0).then(function(){b.textContent=t('Copied','已复制');setTimeout(function(){b.textContent=t('Copy','复制')},1200)})};
 function step(d){var i=G.items.indexOf(cur);var n=G.items[(i+d+G.items.length)%G.items.length];location.hash=n.id}
 document.getElementById('vw-prevE').onclick=function(){step(-1)};document.getElementById('vw-nextE').onclick=function(){step(1)};
 document.getElementById('vw-next').onclick=function(){post('next')};document.getElementById('vw-prev').onclick=function(){post('prev')};

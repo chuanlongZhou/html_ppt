@@ -5,8 +5,13 @@ order: 3
 prompts: [观点页, 金句, 一句话结论, 大字报, 强调一个观点, big statement]
 use_when: 整场只想让听众记住的一句话；章节开头或结尾
 avoid_when: 需要证据支撑的论点（先给证据页）
+en:
+  title: Big statement
+  prompts: [big statement, key message, one-line takeaway, emphasize one point]
+  use_when: The one sentence the audience should remember; opening or closing a section
+  avoid_when: Claims that need evidence (show the evidence first)
 demo:
   layout: center
   objects:
-    main: { type: text, role: title, slot: main, size: 84, align: center, text: "演示文稿是 ==结构化程序==，\n不是页面图片。" }
-    caption: { type: text, role: caption, text: 一页只放一句话；关键词用 ==强调色== }
+    main: { type: text, role: title, slot: main, size: 84, align: center, text: "A deck is a ==structured program==,\nnot a picture of pages. ^^演示文稿是结构化程序，不是页面图片。^^" }
+    caption: { type: text, role: caption, text: "One sentence per slide; key words in ==accent== ^^一页只放一句话；关键词用强调色^^" }

@@ -19,6 +19,7 @@ const Hex = z.string().regex(/^#[0-9a-fA-F]{6}$/, '颜色写成 #RRGGBB');
 export const ThemeFile = z.strictObject({
   label: z.string().optional(),
   desc: z.string().optional(),
+  en: z.strictObject({ label: z.string(), desc: z.string().optional() }).optional().describe('英文名与说明（主页英文界面用）'),
   seeds: z
     .strictObject({
       accent: Hex.optional().describe('主色'),
@@ -41,6 +42,7 @@ export interface Theme {
   id: string;
   label: string;
   desc?: string;
+  en?: { label: string; desc?: string };
   seeds?: Record<string, string>;
   /** 来源文件（报错与 dev 监听用） */
   file: string;
@@ -65,6 +67,7 @@ export function themeFromSource(id: string, file: string, src: ThemeSrc): Theme 
     id,
     label: src.label ?? id,
     desc: src.desc,
+    en: src.en,
     seeds: src.seeds,
     file,
     light: { ...d.light, ...src.tokens },

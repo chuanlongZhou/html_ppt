@@ -43,6 +43,11 @@ order: 8                       # 同组中的排序
 prompts: [说法一, 说法二, 说法三, english phrase]   # 3–6 个，写用户真实的说法
 use_when: 适合什么情况（一句话）
 avoid_when: 不适合什么情况（一句话，指出替代条目）
+en:                            # 英文说明：主页与效果库中英双语显示，英文请求也能查到
+  title: English name
+  prompts: [english phrase, another phrase]
+  use_when: When to use it (one sentence)
+  avoid_when: When not to (one sentence, name the alternative)
 demo:                          # 一个完整 scene，不写 id
   layout: title-body
   objects: { ... }
@@ -52,6 +57,7 @@ demo:                          # 一个完整 scene，不写 id
 **demo 的要求**
 
 - **自解释**：文字讲的就是这个效果本身（"每点击一次，出现一条"），放进任何介绍 deck 都成立。
+- **中英双语**：英文在前，中文用 `^^译文^^` 另起一行（自动缩小、减淡）：`"One click, one point ^^每点击一次，出现一条^^"`；短标签写 `English · 中文`。图表分类写 `Power · 电力`，竖向柱状图会自动分两行。改完确认没有溢出。
 - 颜色用 token；文字用 role，少写 size。
 - 底部 64px 留给说明条：对象的 y + h ≤ 1010。
 - 素材放 `engine/library/assets/`，用 `src: "@lib/<文件名>"` 引用。现有位图：`sample-ui.png`（仪表盘截图，1600×1000）、`sample-city.png`（城市照片风格，1600×1000）。
@@ -77,5 +83,5 @@ npm run gallery
 某个 deck 里出现了第二次相同的结构，或者用户说"这个效果以后还要用"：
 
 1. 把该 scene 复制成 demo，把文字改为自解释的。
-2. 补上 group、prompts、use_when、avoid_when。
+2. 补上 group、prompts、use_when、avoid_when 与 en。
 3. 让原 deck 改为 `use:` 新条目，然后 check 原 deck。

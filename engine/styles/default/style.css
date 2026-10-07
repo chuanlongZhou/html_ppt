@@ -38,6 +38,9 @@
 .reveal .tx .chip-orange { border-color: var(--c-accent-2); background: var(--c-accent-2-soft); color: var(--c-accent-2); }
 .reveal .tx .chip-green { border-color: var(--c-success); background: color-mix(in srgb, var(--c-success) 14%, white); color: var(--c-success); }
 .reveal .tx .chip-blue { border-color: var(--c-accent-3); background: var(--c-accent-3-soft); color: var(--c-accent-3); }
+/* 双语副文 ^^译文^^：另起一行、缩小、减淡；用于中英双语同屏 */
+.reveal .tx .tr { display: block; margin-top: .22em; font-size: .62em; font-weight: 500; line-height: 1.35; letter-spacing: 0; opacity: .72; }
+.reveal .role-title .tr { font-size: .5em; margin-top: .3em; }
 .reveal .tx mark { background: none; color: var(--c-accent); font-weight: 700; }
 .reveal .tx code { font-family: var(--font-mono); font-size: .86em; background: var(--c-surface-2); padding: .06em .32em; border-radius: 6px; }
 .reveal .role-code .tx code { background: none; padding: 0; }
@@ -82,6 +85,7 @@
 .reveal .o-chart .ch-tick { fill: var(--c-muted); font-size: .85em; }
 .reveal .o-chart .ch-cat { fill: var(--c-ink); font-size: 1em; font-weight: 500; }
 .reveal .o-chart .ch-cat.on { font-weight: 800; fill: var(--c-accent); }
+.reveal .o-chart .ch-cat .ch-cat2 { font-size: .8em; font-weight: 400; fill: var(--c-muted); }
 .reveal .o-chart .ch-val { fill: var(--c-ink); font-size: .9em; font-weight: 700; font-variant-numeric: tabular-nums; }
 .reveal .o-chart .ch-rect { rx: 6px; }
 .reveal .o-chart button { font: inherit; font-size: .9em; border: 2px solid var(--c-line); background: var(--c-surface); color: var(--c-ink); border-radius: 999px; padding: 6px 18px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }

@@ -5,13 +5,18 @@ order: 3
 prompts: [方法论图, 数据源到方法再到结果, 多对多连线, 肘形连接线, 输入方法输出, 技术路线图, method map]
 use_when: 几个输入（数据源）经几种方法汇到几个目标（挑战 / 结果）；每个目标点击时依次展开对应的数据源、连线与方法
 avoid_when: 节点超过 10 个（拆页）；只是线性流程（用 page.chain-rows 或 build.diagram-flow）
+en:
+  title: Sources → method → goal (elbow connectors)
+  prompts: [method map, inputs to methods to outputs, elbow connectors, many-to-many links, technical roadmap]
+  use_when: Several inputs (data sources) flow through methods to goals (challenges / results); each click unfolds the sources, links and method for one goal
+  avoid_when: More than 10 nodes (split the slide); a purely linear flow (use page.chain-rows or build.diagram-flow)
 demo:
   layout: free
   objects:
-    s1: { type: shape, fill: "#C04F15", stroke: "#662A07", strokeWidth: 4, color: "#FFFFFF", size: 30, align: center, valign: middle, padding: 0, radius: 20, frame: [160, 220, 320, 120], text: "数据 A" }
-    s2: { type: shape, fill: "#A02B92", stroke: "#460B41", strokeWidth: 4, color: "#FFFFFF", size: 30, align: center, valign: middle, padding: 0, radius: 20, frame: [160, 460, 320, 120], text: "数据 B" }
-    m1: { type: shape, fill: "#F2AA85", stroke: "#642D10", strokeWidth: 4, color: "#333333", size: 30, align: center, valign: middle, padding: 0, radius: 20, frame: [760, 340, 360, 120], text: "方法" }
-    g1: { type: shape, fill: "#FF9901", stroke: "#B35A00", strokeWidth: 4, color: "#B00300", size: 44, weight: bold, align: center, valign: middle, padding: 0, radius: 16, frame: [1300, 355, 340, 90], text: "目标" }
+    s1: { type: shape, fill: "#C04F15", stroke: "#662A07", strokeWidth: 4, color: "#FFFFFF", size: 30, align: center, valign: middle, padding: 0, radius: 20, frame: [160, 220, 320, 120], text: "Data A ^^数据 A^^" }
+    s2: { type: shape, fill: "#A02B92", stroke: "#460B41", strokeWidth: 4, color: "#FFFFFF", size: 30, align: center, valign: middle, padding: 0, radius: 20, frame: [160, 460, 320, 120], text: "Data B ^^数据 B^^" }
+    m1: { type: shape, fill: "#F2AA85", stroke: "#642D10", strokeWidth: 4, color: "#333333", size: 30, align: center, valign: middle, padding: 0, radius: 20, frame: [760, 340, 360, 120], text: "Method ^^方法^^" }
+    g1: { type: shape, fill: "#FF9901", stroke: "#B35A00", strokeWidth: 4, color: "#B00300", size: 44, weight: bold, align: center, valign: middle, padding: 0, radius: 16, frame: [1300, 340, 340, 120], text: "Goal ^^目标^^" }
     c1: { type: shape, geom: line, points: [[480, 260], [620, 260], [620, 380], [760, 380]], stroke: "#C04F15", strokeWidth: 3, arrow: end, ports: true, z: 5 }
     c2: { type: shape, geom: line, points: [[480, 520], [620, 520], [620, 420], [760, 420]], stroke: "#7B2C7E", strokeWidth: 3, arrow: end, ports: true, z: 5 }
     a1: { type: shape, geom: line, points: [[1130, 400], [1300, 400]], stroke: "#000000", strokeWidth: 5, arrow: end }

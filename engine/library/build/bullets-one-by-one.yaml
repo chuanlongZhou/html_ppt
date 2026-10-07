@@ -5,16 +5,21 @@ order: 1
 prompts: [逐条出现, 一条一条显示, 要点依次出现, 点一下出一条, bullets one by one]
 use_when: 讲解有先后的要点，希望听众跟着讲述节奏走
 avoid_when: 要点需要整体对比（一次全部显示更好）
+en:
+  title: Bullets one by one
+  prompts: [bullets one by one, reveal points one at a time, one point per click]
+  use_when: Points with an order, so the audience follows your pace
+  avoid_when: Points meant to be compared together (show them all at once)
 demo:
   layout: title-body
   objects:
-    title: { type: text, role: title, text: 每点击一次，出现一条 }
+    title: { type: text, role: title, text: "One click, one point ^^每点击一次，出现一条^^" }
     points:
       type: text
       role: bullets
       text:
-        - 第一条：by paragraph 让每一段占一次点击
-        - 第二条：effect 选 fade-up，自下而上浮现
-        - 第三条：想一次点击依次出现，加 stagger
+        - "First: `by: paragraph` gives each line a click ^^第一条：by paragraph 让每一段占一次点击^^"
+        - "Second: `effect: fade-up` floats it in from below ^^第二条：effect 选 fade-up，自下而上浮现^^"
+        - "Third: add `stagger` to cascade in one click ^^第三条：想一次点击依次出现，加 stagger^^"
   steps:
     - { enter: points, by: paragraph, effect: fade-up }

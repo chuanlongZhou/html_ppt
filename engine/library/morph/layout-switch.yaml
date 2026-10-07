@@ -5,14 +5,19 @@ order: 4
 prompts: [列表变网格, 重新排列, 布局切换, 横排变竖排, rearrange]
 use_when: 同一组对象换一种组织方式：先逐行讲，再并排比较
 avoid_when: 对象数量在两种布局中不同
+en:
+  title: List to grid
+  prompts: [rearrange, list to grid, switch layout, rows to columns]
+  use_when: Reorganize the same objects — walk through them as rows, then compare side by side
+  avoid_when: The number of objects differs between the two layouts
 demo:
   layout: { type: grid, cols: 1 }
   objects:
-    title: { type: text, role: title, text: 同一组对象，换一种排列 }
-    i1: { type: shape, fill: surface, shadow: true, valign: middle, size: 30, text: ["# 封面", "page.cover"] }
-    i2: { type: shape, fill: surface, shadow: true, valign: middle, size: 30, text: ["# 要点", "page.title-bullets"] }
-    i3: { type: shape, fill: surface, shadow: true, valign: middle, size: 30, text: ["# 卡片", "page.cards-3"] }
-    i4: { type: shape, fill: accent, color: "#FFFFFF", shadow: true, valign: middle, size: 30, text: ["# 大数字", "page.big-number"] }
+    title: { type: text, role: title, text: "Same objects, new arrangement ^^同一组对象，换一种排列^^" }
+    i1: { type: shape, fill: surface, shadow: true, valign: middle, size: 30, text: ["# Cover · 封面", "page.cover"] }
+    i2: { type: shape, fill: surface, shadow: true, valign: middle, size: 30, text: ["# Bullets · 要点", "page.title-bullets"] }
+    i3: { type: shape, fill: surface, shadow: true, valign: middle, size: 30, text: ["# Cards · 卡片", "page.cards-3"] }
+    i4: { type: shape, fill: accent, color: "#FFFFFF", shadow: true, valign: middle, size: 30, text: ["# Big number · 大数字", "page.big-number"] }
   states:
     - {}
     - layout: { type: grid, cols: 4, cellHeight: 520 }

@@ -5,16 +5,21 @@ order: 4
 prompts: [要点页, 列表页, 几条要点, bullet points, 标题加正文]
 use_when: 3–5 条并列要点；标题直接写结论
 avoid_when: 超过 6 条，或要点之间需要对比（用 page.comparison / page.cards-3）
+en:
+  title: Title + bullets
+  prompts: [bullet points, list slide, key points, title and body]
+  use_when: 3–5 parallel points; the title states the conclusion
+  avoid_when: More than 6 points, or points that need comparing (use page.comparison / page.cards-3)
 demo:
   layout: title-body
   objects:
-    title: { type: text, role: title, text: 标题写结论，而不是写主题 }
+    title: { type: text, role: title, text: "Titles state conclusions, not topics ^^标题写结论，而不是写主题^^" }
     points:
       type: text
       role: bullets
       text:
-        - 每条只讲一件事，控制在一行半以内
-        - 3–5 条最合适，再多就拆页
-        - 关键词用 ==强调色==，不要整句加粗
-        - "+ 子要点用 + 开头，会缩进并变浅"
-        - 段落前缀：- 要点，1. 编号，# 小标题
+        - "One idea per point, under a line and a half ^^每条只讲一件事，一行半以内^^"
+        - "3–5 points is best; more, split the slide ^^3–5 条最合适，再多就拆页^^"
+        - "Mark ==key words==, don't bold whole lines ^^关键词用强调色，不要整句加粗^^"
+        - "+ Sub-points start with + and are indented ^^子要点用 + 开头，缩进并变浅^^"
+        - "Prefixes: - point, 1. number, # heading ^^段落前缀：- 要点，1. 编号，# 小标题^^"

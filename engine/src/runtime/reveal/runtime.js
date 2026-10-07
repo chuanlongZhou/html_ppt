@@ -381,6 +381,9 @@
         window.HtmlPptCharts.enter(Reveal.getCurrentSlide(), null);
         Reveal.on('slidechanged', function (e) { window.HtmlPptCharts.enter(e.currentSlide, e.previousSlide); });
       }
+      // ?at=h,f：直接停在第 h 页第 f 次点击（主页缩略图的实时预览用；配合 ?qa 不播放过渡）
+      var at = params.get('at');
+      if (at) { var hf = at.split(',').map(Number); Reveal.slide(hf[0] || 0, 0, isNaN(hf[1]) ? undefined : hf[1]); }
       window.__htmlppt.ready = true;
     });
   }

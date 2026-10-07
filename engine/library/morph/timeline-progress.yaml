@@ -5,10 +5,15 @@ order: 6
 prompts: [时间线, 路线图, 里程碑推进, 进度往前走, roadmap, timeline]
 use_when: 路线图、阶段计划、历史沿革：每次点击推进到下一个节点
 avoid_when: 节点超过 6 个（分段讲）
+en:
+  title: Advancing timeline
+  prompts: [roadmap, timeline, advance milestones, move progress forward]
+  use_when: Roadmaps, phase plans, histories — each click advances to the next node
+  avoid_when: More than 6 nodes (present in segments)
 demo:
   layout: free
   objects:
-    title: { type: text, role: title, frame: [120, 84, 1680, 110], text: 路线图 }
+    title: { type: text, role: title, frame: [120, 70, 1680, 150], text: "Roadmap ^^路线图^^" }
     track: { type: shape, geom: rect, fill: line, frame: [200, 556, 1520, 8] }
     prog: { type: shape, geom: rect, fill: accent, frame: [200, 556, 100, 8] }
     d1: { type: shape, geom: ellipse, fill: accent, frame: [282, 542, 36, 36] }
@@ -16,14 +21,14 @@ demo:
     d3: { type: shape, geom: ellipse, fill: line, frame: [1162, 542, 36, 36] }
     d4: { type: shape, geom: ellipse, fill: line, frame: [1602, 542, 36, 36] }
     ring: { type: shape, geom: ellipse, fill: transparent, stroke: accent, strokeWidth: 4, frame: [264, 524, 72, 72] }
-    t1: { type: text, role: heading, align: center, frame: [120, 420, 360, 80], valign: bottom, text: M0 骨架 }
-    t2: { type: text, role: heading, align: center, color: muted, frame: [560, 420, 360, 80], valign: bottom, text: M1 复刻 PPT }
-    t3: { type: text, role: heading, align: center, color: muted, frame: [1000, 420, 360, 80], valign: bottom, text: M2 原生生成 }
-    t4: { type: text, role: heading, align: center, color: muted, frame: [1440, 420, 360, 80], valign: bottom, text: M3 交互 }
-    s1: { type: text, role: caption, align: center, frame: [120, 630, 360, 160], text: 编译器、效果库、截图 QA }
-    s2: { type: text, role: caption, align: center, frame: [560, 630, 360, 160], opacity: 0.45, text: PPTX 导入、逐步对比 }
-    s3: { type: text, role: caption, align: center, frame: [1000, 630, 360, 160], opacity: 0.45, text: 三套 deck 验证泛化 }
-    s4: { type: text, role: caption, align: center, frame: [1440, 630, 360, 160], opacity: 0.45, text: 状态驱动的交互图表 }
+    t1: { type: text, role: heading, align: center, frame: [120, 380, 360, 120], valign: bottom, text: "M0 Skeleton ^^骨架^^" }
+    t2: { type: text, role: heading, align: center, color: muted, frame: [560, 380, 360, 120], valign: bottom, text: "M1 Rebuild PPT ^^复刻 PPT^^" }
+    t3: { type: text, role: heading, align: center, color: muted, frame: [1000, 380, 360, 120], valign: bottom, text: "M2 Native ^^原生生成^^" }
+    t4: { type: text, role: heading, align: center, color: muted, frame: [1440, 380, 360, 120], valign: bottom, text: "M3 Interactive ^^交互^^" }
+    s1: { type: text, role: caption, align: center, frame: [120, 630, 360, 200], text: "Compiler, library, screenshot QA ^^编译器、效果库、截图 QA^^" }
+    s2: { type: text, role: caption, align: center, frame: [560, 630, 360, 200], opacity: 0.45, text: "PPTX import, step-by-step diff ^^PPTX 导入、逐步对比^^" }
+    s3: { type: text, role: caption, align: center, frame: [1000, 630, 360, 200], opacity: 0.45, text: "Three decks prove it generalizes ^^三套 deck 验证泛化^^" }
+    s4: { type: text, role: caption, align: center, frame: [1440, 630, 360, 200], opacity: 0.45, text: "State-driven interactive charts ^^状态驱动的交互图表^^" }
   states:
     - {}
     - override:

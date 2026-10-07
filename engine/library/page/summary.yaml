@@ -5,18 +5,23 @@ order: 90
 prompts: [总结, 小结, takeaway, 要点回顾, 带走什么, 结论页, summary]
 use_when: 结尾之前的一页：把全篇收成 3 句话，再给出明确的下一步行动
 avoid_when: 把所有内容再复述一遍（只留 3 条，每条一句）
+en:
+  title: Summary
+  prompts: [summary, takeaways, key points recap, conclusion slide]
+  use_when: The slide before the end — the whole talk in 3 sentences, then a clear next action
+  avoid_when: Repeating everything (keep 3 points, one sentence each)
 demo:
   layout: title-body
   objects:
-    title: { type: text, role: title, text: 带走这三件事 }
+    title: { type: text, role: title, text: "Take away three things ^^带走这三件事^^" }
     points:
       type: text
       role: bullets
       text:
-        - "1. **结论先行**：标题写结论，不写主题"
-        - "2. **一页一个意思**：多了就拆成多个 State"
-        - "3. **数据说话**：关键数字单独放大，并标明来源"
-    next: { type: text, role: callout, text: "下一步 → 本周内确认范围与负责人" }
+        - "1. **Lead with the conclusion**: titles state findings ^^结论先行：标题写结论，不写主题^^"
+        - "2. **One idea per slide**: split the rest into States ^^一页一个意思：多了就拆成多个 State^^"
+        - "3. **Let data speak**: enlarge key numbers, cite sources ^^数据说话：关键数字单独放大，并标明来源^^"
+    next: { type: text, role: callout, text: "Next → confirm scope and owners this week ^^下一步 → 本周内确认范围与负责人^^" }
   steps:
     - { enter: points, by: paragraph }
     - { enter: next, effect: fade }
