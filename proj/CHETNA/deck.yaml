@@ -7644,94 +7644,96 @@ scenes:
   # Part 4 结尾：Technology } Sectors { Impact —— 不画具体连线；三栏自左向右逐次出现
   - id: research-summary
     section: Selected Research
-    purpose: Recap the four story lines as shared technologies applied across four sectors, leading to planning, climate, society and operations impacts
+    purpose: Recap the four story lines as shared technologies applied across four sectors, leading to climate, policy, society and action impacts
     layout: free
     chrome: { header: { left: "Selected research: from technology to impact" } }
     objects:
-      # 左栏：Technology
+      # 左栏：Technology（标题行与图标在栏内居中）
       tp_panel: { type: shape, geom: roundRect, radius: 22, fill: accent-3-soft, frame: [120, 96, 420, 872] }
-      tp_icon: { type: image, src: assets/part4/summary/technology.svg, fit: contain, caption: false, alt: Technology, frame: [144, 120, 80, 80] }
-      tp_title: { type: text, size: 40, weight: bold, color: accent, lineHeight: 1.2, valign: middle, frame: [240, 120, 280, 80], text: "Technology" }
+      tp_icon: { type: image, src: assets/part4/summary/technology.svg, fit: contain, caption: false, alt: Technology, frame: [175, 120, 80, 80] }
+      tp_title: { type: text, size: 40, weight: bold, color: accent, lineHeight: 1.2, align: center, valign: middle, frame: [261, 120, 235, 80], text: "Technology" }
       t1_box: { type: shape, geom: roundRect, radius: 16, fill: surface, frame: [144, 224, 372, 90] }
-      t1_icon: { type: image, src: assets/part4/summary/big-data.svg, fit: contain, caption: false, alt: Big data, frame: [160, 241, 56, 56] }
-      t1: { type: text, size: 24, weight: bold, color: ink, valign: middle, frame: [232, 224, 272, 90], text: "Big data" }
+      t1_icon: { type: image, src: assets/part4/summary/satellite.svg, fit: contain, caption: false, alt: Satellite imagery, frame: [160, 241, 56, 56] }
+      t1: { type: text, size: 24, weight: bold, color: ink, valign: middle, frame: [232, 224, 272, 90], text: "Satellite imagery" }
       t2_box: { type: shape, geom: roundRect, radius: 16, fill: surface, frame: [144, 328, 372, 90] }
-      t2_icon: { type: image, src: assets/part4/summary/ml-ai.svg, fit: contain, caption: false, alt: Machine learning and AI, frame: [160, 345, 56, 56] }
-      t2: { type: text, size: 24, weight: bold, color: ink, valign: middle, frame: [232, 328, 272, 90], text: "Machine learning & AI" }
+      t2_icon: { type: image, src: assets/part4/summary/local-surveys.svg, fit: contain, caption: false, alt: Local surveys, frame: [160, 345, 56, 56] }
+      t2: { type: text, size: 24, weight: bold, color: ink, valign: middle, frame: [232, 328, 272, 90], text: "Local surveys" }
       t3_box: { type: shape, geom: roundRect, radius: 16, fill: surface, frame: [144, 432, 372, 90] }
-      t3_icon: { type: image, src: assets/part4/summary/physical-modelling.svg, fit: contain, caption: false, alt: Physical modelling, frame: [160, 449, 56, 56] }
-      t3: { type: text, size: 24, weight: bold, color: ink, valign: middle, frame: [232, 432, 272, 90], text: "Physical modelling" }
+      t3_icon: { type: image, src: assets/part4/summary/climate-data.svg, fit: contain, caption: false, alt: Climate data, frame: [160, 449, 56, 56] }
+      t3: { type: text, size: 24, weight: bold, color: ink, valign: middle, frame: [232, 432, 272, 90], text: "Climate data" }
       t4_box: { type: shape, geom: roundRect, radius: 16, fill: surface, frame: [144, 536, 372, 90] }
-      t4_icon: { type: image, src: assets/part4/summary/proxy-modelling.svg, fit: contain, caption: false, alt: Proxy-based modelling, frame: [160, 553, 56, 56] }
-      t4: { type: text, size: 24, weight: bold, color: ink, valign: middle, frame: [232, 536, 272, 90], text: "Proxy-based modelling" }
+      t4_icon: { type: image, src: assets/part4/summary/big-data.svg, fit: contain, caption: false, alt: Big data, frame: [160, 553, 56, 56] }
+      t4: { type: text, size: 24, weight: bold, color: ink, valign: middle, frame: [232, 536, 272, 90], text: "Big data" }
       t5_box: { type: shape, geom: roundRect, radius: 16, fill: surface, frame: [144, 640, 372, 90] }
-      t5_icon: { type: image, src: assets/part4/summary/climate-data.svg, fit: contain, caption: false, alt: Climate data, frame: [160, 657, 56, 56] }
-      t5: { type: text, size: 24, weight: bold, color: ink, valign: middle, frame: [232, 640, 272, 90], text: "Climate data" }
+      t5_icon: { type: image, src: assets/part4/summary/ml-ai.svg, fit: contain, caption: false, alt: Machine learning and AI, frame: [160, 657, 56, 56] }
+      t5: { type: text, size: 24, weight: bold, color: ink, valign: middle, frame: [232, 640, 272, 90], text: "Machine learning & AI" }
       t6_box: { type: shape, geom: roundRect, radius: 16, fill: surface, frame: [144, 744, 372, 90] }
-      t6_icon: { type: image, src: assets/part4/summary/local-surveys.svg, fit: contain, caption: false, alt: Local surveys, frame: [160, 761, 56, 56] }
-      t6: { type: text, size: 24, weight: bold, color: ink, valign: middle, frame: [232, 744, 272, 90], text: "Local surveys" }
+      t6_icon: { type: image, src: assets/part4/summary/physical-modelling.svg, fit: contain, caption: false, alt: Physical modelling, frame: [160, 761, 56, 56] }
+      t6: { type: text, size: 24, weight: bold, color: ink, valign: middle, frame: [232, 744, 272, 90], text: "Physical modelling" }
       t7_box: { type: shape, geom: roundRect, radius: 16, fill: surface, frame: [144, 848, 372, 90] }
-      t7_icon: { type: image, src: assets/part4/summary/satellite.svg, fit: contain, caption: false, alt: Satellite imagery, frame: [160, 865, 56, 56] }
-      t7: { type: text, size: 24, weight: bold, color: ink, valign: middle, frame: [232, 848, 272, 90], text: "Satellite imagery" }
+      t7_icon: { type: image, src: assets/part4/summary/proxy-modelling.svg, fit: contain, caption: false, alt: Proxy-based modelling, frame: [160, 865, 56, 56] }
+      t7: { type: text, size: 24, weight: bold, color: ink, valign: middle, frame: [232, 848, 272, 90], text: "Proxy-based modelling" }
       brace1: { type: image, src: assets/part4/summary/brace-technology.svg, fit: contain, caption: false, alt: Technologies feed the sectors, frame: [548, 104, 64, 856] }
-      # 中栏：Sectors（高度较低、垂直居中）
-      sp_panel: { type: shape, geom: roundRect, radius: 22, fill: surface, stroke: line, strokeWidth: 2, frame: [620, 212, 520, 640] }
-      sp_icon: { type: image, src: assets/part4/summary/sectors.svg, fit: contain, caption: false, alt: Sectors, frame: [757, 236, 80, 80] }
-      sp_title: { type: text, size: 40, weight: bold, color: accent, lineHeight: 1.2, valign: middle, frame: [853, 236, 230, 80], text: "Sectors" }
-      s1_card: { type: shape, geom: roundRect, radius: 18, fill: bg, frame: [644, 340, 232, 236] }
-      s1_disc: { type: shape, geom: ellipse, fill: surface, frame: [712, 360, 96, 96] }
-      s1_icon: { type: image, src: "assets/part 1/ground transport.svg", fit: contain, caption: false, alt: Ground transport, frame: [730, 378, 60, 60] }
-      s1_name: { type: text, size: 24, weight: bold, color: ink, lineHeight: 1.2, align: center, valign: middle, frame: [652, 466, 216, 36], text: "Ground transport" }
-      s1_sub: { type: text, size: 20, color: muted, lineHeight: 1.3, align: center, frame: [652, 504, 216, 54], text: "Traffic · congestion · health" }
-      s2_card: { type: shape, geom: roundRect, radius: 18, fill: bg, frame: [892, 340, 232, 236] }
-      s2_disc: { type: shape, geom: ellipse, fill: surface, frame: [960, 360, 96, 96] }
-      s2_icon: { type: image, src: "assets/part 1/power.svg", fit: contain, caption: false, alt: Power, frame: [978, 378, 60, 60] }
-      s2_name: { type: text, size: 24, weight: bold, color: ink, lineHeight: 1.2, align: center, valign: middle, frame: [900, 466, 216, 36], text: "Power" }
-      s2_sub: { type: text, size: 20, color: muted, lineHeight: 1.3, align: center, frame: [900, 504, 216, 54], text: "Generation · demand · climate stress" }
-      s3_card: { type: shape, geom: roundRect, radius: 18, fill: bg, frame: [644, 592, 232, 236] }
-      s3_disc: { type: shape, geom: ellipse, fill: surface, frame: [712, 612, 96, 96] }
-      s3_icon: { type: image, src: "assets/part 1/residential.svg", fit: contain, caption: false, alt: Residential, frame: [730, 630, 60, 60] }
-      s3_name: { type: text, size: 24, weight: bold, color: ink, lineHeight: 1.2, align: center, valign: middle, frame: [652, 718, 216, 36], text: "Residential" }
-      s3_sub: { type: text, size: 20, color: muted, lineHeight: 1.3, align: center, frame: [652, 756, 216, 54], text: "Households · buildings" }
-      s4_card: { type: shape, geom: roundRect, radius: 18, fill: bg, frame: [892, 592, 232, 236] }
-      s4_disc: { type: shape, geom: ellipse, fill: surface, frame: [960, 612, 96, 96] }
-      s4_icon: { type: image, src: "assets/part 1/industrial.svg", fit: contain, caption: false, alt: Industry, frame: [978, 630, 60, 60] }
-      s4_name: { type: text, size: 24, weight: bold, color: ink, lineHeight: 1.2, align: center, valign: middle, frame: [900, 718, 216, 36], text: "Industry" }
-      s4_sub: { type: text, size: 20, color: muted, lineHeight: 1.3, align: center, frame: [900, 756, 216, 54], text: "Brick kilns · coal mines" }
-      brace2: { type: image, src: assets/part4/summary/brace-impact.svg, fit: contain, caption: false, alt: Sectors lead to impacts, frame: [1148, 104, 64, 856] }
-      # 右栏：Impact（四个类别 + 标签）
-      ip_panel: { type: shape, geom: roundRect, radius: 22, fill: accent-2-soft, frame: [1220, 96, 580, 872] }
-      ip_icon: { type: image, src: assets/part4/summary/impact.svg, fit: contain, caption: false, alt: Impact, frame: [1244, 120, 80, 80] }
-      ip_title: { type: text, size: 40, weight: bold, color: accent, lineHeight: 1.2, valign: middle, frame: [1340, 120, 440, 80], text: "Impact" }
-      c1_box: { type: shape, geom: roundRect, radius: 16, fill: surface, frame: [1244, 224, 532, 188] }
-      c1_icon: { type: image, src: assets/part4/summary/planning.svg, fit: contain, caption: false, alt: Planning, frame: [1260, 238, 48, 48] }
-      c1: { type: text, size: 26, weight: bold, color: ink, lineHeight: 1.2, valign: middle, frame: [1320, 238, 440, 48], text: "Planning" }
-      c1_p1: { type: shape, geom: pill, fill: accent-2-soft, color: ink, size: 20, lineHeight: 1.1, align: center, valign: middle, padding: 4, frame: [1260, 298, 244, 44], text: "Urban planning" }
-      c1_p2: { type: shape, geom: pill, fill: accent-2-soft, color: ink, size: 20, lineHeight: 1.1, align: center, valign: middle, padding: 4, frame: [1516, 298, 244, 44], text: "Energy planning" }
-      c1_p3: { type: shape, geom: pill, fill: accent-2-soft, color: ink, size: 20, lineHeight: 1.1, align: center, valign: middle, padding: 4, frame: [1260, 352, 500, 44], text: "Low-carbon development" }
-      c2_box: { type: shape, geom: roundRect, radius: 16, fill: surface, frame: [1244, 437, 532, 188] }
-      c2_icon: { type: image, src: assets/part4/summary/climate.svg, fit: contain, caption: false, alt: Climate, frame: [1260, 451, 48, 48] }
-      c2: { type: text, size: 26, weight: bold, color: ink, lineHeight: 1.2, valign: middle, frame: [1320, 451, 440, 48], text: "Climate" }
-      c2_p1: { type: shape, geom: pill, fill: accent-2-soft, color: ink, size: 20, lineHeight: 1.1, align: center, valign: middle, padding: 4, frame: [1260, 511, 244, 44], text: "Emissions assessment" }
-      c2_p2: { type: shape, geom: pill, fill: accent-2-soft, color: ink, size: 20, lineHeight: 1.1, align: center, valign: middle, padding: 4, frame: [1516, 511, 244, 44], text: "Climate vulnerability" }
-      c2_p3: { type: shape, geom: pill, fill: accent-2-soft, color: ink, size: 20, lineHeight: 1.1, align: center, valign: middle, padding: 4, frame: [1260, 565, 500, 44], text: "Climate resilience" }
-      c3_box: { type: shape, geom: roundRect, radius: 16, fill: surface, frame: [1244, 650, 532, 134] }
-      c3_icon: { type: image, src: assets/part4/summary/society.svg, fit: contain, caption: false, alt: Society, frame: [1260, 664, 48, 48] }
-      c3: { type: text, size: 26, weight: bold, color: ink, lineHeight: 1.2, valign: middle, frame: [1320, 664, 440, 48], text: "Society" }
-      c3_p1: { type: shape, geom: pill, fill: accent-2-soft, color: ink, size: 20, lineHeight: 1.1, align: center, valign: middle, padding: 4, frame: [1260, 724, 244, 44], text: "Public health" }
-      c3_p2: { type: shape, geom: pill, fill: accent-2-soft, color: ink, size: 20, lineHeight: 1.1, align: center, valign: middle, padding: 4, frame: [1516, 724, 244, 44], text: "Social equity" }
-      c4_box: { type: shape, geom: roundRect, radius: 16, fill: surface, frame: [1244, 809, 532, 134] }
-      c4_icon: { type: image, src: assets/part4/summary/operations.svg, fit: contain, caption: false, alt: Operations, frame: [1260, 823, 48, 48] }
-      c4: { type: text, size: 26, weight: bold, color: ink, lineHeight: 1.2, valign: middle, frame: [1320, 823, 440, 48], text: "Operations" }
-      c4_p1: { type: shape, geom: pill, fill: accent-2-soft, color: ink, size: 20, lineHeight: 1.1, align: center, valign: middle, padding: 4, frame: [1260, 883, 244, 44], text: "Facility monitoring" }
-      c4_p2: { type: shape, geom: pill, fill: accent-2-soft, color: ink, size: 20, lineHeight: 1.1, align: center, valign: middle, padding: 4, frame: [1516, 883, 244, 44], text: "Environmental risk" }
+      # 中栏：Urban Emissions（高度较低、垂直居中；宽度吸收 Impact 栏收窄后的空间）
+      sp_panel: { type: shape, geom: roundRect, radius: 22, fill: surface, stroke: line, strokeWidth: 2, frame: [620, 212, 680, 640] }
+      sp_icon: { type: image, src: assets/part4/summary/sectors.svg, fit: contain, caption: false, alt: Urban emissions, frame: [760, 236, 80, 80] }
+      sp_title: { type: text, size: 40, weight: bold, color: accent, lineHeight: 1.2, align: center, valign: middle, frame: [846, 236, 320, 80], text: "Urban Emissions" }
+      s1_card: { type: shape, geom: roundRect, radius: 18, fill: bg, frame: [644, 340, 308, 236] }
+      s1_disc: { type: shape, geom: ellipse, fill: surface, frame: [750, 360, 96, 96] }
+      s1_icon: { type: image, src: "assets/part 1/ground transport.svg", fit: contain, caption: false, alt: Ground transport, frame: [768, 378, 60, 60] }
+      s1_name: { type: text, size: 24, weight: bold, color: ink, lineHeight: 1.2, align: center, valign: middle, frame: [652, 466, 292, 36], text: "Ground transport" }
+      s1_sub: { type: text, size: 20, color: muted, lineHeight: 1.3, align: center, frame: [652, 504, 292, 54], text: "Traffic · congestion · health" }
+      s2_card: { type: shape, geom: roundRect, radius: 18, fill: bg, frame: [968, 340, 308, 236] }
+      s2_disc: { type: shape, geom: ellipse, fill: surface, frame: [1074, 360, 96, 96] }
+      s2_icon: { type: image, src: "assets/part 1/power.svg", fit: contain, caption: false, alt: Power, frame: [1092, 378, 60, 60] }
+      s2_name: { type: text, size: 24, weight: bold, color: ink, lineHeight: 1.2, align: center, valign: middle, frame: [976, 466, 292, 36], text: "Power" }
+      s2_sub: { type: text, size: 20, color: muted, lineHeight: 1.3, align: center, frame: [976, 504, 292, 54], text: "Generation · demand ·\\nclimate stress" }
+      s3_card: { type: shape, geom: roundRect, radius: 18, fill: bg, frame: [644, 592, 308, 236] }
+      s3_disc: { type: shape, geom: ellipse, fill: surface, frame: [750, 612, 96, 96] }
+      s3_icon: { type: image, src: "assets/part 1/residential.svg", fit: contain, caption: false, alt: Residential, frame: [768, 630, 60, 60] }
+      s3_name: { type: text, size: 24, weight: bold, color: ink, lineHeight: 1.2, align: center, valign: middle, frame: [652, 718, 292, 36], text: "Residential" }
+      s3_sub: { type: text, size: 20, color: muted, lineHeight: 1.3, align: center, frame: [652, 756, 292, 54], text: "Households · building stocks\\n· scope-2 emissions" }
+      s4_card: { type: shape, geom: roundRect, radius: 18, fill: bg, frame: [968, 592, 308, 236] }
+      s4_disc: { type: shape, geom: ellipse, fill: surface, frame: [1074, 612, 96, 96] }
+      s4_icon: { type: image, src: "assets/part 1/industrial.svg", fit: contain, caption: false, alt: Industry, frame: [1092, 630, 60, 60] }
+      s4_name: { type: text, size: 24, weight: bold, color: ink, lineHeight: 1.2, align: center, valign: middle, frame: [976, 718, 292, 36], text: "Industry" }
+      s4_sub: { type: text, size: 20, color: muted, lineHeight: 1.3, align: center, frame: [976, 756, 292, 54], text: "Brick kilns · coal mines" }
+      brace2: { type: image, src: assets/part4/summary/brace-impact.svg, fit: contain, caption: false, alt: Sectors lead to impacts, frame: [1308, 104, 64, 856] }
+      # 右栏：Impact（与 Technology 栏同宽；四个类别 + 标签）
+      ip_panel: { type: shape, geom: roundRect, radius: 22, fill: accent-2-soft, frame: [1380, 96, 420, 872] }
+      ip_icon: { type: image, src: assets/part4/summary/impact.svg, fit: contain, caption: false, alt: Impact, frame: [1477, 120, 80, 80] }
+      ip_title: { type: text, size: 40, weight: bold, color: accent, lineHeight: 1.2, align: center, valign: middle, frame: [1563, 120, 150, 80], text: "Impact" }
+      c1_box: { type: shape, geom: roundRect, radius: 16, fill: surface, frame: [1404, 224, 372, 188] }
+      c1_icon: { type: image, src: assets/part4/summary/climate.svg, fit: contain, caption: false, alt: Climate, frame: [1420, 238, 48, 48] }
+      c1: { type: text, size: 26, weight: bold, color: ink, lineHeight: 1.2, valign: middle, frame: [1480, 238, 280, 48], text: "Climate" }
+      c1_p1: { type: shape, geom: pill, fill: accent-2-soft, color: ink, size: 17, lineHeight: 1.1, align: center, valign: middle, padding: 2, frame: [1412, 298, 174, 44], text: "Emissions assessment" }
+      c1_p2: { type: shape, geom: pill, fill: accent-2-soft, color: ink, size: 17, lineHeight: 1.1, align: center, valign: middle, padding: 2, frame: [1594, 298, 174, 44], text: "Emission mitigation" }
+      c1_p3: { type: shape, geom: pill, fill: accent-2-soft, color: ink, size: 17, lineHeight: 1.1, align: center, valign: middle, padding: 2, frame: [1412, 352, 174, 44], text: "Climate vulnerability" }
+      c1_p4: { type: shape, geom: pill, fill: accent-2-soft, color: ink, size: 17, lineHeight: 1.1, align: center, valign: middle, padding: 2, frame: [1594, 352, 174, 44], text: "Climate resilience" }
+      c2_box: { type: shape, geom: roundRect, radius: 16, fill: surface, frame: [1404, 437, 372, 188] }
+      c2_icon: { type: image, src: assets/part4/summary/planning.svg, fit: contain, caption: false, alt: Policy, frame: [1420, 451, 48, 48] }
+      c2: { type: text, size: 26, weight: bold, color: ink, lineHeight: 1.2, valign: middle, frame: [1480, 451, 280, 48], text: "Policy" }
+      c2_p1: { type: shape, geom: pill, fill: accent-2-soft, color: ink, size: 17, lineHeight: 1.1, align: center, valign: middle, padding: 2, frame: [1412, 511, 174, 44], text: "Hotspot targeting" }
+      c2_p2: { type: shape, geom: pill, fill: accent-2-soft, color: ink, size: 17, lineHeight: 1.1, align: center, valign: middle, padding: 2, frame: [1594, 511, 174, 44], text: "Low-carbon city" }
+      c2_p3: { type: shape, geom: pill, fill: accent-2-soft, color: ink, size: 17, lineHeight: 1.1, align: center, valign: middle, padding: 2, frame: [1412, 565, 174, 44], text: "Urban planning" }
+      c2_p4: { type: shape, geom: pill, fill: accent-2-soft, color: ink, size: 17, lineHeight: 1.1, align: center, valign: middle, padding: 2, frame: [1594, 565, 174, 44], text: "Energy transitions" }
+      c3_box: { type: shape, geom: roundRect, radius: 16, fill: surface, frame: [1404, 650, 372, 134] }
+      c3_icon: { type: image, src: assets/part4/summary/society.svg, fit: contain, caption: false, alt: Society, frame: [1420, 664, 48, 48] }
+      c3: { type: text, size: 26, weight: bold, color: ink, lineHeight: 1.2, valign: middle, frame: [1480, 664, 280, 48], text: "Society" }
+      c3_p1: { type: shape, geom: pill, fill: accent-2-soft, color: ink, size: 17, lineHeight: 1.1, align: center, valign: middle, padding: 2, frame: [1412, 724, 174, 44], text: "Public health" }
+      c3_p2: { type: shape, geom: pill, fill: accent-2-soft, color: ink, size: 17, lineHeight: 1.1, align: center, valign: middle, padding: 2, frame: [1594, 724, 174, 44], text: "Social equity" }
+      c4_box: { type: shape, geom: roundRect, radius: 16, fill: surface, frame: [1404, 809, 372, 134] }
+      c4_icon: { type: image, src: assets/part4/summary/operations.svg, fit: contain, caption: false, alt: Actions, frame: [1420, 823, 48, 48] }
+      c4: { type: text, size: 26, weight: bold, color: ink, lineHeight: 1.2, valign: middle, frame: [1480, 823, 280, 48], text: "Actions" }
+      c4_p1: { type: shape, geom: pill, fill: accent-2-soft, color: ink, size: 17, lineHeight: 1.1, align: center, valign: middle, padding: 2, frame: [1412, 883, 174, 44], text: "Facility monitoring" }
+      c4_p2: { type: shape, geom: pill, fill: accent-2-soft, color: ink, size: 17, lineHeight: 1.1, align: center, valign: middle, padding: 2, frame: [1594, 883, 174, 44], text: "Risk management" }
     steps:
       - - { enter: brace1, effect: fade, duration: 300 }
         - { enter: [sp_panel, sp_icon, sp_title, s1_card, s1_disc, s1_icon, s1_name, s1_sub, s2_card, s2_disc, s2_icon, s2_name, s2_sub, s3_card, s3_disc, s3_icon, s3_name, s3_sub, s4_card, s4_disc, s4_icon, s4_name, s4_sub], effect: fade-up, duration: 500, after: true }
       - - { enter: brace2, effect: fade, duration: 300 }
-        - { enter: [ip_panel, ip_icon, ip_title, c1_box, c1_icon, c1, c1_p1, c1_p2, c1_p3, c2_box, c2_icon, c2, c2_p1, c2_p2, c2_p3, c3_box, c3_icon, c3, c3_p1, c3_p2, c4_box, c4_icon, c4, c4_p1, c4_p2], effect: fade-up, duration: 500, after: true }
+        - { enter: [ip_panel, ip_icon, ip_title, c1_box, c1_icon, c1, c1_p1, c1_p2, c1_p3, c1_p4, c2_box, c2_icon, c2, c2_p1, c2_p2, c2_p3, c2_p4, c3_box, c3_icon, c3, c3_p1, c3_p2, c4_box, c4_icon, c4, c4_p1, c4_p2], effect: fade-up, duration: 500, after: true }
     notes: "Recap of the four story lines in three columns; individual technology-to-sector links are intentionally not drawn. Enter with
-      the technologies; click once for the four sectors, once more for the impacts (planning, climate, society, operations). Ground transport:
+      the technologies; click once for the four urban-emission sectors, once more for the impacts (climate, policy, society, actions). Ground transport:
       CHETNA integrates big data, machine learning and physical modelling to inform urban planning and public health policy. Power: CHETNA uses
       proxy-based modelling and climate data to assess power-sector emissions and climatic vulnerability. Residential: CHETNA combines local
       surveys with ML model to inform equitable, low-carbon urban planning. Industry: CHETNA integrates satellite imagery and AI to monitor
