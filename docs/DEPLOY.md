@@ -12,6 +12,8 @@
 
 缩略图要用浏览器截图：`netlify.toml` 的构建命令先执行 `npx playwright-core install --only-shell chromium` 再 `npm run site`。如果 Chromium 装不上或启动失败，构建照常完成，只是没有 PNG 缩略图：主页的效果卡片会自动改用实时预览（滚动到时才加载的缩小 iframe，停在最终画面），演示卡片显示标题。也可以本地运行 `npm run site` 后用 CLI 上传：`npx netlify deploy --dir output/_site --prod`。
 
+缩略图截图时会自动注入 devDependency `@fontsource/noto-sans-sc` 的中文字体（Netlify 的 Linux 构建机没有中文字体，否则中文会被画成方块并烤进 PNG）；运行时的放映页仍用访客自己的字体，不受影响。
+
 主页与效果库预览页的界面默认英文，右上角可切换中文（记在浏览器 localStorage）；效果库条目的标题、提示词、说明始终中英双语显示。
 
 ## 首次部署

@@ -14,7 +14,7 @@ import { loadLibrary, type LibEntry } from './library.ts';
 import { buildDeck, copyReveal } from './build.ts';
 import { Issues } from './issues.ts';
 import { LIB_CATEGORIES, LIB_CATEGORIES_EN } from './schema.ts';
-import { ENGINE, OUTPUT, rel, type DeckPaths } from './paths.ts';
+import { ENGINE, OUTPUT, ROOT, rel, type DeckPaths } from './paths.ts';
 import { homeHtml, LANG_BOOT } from './home.ts';
 import { escapeHtml } from './markup.ts';
 import { printIssues } from './report.ts';
@@ -102,6 +102,30 @@ function item(e: LibEntry, clicks: number[], ok: boolean, errors: string[]): Gal
   };
 }
 
+/**
+ * 缩略图在构建机（如 Netlify 的 Linux）上截图，那里没有中文字体，中文会被画成方块并烤进 PNG。
+ * 这里把 devDependency @fontsource/noto-sans-sc 的中文子集（按 unicode-range 只下载用到的）注入页面：
+ * 它以 'Noto Sans SC' 命名，正好是风格字体栈的最后一项，所以只补中文字形，拉丁字母不变。
+ */
+export async function withCjkFonts(page: import('playwright-core').Page) {
+  const dir = path.join(ROOT, 'node_modules', '@fontsource', 'noto-sans-sc');
+  if (!fs.existsSync(dir)) return;
+  const css = [400, 700]
+    .map((w) => path.join(dir, `chinese-simplified-${w}.css`))
+    .filter((f) => fs.existsSync(f))
+    .map((f) => fs.readFileSync(f, 'utf8').replace(/url\(\.\/files\//g, 'url(/__cjkfont/'))
+    .join('\n');
+  await page.route('**/__cjkfont/*', (route) => {
+    const file = path.join(dir, 'files', path.basename(new URL(route.request().url()).pathname));
+    if (!file.startsWith(path.join(dir, 'files')) || !fs.existsSync(file)) return route.fulfill({ status: 404 });
+    return route.fulfill({ path: file, headers: { 'access-control-allow-origin': '*' } });
+  });
+  // 用字符串而不是函数：tsx/esbuild 会给函数注入 __name，序列化到浏览器里会报 ReferenceError
+  await page.addInitScript(
+    `(function(){var c=${JSON.stringify(css)};function add(){var st=document.createElement('style');st.textContent=c;document.head.appendChild(st)}if(document.head)add();else document.addEventListener('DOMContentLoaded',add)})();`,
+  );
+}
+
 async function thumbnails(items: GalleryItem[], dir: string) {
   const { launch, openDeck, goTo } = await import('./qa/check.ts');
   const { serveStatic } = await import('./serve.ts');
@@ -109,6 +133,7 @@ async function thumbnails(items: GalleryItem[], dir: string) {
   const browser = await launch();
   try {
     const page = await browser.newPage({ viewport: { width: 960, height: 540 }, deviceScaleFactor: 1 });
+    await withCjkFonts(page);
     for (const it of items) {
       if (!it.ok) continue;
       await openDeck(page, `http://127.0.0.1:${port}/e/${it.id}/site/index.html?qa`);
@@ -132,6 +157,7 @@ export async function deckThumbnails(names: string[]) {
   const browser = await launch();
   try {
     const page = await browser.newPage({ viewport: { width: 960, height: 540 }, deviceScaleFactor: 1 });
+    await withCjkFonts(page);
     for (const name of names) {
       if (!fs.existsSync(path.join(OUTPUT, name, 'site', 'index.html'))) continue;
       try {
