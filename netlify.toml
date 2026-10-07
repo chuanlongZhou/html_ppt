@@ -1,9 +1,5 @@
-# 【deploy/full 分支】整站部署：主页 + 所有演示（/<deck>/）。
-# 本分支的 netlify.toml 就是 netlify.full.toml 的内容；main 上的 netlify.toml 只部署 CHETNA。
-# 更新方式：把 main 合并进本分支（git merge main），冲突时保留本文件。详见 docs/DEPLOY.md。
-
-# 整站部署配置：主页（主题与页面元素、页面结构、动画与交互）+ 所有演示（/<deck>/）。
-# Netlify 只自动读取名为 netlify.toml 的文件；用法见 docs/DEPLOY.md「部署整个项目页面」。
+# 整站部署配置：项目主页（主题与页面元素、页面结构、动画与交互）+ 所有演示（/<deck>/）。
+# Netlify 只自动读取名为 netlify.toml 的文件；只部署 CHETNA 见 netlify.chetna.toml，用法见 docs/DEPLOY.md。
 # 只部署部分演示：把命令改成 npm run site -- CHETNA intro
 
 [build]

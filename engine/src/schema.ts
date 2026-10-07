@@ -97,7 +97,10 @@ export const Chrome = z.strictObject({
     .optional()
     .describe('页码（按 Scene 计数）。true = 右下角 "n / N"'),
   sections: z
-    .union([z.boolean(), z.strictObject({ at: z.enum(['header', 'footer']).optional().describe('默认 footer') })])
+    .union([z.boolean(), z.strictObject({
+      at: z.enum(['header', 'footer']).optional().describe('默认 footer'),
+      icon: z.boolean().optional().describe('在当前章节标签文字后显示当前页 chrome.logo.src 图标（24 px）；无图片 Logo 时不显示'),
+    })])
     .optional()
     .describe('章节导航：一排章节标签，当前章节高亮，翻到新章节时高亮块滑动过去。章节名来自 scene 的 section（至少两个不同的 section）；占用页脚（或页眉）的中间'),
   progress: z.enum(['none', 'bar', 'dots']).optional().describe('进度：bar 底部细条 / dots 页脚圆点'),
@@ -149,6 +152,7 @@ export const DeckMeta = z.strictObject({
   stage: z.tuple([z.number(), z.number()]).optional().describe('舞台尺寸，默认 [1920, 1080]'),
   style: z.string().optional().describe('engine/styles 下的风格名（默认 default）'),
   theme: z.string().optional().describe('主题：engine/themes/ 下的预设名（ocean、forest …），或相对 deck 目录的主题文件（theme.yaml；可在主页「主题与页面元素」配置并下载）'),
+  captionFile: z.string().optional().describe('图片图注 JSON，相对 deck 目录；格式见 docs/IMAGE_CAPTIONS.md，按图片路径和 show 开关选择显示'),
   tokens: z.record(z.string(), z.string()).optional().describe('覆盖浅色 token，如 { accent: "#E8590C" }（优先于 theme）'),
   tokensDark: z.record(z.string(), z.string()).optional().describe('覆盖深色 token（theme: dark 的页面）'),
   chrome: Chrome.optional().describe('页面元素：Logo、页眉页脚、页码、进度（优先于 theme 中的 chrome）'),

@@ -7,9 +7,11 @@
  */
 import fs from 'node:fs';
 import path from 'node:path';
+import { pathToFileURL } from 'node:url';
 import { buildDeck } from './build.ts';
 import { printIssues } from './report.ts';
 import { rel, type DeckPaths } from './paths.ts';
+import { escapeHtml } from './markup.ts';
 
 const MIME: Record<string, string> = {
   '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.gif': 'image/gif', '.webp': 'image/webp', '.avif': 'image/avif',
@@ -91,7 +93,9 @@ export function inlineSite(site: string): { html: string; assets: ExportResult['
 
   // 配置 JSON 里引用的资源（如页面 chrome 的 logo）也要带上
   const cfg = /HtmlPpt\.init\((\{.*\})\);/s.exec(html)?.[1] ?? '';
-  for (const k of dataUri.keys()) if (cfg.includes(JSON.stringify(k))) used.add(k);
+  const overrides = [...html.matchAll(/\bdata-chrome="([^"]*)"/g)].map(m => m[1]);
+  for (const k of dataUri.keys())
+    if (cfg.includes(JSON.stringify(k)) || overrides.some(o => o.includes(escapeHtml(JSON.stringify(k))))) used.add(k);
 
   let first = true;
   html = html.replace(/<script src="([^"]+)"><\/script>/g, (_m, src: string) => {
@@ -140,7 +144,7 @@ export async function verifyStandalone(file: string, shotsDir?: string): Promise
   const rep: VerifyReport = { ok: true, sections: 0, steps: 0, images: { total: 0, broken: [] }, requests: { total: 0, external: [] }, errors: [], shots: [] };
   try {
     const page = await browser.newPage({ viewport: { width: 1920, height: 1080 } });
-    const url = 'file://' + file;
+    const url = pathToFileURL(file).href;
     page.on('request', (r) => {
       rep.requests.total++;
       const u = r.url();

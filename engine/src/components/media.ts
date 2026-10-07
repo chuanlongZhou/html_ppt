@@ -22,6 +22,7 @@ export const imageSchema = z.strictObject({
   radius: z.number().optional().describe('圆角 px'),
   shadow: z.boolean().optional(),
   alt: z.string().optional(),
+  caption: z.union([z.boolean(), z.string().trim().min(1)]).optional().describe('图片图注：默认遵循 deck.captionFile；false 关闭、true 强制显示 JSON 图注、字符串改写图注但仍遵循已登记图片的 show（未登记时直接显示）；可在 State override 中覆盖'),
   ...base,
 });
 export type ImageProps = z.infer<typeof imageSchema> & { _src?: string; _size?: { w: number; h: number } };

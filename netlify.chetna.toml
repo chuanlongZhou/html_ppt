@@ -1,0 +1,15 @@
+# 只部署 CHETNA 的配置（单个演示，不含项目主页）。
+# Netlify 只自动读取 netlify.toml（现为整站配置）；用法见 docs/DEPLOY.md。
+
+[build]
+  command = "npm ci && npm run build -- CHETNA"
+  publish = "output/CHETNA/site"
+
+[build.environment]
+  NODE_VERSION = "22"
+  PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD = "1"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

@@ -18,6 +18,7 @@
     "catalog": "tsx engine/src/cli.ts catalog",
     "agents:sync": "tsx engine/src/cli.ts agents-sync",
     "typecheck": "tsc --noEmit -p engine/tsconfig.json",
+    "test": "node --import tsx --test engine/tests/*.test.ts",
     "test:navigation": "node --import tsx --test engine/tests/navigation.test.ts"
   },
   "dependencies": {
