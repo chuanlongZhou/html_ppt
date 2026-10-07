@@ -5,17 +5,22 @@ order: 7
 prompts: [对比, 之前之后, before after, 优缺点, 两种方案对比, vs]
 use_when: 两种方案、新旧做法、优缺点的对照
 avoid_when: 超过两个对象（用 page.cards-3）
+en:
+  title: Side-by-side comparison
+  prompts: [comparison, before and after, pros and cons, A vs B]
+  use_when: Two options, old vs new, pros vs cons
+  avoid_when: More than two things (use page.cards-3)
 demo:
   layout: split
   objects:
-    title: { type: text, role: title, text: 对比：两栏同结构，颜色区分立场 }
+    title: { type: text, role: title, text: "Same structure, color shows the side ^^两栏同结构，颜色区分立场^^" }
     a:
       type: shape
       slot: left
       fill: surface-2
-      text: ["# 以前：AI 生成 PPTX", "- 对象是零散的文本框", "- 动画难以程序化", "- 改一处，要重新生成"]
+      text: ["# Before: AI writes PPTX ^^以前：AI 生成 PPTX^^", "- Loose text boxes ^^对象是零散的文本框^^", "- Animation is hard to script ^^动画难以程序化^^", "- One fix, full regeneration ^^改一处，要重新生成^^"]
     b:
       type: shape
       slot: right
       fill: accent-soft
-      text: ["# 现在：AI 编写 deck.yaml", "- 对象有语义和身份", "- 动画是状态变化", "- 改一处，只动一处"]
+      text: ["# Now: AI writes deck.yaml ^^现在：AI 编写 deck.yaml^^", "- Objects have meaning and identity ^^对象有语义和身份^^", "- Animation is state change ^^动画是状态变化^^", "- One fix, one edit ^^改一处，只动一处^^"]

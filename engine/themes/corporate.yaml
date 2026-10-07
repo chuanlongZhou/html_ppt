@@ -1,3 +1,4 @@
 label: 商务红
 desc: 暖灰底、深红主色，稳重正式，适合企业与金融
+en: { label: Corporate red, desc: "Warm grey and deep red — steady and formal, for business and finance" }
 seeds: { accent: "#C8102E", accent2: "#1F4E8C", accent3: "#2F855A", accent4: "#6B4E9B", bg: "#F7F6F4", ink: "#1A1A1A" }

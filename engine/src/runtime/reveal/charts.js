@@ -89,7 +89,9 @@
     var font = getComputedStyle(root).fontFamily;
     measureCtx.font = size + 'px ' + font;
     var catW = Math.max.apply(null, cats.map(function (c) { return measureCtx.measureText(c).width; }));
-    var m = kind === 'hbar' ? { l: Math.min(360, catW + 28), r: 70, t: 16, b: 44 } : { l: 84, r: 24, t: labelsOn ? 44 : 20, b: 56 };
+    // 竖向分类标签含 " · "（如中英双语 "Power · 电力"）时分两行显示，底部多留一行
+    var twoLine = kind !== 'hbar' && cats.some(function (c) { return String(c).indexOf(' · ') > 0; });
+    var m = kind === 'hbar' ? { l: Math.min(360, catW + 28), r: 70, t: 16, b: 44 } : { l: 84, r: 24, t: labelsOn ? 44 : 20, b: twoLine ? 56 + Math.round(size * 0.95) : 56 };
     var pw = W - m.l - m.r;
     var ph = H - m.t - m.b;
     var val = function (v) { return (Math.max(vmin, Math.min(vmax, v)) - vmin) / (vmax - vmin || 1); };
@@ -118,7 +120,20 @@
       // 分类标签
       var cl = self.mark('c|' + ci, 'text', self.gLabels);
       cl.setAttribute('class', 'm ch-cat' + (hl === c ? ' on' : ''));
-      cl.textContent = c;
+      var parts = twoLine ? String(c).split(' · ') : null;
+      if (parts && parts.length > 1) {
+        cl.textContent = '';
+        var t1 = document.createElementNS(NS, 'tspan');
+        t1.setAttribute('x', '0');
+        t1.textContent = parts[0];
+        var t2 = document.createElementNS(NS, 'tspan');
+        t2.setAttribute('x', '0');
+        t2.setAttribute('dy', '1.15em');
+        t2.setAttribute('class', 'ch-cat2');
+        t2.textContent = parts.slice(1).join(' · ');
+        cl.appendChild(t1);
+        cl.appendChild(t2);
+      } else cl.textContent = c;
       if (kind === 'hbar') {
         cl.setAttribute('text-anchor', 'end');
         cl.style.transform = 'translate(' + (m.l - 14) + 'px,' + (m.t + ci * band + band / 2 + size * 0.35) + 'px)';

@@ -5,21 +5,26 @@ order: 3
 prompts: [目录, 议程, 大纲页, 今天讲什么, 内容提纲, agenda, contents]
 use_when: 封面之后，用 3–5 项告诉听众这次会讲什么、按什么顺序；左边一句话立场，右边编号列表
 avoid_when: 只有一两个部分的短演示（直接开讲）；超过 5 项（合并成 4–5 个部分）
+en:
+  title: Agenda
+  prompts: [agenda, contents, outline, what we will cover]
+  use_when: Right after the cover — 3–5 items saying what you will cover and in what order; a one-line stance on the left, a numbered list on the right
+  avoid_when: Short talks with one or two parts (just start); more than 5 items (merge into 4–5 parts)
 demo:
   layout: { type: split, ratio: 36 }
   objects:
-    title: { type: text, role: title, text: 今天讲四件事 }
-    lead: { type: text, role: subtitle, slot: left, text: 先给结论，再讲证据，最后落到行动 }
+    title: { type: text, role: title, text: "Four things today ^^今天讲四件事^^" }
+    lead: { type: text, role: subtitle, slot: left, text: "Conclusion first, then evidence, then action ^^先给结论，再讲证据，最后落到行动^^" }
     items:
       type: text
       role: bullets
       slot: right
       text:
-        - "1. **背景与问题**"
-        - "+ 为什么现在必须做"
-        - "2. **方案与取舍**"
-        - "+ 我们选了什么，放弃了什么"
-        - "3. **结果与证据**"
-        - "+ 数据怎么说"
-        - "4. **下一步**"
-        - "+ 需要你们做的决定"
+        - "1. **Context & problem** · 背景与问题"
+        - "+ Why now · 为什么现在做"
+        - "2. **Options & trade-offs** · 方案与取舍"
+        - "+ What we chose, what we dropped · 选了什么，放弃了什么"
+        - "3. **Results** · 结果与证据"
+        - "+ What the data says · 数据怎么说"
+        - "4. **Next steps** · 下一步"
+        - "+ Decisions we need from you · 需要你们做的决定"

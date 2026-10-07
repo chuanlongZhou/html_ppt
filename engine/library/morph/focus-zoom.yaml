@@ -5,15 +5,20 @@ order: 3
 prompts: [放大其中一个, 聚焦, 突出某一项, 其他变暗, zoom in, focus]
 use_when: 从几个并列项中挑一个深入讲：它放大，其他变暗但保留上下文
 avoid_when: 要连续深入每一项（考虑每项一个 scene）
+en:
+  title: Zoom into one item
+  prompts: [zoom in, focus on one, enlarge this item, dim the others]
+  use_when: Pick one of several parallel items to go deeper — it grows, the others dim but stay in context
+  avoid_when: Going deep into every item in turn (consider one scene per item)
 demo:
   layout: free
   objects:
-    title: { type: text, role: title, frame: [120, 84, 1680, 110], text: 四个子系统 }
-    c1: { type: shape, fill: surface, shadow: true, frame: [120, 250, 820, 340], valign: middle, text: ["# 编译器", "YAML → IR"] }
-    c2: { type: shape, fill: surface, shadow: true, frame: [980, 250, 820, 340], valign: middle, text: ["# 动画", "steps 与 morph"] }
-    c3: { type: shape, fill: surface, shadow: true, frame: [120, 630, 820, 340], valign: middle, text: ["# QA", "截图与检查"] }
-    c4: { type: shape, fill: surface, shadow: true, frame: [980, 630, 820, 340], valign: middle, text: ["# 效果库", "场景 ↔ 提示词"] }
-    d2: { type: text, role: body, frame: [480, 470, 960, 380], z: 6, text: ["- 点击构建：fragment，State 内", "- 状态切换：morph，State 之间", "- 一张 preset 表，代码实现"] }
+    title: { type: text, role: title, frame: [120, 70, 1680, 150], text: "Four subsystems ^^四个子系统^^" }
+    c1: { type: shape, fill: surface, shadow: true, frame: [120, 250, 820, 340], valign: middle, text: ["# Compiler ^^编译器^^", "YAML → IR"] }
+    c2: { type: shape, fill: surface, shadow: true, frame: [980, 250, 820, 340], valign: middle, text: ["# Motion ^^动画^^", "steps & morph"] }
+    c3: { type: shape, fill: surface, shadow: true, frame: [120, 630, 820, 340], valign: middle, text: ["# QA", "Screenshots & checks ^^截图与检查^^"] }
+    c4: { type: shape, fill: surface, shadow: true, frame: [980, 630, 820, 340], valign: middle, text: ["# Library ^^效果库^^", "Scenes ↔ prompts"] }
+    d2: { type: text, role: body, frame: [480, 470, 960, 400], z: 6, text: ["- Builds: fragments, within a State ^^点击构建：fragment，State 内^^", "- Morphs: between States ^^状态切换：morph，State 之间^^", "- One preset table, in code ^^一张 preset 表，代码实现^^"] }
   states:
     - show: [title, c1, c2, c3, c4]
     - add: [d2]

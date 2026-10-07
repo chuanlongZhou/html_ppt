@@ -190,15 +190,19 @@ function fxVars(f: IRFx, rect: Rect, stage: { w: number; h: number }): string {
 function renderOverlays(ir: IRDeck, scene: IRScene): string {
   if (scene.caption) {
     const c = scene.caption;
+    // 有英文说明时中英双语：标签用英文，标题与提示词两种语言都给
+    const tag = c.en ? `${c.en.category} · ${c.en.group}` : `${c.category} · ${c.group}`;
+    const title = c.en ? `${c.en.title} · ${c.title}` : c.title;
+    const prompts = c.en ? [...c.en.prompts.slice(0, 2), ...c.prompts.filter((p) => /[^\x00-\x7F]/.test(p)).slice(0, 2)] : c.prompts.slice(0, 4);
     return (
       `<div class="lib-caption" data-id="${scene.id}.__caption">` +
-      `<span class="lc-tag">${escapeHtml(c.category)} · ${escapeHtml(c.group)}</span><span class="lc-title">${escapeHtml(c.title)}</span><span class="lc-id">${escapeHtml(c.id)}</span>` +
-      `<span class="lc-prompts"><span class="lc-k">提示词</span>${c.prompts.slice(0, 4).map((p) => `<q>${escapeHtml(p)}</q>`).join('')}</span>` +
+      `<span class="lc-tag">${escapeHtml(tag)}</span><span class="lc-title">${escapeHtml(title)}</span><span class="lc-id">${escapeHtml(c.id)}</span>` +
+      `<span class="lc-prompts"><span class="lc-k">${c.en ? 'Prompts · 提示词' : '提示词'}</span>${prompts.map((p) => `<q>${escapeHtml(p)}</q>`).join('')}</span>` +
       `</div>`
     );
   }
   if (ir.showPatterns && scene.patterns.length) {
-    return `<div class="pat-chips" data-id="${scene.id}.__patterns"><span class="lc-k">本页效果</span>${scene.patterns.map((p) => `<span class="pc">${escapeHtml(p)}</span>`).join('')}</div>`;
+    return `<div class="pat-chips" data-id="${scene.id}.__patterns"><span class="lc-k">Patterns · 本页效果</span>${scene.patterns.map((p) => `<span class="pc">${escapeHtml(p)}</span>`).join('')}</div>`;
   }
   return '';
 }

@@ -5,7 +5,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { Issues, readYaml, zodIssues, at, type SrcDoc } from './issues.ts';
-import { Scene, LibraryInclude, DeckShape, type StateSrc, type StepSrc, type EffectSrc, type ChromeSrc } from './schema.ts';
+import { Scene, LibraryInclude, DeckShape, LIB_CATEGORIES_EN, type StateSrc, type StepSrc, type EffectSrc, type ChromeSrc } from './schema.ts';
 import { COMPONENTS, ObjectSchema } from './components/index.ts';
 import { resolveLayout, defaultSlot, LAYOUTS, type LayoutSpec, type Rect, type LayoutName, type ResolvedLayout } from './layout.ts';
 import { PRESETS, DEFAULT_PRESET, DEFAULT_EASING, presetsOf, MORPH_DEFAULTS, type FxKind, type Intent, type Dir } from './motion.ts';
@@ -123,7 +123,7 @@ export function compileDeck(file: string): CompileResult {
       for (const e of matched) {
         files.push(e.file);
         const sceneData = { id: libSceneId(e.id), purpose: `效果库演示：${e.title}`, ...e.demo };
-        const caption = r.data.caption === false ? undefined : { id: e.id, title: e.title, prompts: e.prompts, category: e.categoryLabel, group: e.groupLabel };
+        const caption = r.data.caption === false ? undefined : { id: e.id, title: e.title, prompts: e.prompts, category: e.categoryLabel, group: e.groupLabel, en: e.en && { title: e.en.title, prompts: e.en.prompts, category: LIB_CATEGORIES_EN[e.category].label, group: LIB_CATEGORIES_EN[e.category].groups[e.group] ?? e.group } };
         normScene(sceneData, { src: e.src, base: ['demo'], assetDir: path.join(LIBRARY, 'assets'), caption, library: true, template: e.id }, ctx, defaultTransition);
       }
     } else if (item && typeof item.use === 'string') {
@@ -564,7 +564,8 @@ function registerAsset(src: string, assetDir: string, ctx: Ctx, loc: any): { pub
 
 function plain(s: unknown): string {
   if (Array.isArray(s)) return s.map(plain).join('');
-  return typeof s === 'string' ? s.replace(/[*=`#\-\s]/g, '') : s === undefined ? '' : String(s);
+  // ^^译文^^ 是同一内容的另一种语言，不计入文字量
+  return typeof s === 'string' ? s.replace(/\^\^.+?\^\^/g, '').replace(/[*=`#\-\s]/g, '') : s === undefined ? '' : String(s);
 }
 
 function densityChecks(items: IRItem[], clicks: number, style: Style, warn: (code: string, msg: string, hint: string, key?: string) => void) {

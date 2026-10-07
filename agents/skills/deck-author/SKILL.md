@@ -47,6 +47,7 @@ description: 制作或修改 html_ppt 演示（decks/<name>/deck.yaml）。用�
 - 颜色用 token（`accent`、`muted`、`surface`…），不要写死十六进制（白字 `#FFFFFF` 除外）。
 - 需要动画时，读 `agents/skills/deck-motion/SKILL.md`。
 - 每个 scene 都写 `purpose`。
+- 双语同屏：主语言在前，另一种语言写成 `^^译文^^`，渲染为下一行的小号浅色字（如 `"Core model ^^核心模型^^"`）；它不计入字数上限，但占高度，注意 check 的溢出报错。
 
 ## 主题与页面元素
 

@@ -5,8 +5,13 @@ order: 9
 prompts: [引用, 名言, 用户原话, 引述, quote]
 use_when: 引用专家、用户或文献的原话，增加可信度
 avoid_when: 引文超过三行（摘要后再引用）
+en:
+  title: Quote
+  prompts: [quote, quotation, customer words, testimonial]
+  use_when: Quote an expert, a user or a paper word for word to add credibility
+  avoid_when: Quotes longer than three lines (summarize, then quote)
 demo:
   layout: center
   objects:
-    q: { type: text, role: quote, align: center, text: "演示文稿不是页面图片，\n而是一段可以被理解和修改的结构化程序。" }
-    caption: { type: text, role: caption, text: —— 项目设计原则 }
+    q: { type: text, role: quote, align: center, text: "A deck is not a picture of pages,\nbut a structured program you can read and change. ^^演示文稿不是页面图片，而是一段可以被理解和修改的结构化程序。^^" }
+    caption: { type: text, role: caption, text: — Design principle · 项目设计原则 }

@@ -5,19 +5,24 @@ order: 2
 prompts: [从概览到详情, 移到一边展开, 对象移动腾出空间, 展开讲解, move aside]
 use_when: 先展示一个概念，再让它移到一侧、给细节腾出空间——听众始终看得到"在讲哪个"
 avoid_when: 概念与细节没有从属关系
+en:
+  title: Overview to detail
+  prompts: [move aside, overview to detail, make room for details, expand on it]
+  use_when: Show a concept, then move it aside to make room for details — the audience always sees what you are talking about
+  avoid_when: The details don't belong to the concept
 demo:
   layout: free
   objects:
-    card: { type: shape, fill: accent, color: "#FFFFFF", shadow: true, frame: [560, 290, 800, 440], align: center, valign: middle, size: 40, text: ["# Scene", "一组有连续性的 State"] }
-    head: { type: text, role: title, frame: [120, 84, 1680, 110], text: Scene 的三个要素 }
+    card: { type: shape, fill: accent, color: "#FFFFFF", shadow: true, frame: [560, 290, 800, 440], align: center, valign: middle, size: 40, text: ["# Scene", "A continuous set of States ^^一组有连续性的 State^^"] }
+    head: { type: text, role: title, frame: [120, 70, 1680, 150], text: "Three parts of a Scene ^^Scene 的三个要素^^" }
     detail:
       type: text
       role: bullets
-      frame: [780, 270, 1020, 560]
+      frame: [780, 270, 1020, 600]
       text:
-        - "**objects**：对象池，key 即身份"
-        - "**states**：每个 State = 可见对象 + 属性覆盖"
-        - "**transition**：State 之间默认 morph"
+        - "**objects**: the object pool; key = identity ^^对象池，key 即身份^^"
+        - "**states**: visible objects + overrides ^^每个 State = 可见对象 + 属性覆盖^^"
+        - "**transition**: States morph by default ^^State 之间默认 morph^^"
   states:
     - show: [card]
     - show: [card, head, detail]

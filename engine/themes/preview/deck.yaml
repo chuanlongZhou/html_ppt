@@ -1,9 +1,9 @@
 # 主页「主题与页面元素」的预览 deck：主题色与页面元素通过 postMessage 实时套用（见 runtime.js 的 applyTheme / chrome）
 # 这里不写 theme / chrome，由主页驱动。每页都用效果库条目，保证预览与真实使用一致。
 deck:
-  title: 示例演示
-  subtitle: 主题预览
-  author: 演讲者
+  title: Sample deck · 示例演示
+  subtitle: Theme preview · 主题预览
+  author: Speaker · 演讲者
   date: 2026-10
   slideNumber: false
   transition: none
@@ -12,33 +12,33 @@ scenes:
   - id: cover
     use: page.cover
     purpose: 预览封面
-    section: 开场
+    section: Intro · 开场
     objects:
-      kicker: { text: 项目介绍 · 2026 }
-      title: { text: "示例演示\n这是标题" }
-      subtitle: { text: 一行副标题，说明这份演示讲什么 }
-      meta: { text: 演讲者 · 2026-10 }
+      kicker: { text: Introduction · 2026 }
+      title: { text: "Sample deck\\nThis is the title ^^示例演示 · 这是标题^^" }
+      subtitle: { text: "One line on what this talk is about ^^一行副标题，说明这份演示讲什么^^" }
+      meta: { text: Speaker · 演讲者 · 2026-10 }
   - id: agenda
     use: page.agenda
     purpose: 预览目录页
-    section: 开场
+    section: Intro · 开场
   - id: cards
     use: page.cards-3
     purpose: 预览卡片与主色
-    section: 正文
+    section: Body · 正文
   - id: metrics
     use: page.metrics-4
     purpose: 预览数据与辅色
-    section: 正文
+    section: Body · 正文
   - id: chart
     use: interact.hbar-ranking
     purpose: 预览图表配色
-    section: 正文
+    section: Body · 正文
   - id: section
     use: page.section
     purpose: 预览深色页
-    section: 结尾
+    section: End · 结尾
   - id: closing
     use: page.closing
     purpose: 预览结尾页
-    section: 结尾
+    section: End · 结尾

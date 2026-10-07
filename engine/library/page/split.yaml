@@ -5,17 +5,22 @@ order: 5
 prompts: [左文右图, 图文页, 左边文字右边图, 观点加证据, split]
 use_when: 一个结论 + 一张支撑它的图、截图或图表
 avoid_when: 图本身信息量很大（让图占满整页，用 page.full-bleed 或单独一页）
+en:
+  title: Text + image
+  prompts: [split, text and image, claim with evidence, image on the right]
+  use_when: One conclusion plus an image, screenshot or chart that backs it up
+  avoid_when: The image carries a lot of detail (give it the whole slide — page.full-bleed or its own page)
 demo:
   layout: { type: split, ratio: 45 }
   objects:
-    title: { type: text, role: title, text: 左边讲观点，右边给证据 }
-    claim: { type: text, role: heading, slot: left, text: 一句话结论放在最上面 }
+    title: { type: text, role: title, text: "Claim on the left, evidence on the right ^^左边讲观点，右边给证据^^" }
+    claim: { type: text, role: heading, slot: left, text: "Lead with a one-line conclusion ^^一句话结论放在最上面^^" }
     body:
       type: text
       role: bullets
       slot: left
       text:
-        - 左栏：结论 + 2–3 条支撑
-        - 右栏：图、截图或图表
-        - 比例用 ratio 调整（默认 50）
+        - "Left: claim + 2–3 points ^^左栏：结论 + 2–3 条支撑^^"
+        - "Right: image or chart ^^右栏：图、截图或图表^^"
+        - "Adjust with ratio (default 50) ^^比例用 ratio 调整（默认 50）^^"
     visual: { type: image, src: "@lib/chart.svg", slot: right, fit: contain }

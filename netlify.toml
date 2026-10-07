@@ -2,13 +2,14 @@
 # Netlify 只自动读取名为 netlify.toml 的文件；只部署 CHETNA 见 netlify.chetna.toml，用法见 docs/DEPLOY.md。
 # 只部署部分演示：把命令改成 npm run site -- CHETNA intro
 
+# 缩略图要用浏览器截图：先装 Chromium（headless shell）；装不上也不影响部署，主页会改用实时预览。
+
 [build]
-  command = "npm ci && npm run site"
+  command = "npm ci && (npx playwright-core install --only-shell chromium || echo '· Chromium 安装失败，跳过缩略图') && npm run site"
   publish = "output/_site"
 
 [build.environment]
   NODE_VERSION = "22"
-  PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD = "1"
 
 [[headers]]
   for = "/*/assets/*"

@@ -5,13 +5,18 @@ order: 3
 prompts: [重点高亮, 荧光笔, 划重点, 强调这一句, highlight]
 use_when: 讲到关键句时，在它背后扫出一条底色
 avoid_when: 同一页强调超过两处（重点就不再是重点）
+en:
+  title: Highlighter
+  prompts: [highlight, highlighter, mark the key line, emphasize this sentence]
+  use_when: Sweep a color band behind the key sentence when you reach it
+  avoid_when: More than two highlights on one slide (nothing stands out any more)
 demo:
   layout: title-body
   objects:
-    title: { type: text, role: title, text: 讲到关键句时再强调它 }
-    intro: { type: text, role: body, text: 先正常展示内容，讲到那一句时点击一次，底色从左向右扫出。 }
-    key: { type: text, role: callout, frame: [120, 470, 760, 90], valign: middle, text: 动画应该服务于信息，而不是装饰 }
-    note: { type: text, role: caption, frame: [120, 620, 1300, 60], text: "emphasis: key, effect: highlight —— 之后可以再接一个 fade-up 补充说明" }
+    title: { type: text, role: title, text: "Emphasize the key line when you reach it ^^讲到关键句时再强调它^^" }
+    intro: { type: text, role: body, text: "Show the content as usual; click when you reach the line, and a band sweeps in from the left. ^^先正常展示内容，讲到那一句时点击一次，底色从左向右扫出。^^" }
+    key: { type: text, role: callout, frame: [120, 460, 1400, 140], valign: middle, text: "Motion should serve the message, not decorate ^^动画应该服务于信息，而不是装饰^^" }
+    note: { type: text, role: caption, frame: [120, 650, 1500, 100], text: "`emphasis: key, effect: highlight` — then add a fade-up note ^^之后可以再接一个 fade-up 补充说明^^" }
   steps:
     - { emphasis: key, effect: highlight }
     - { enter: note, effect: fade-up }

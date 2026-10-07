@@ -5,19 +5,24 @@ order: 11
 prompts: [表格, 数据表, 对比表, 参数表, 方案对比表, table, 价格表]
 use_when: 3–5 列、不超过 6 行的结构化数据；高亮行用 class="hl"，数字列用 class="num" 右对齐
 avoid_when: 行列很多（挑重点，其余放附录）；要看趋势（用 chart 组件）
+en:
+  title: Table
+  prompts: [table, data table, comparison table, pricing table, spec table]
+  use_when: Structured data with 3–5 columns and up to 6 rows; highlight a row with class="hl", right-align numbers with class="num"
+  avoid_when: Many rows or columns (show the key ones, move the rest to an appendix); trends (use the chart component)
 demo:
   layout: title-body
   objects:
-    title: { type: text, role: title, text: 三个方案的对比，一眼看出差别 }
+    title: { type: text, role: title, text: "Three options, differences at a glance ^^三个方案对比，一眼看出差别^^" }
     grid:
       type: html
       size: 34
       html: |
         <table class="tbl">
-          <thead><tr><th>方案</th><th class="num">成本</th><th class="num">周期</th><th>风险</th></tr></thead>
+          <thead><tr><th>Option · 方案</th><th class="num">Cost · 成本</th><th class="num">Time · 周期</th><th>Risk · 风险</th></tr></thead>
           <tbody>
-            <tr><td>A　自研</td><td class="num">120 万</td><td class="num">6 个月</td><td>中</td></tr>
-            <tr class="hl"><td>B　采购 + 定制</td><td class="num">80 万</td><td class="num">3 个月</td><td>低</td></tr>
-            <tr><td>C　外包</td><td class="num">60 万</td><td class="num">4 个月</td><td>高</td></tr>
+            <tr><td>A　Build · 自研</td><td class="num">$170k</td><td class="num">6 mo</td><td>Medium · 中</td></tr>
+            <tr class="hl"><td>B　Buy + customize · 采购 + 定制</td><td class="num">$110k</td><td class="num">3 mo</td><td>Low · 低</td></tr>
+            <tr><td>C　Outsource · 外包</td><td class="num">$85k</td><td class="num">4 mo</td><td>High · 高</td></tr>
           </tbody>
         </table>

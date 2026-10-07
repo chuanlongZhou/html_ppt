@@ -5,17 +5,22 @@ order: 1
 prompts: [交互图表, 可交互柱状图, 悬停看数值, 点击高亮, 切换年份, interactive bar chart]
 use_when: 讲完一组数据后，让听众或演讲者自己探索：悬停看数值、点击某一柱高亮并显示读数、按钮切换年份
 avoid_when: 只需要传达一个结论（用 page.big-number）
+en:
+  title: Interactive bar chart
+  prompts: [interactive bar chart, hover for values, click to highlight, switch years]
+  use_when: After presenting a data set, let the audience or presenter explore — hover for values, click a bar to highlight it, switch years with buttons
+  avoid_when: You only need to land one conclusion (use page.big-number)
 demo:
   layout: title-body
   objects:
-    title: { type: text, role: title, text: 悬停看数值，点击高亮，按钮切换年份 }
+    title: { type: text, role: title, text: "Hover for values, click to highlight, switch years ^^悬停看数值，点击高亮，按钮切换年份^^" }
     chart:
       type: chart
       kind: bar
-      categories: [交通, 工业, 建筑, 电力, 其他]
+      categories: [Transport · 交通, Industry · 工业, Buildings · 建筑, Power · 电力, Other · 其他]
       series: { "2020": [200, 260, 180, 320, 240], "2024": [280, 380, 210, 600, 340] }
       show: ["2024"]
       switch: true
       detail: true
       unit: Mt
-      source: 示例数据
+      source: Sample data · 示例数据

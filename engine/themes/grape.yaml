@@ -1,3 +1,4 @@
 label: 葡萄紫
 desc: 淡紫白底、紫色主色，有设计感，适合创意与发布会
+en: { label: Grape, desc: "Lilac white and purple — designerly, for creative work and launches" }
 seeds: { accent: "#6D4AE0", accent2: "#EC4899", accent3: "#0EA5A4", accent4: "#F59E0B", bg: "#F7F5FB", ink: "#1B1730" }

@@ -5,14 +5,19 @@ order: 6
 prompts: [条形图出现, 擦除, 从左往右出现, 进度条, 数据条依次出现, wipe]
 use_when: 横向条形、进度、时间轴等"有方向感"的元素
 avoid_when: 圆形、图标等没有方向的元素（用 fade 或 pop）
+en:
+  title: Wipe-in bars
+  prompts: [wipe, bars grow in, left to right reveal, progress bars]
+  use_when: Elements with a direction — horizontal bars, progress, time axes
+  avoid_when: Directionless elements like circles or icons (use fade or pop)
 demo:
   layout: title-body
   objects:
-    title: { type: text, role: title, text: 有方向的元素，用擦除让它"长"出来 }
-    l1: { type: text, role: label, size: 30, frame: [120, 320, 260, 80], valign: middle, text: 交通 }
-    l2: { type: text, role: label, size: 30, frame: [120, 440, 260, 80], valign: middle, text: 工业 }
-    l3: { type: text, role: label, size: 30, frame: [120, 560, 260, 80], valign: middle, text: 建筑 }
-    l4: { type: text, role: label, size: 30, frame: [120, 680, 260, 80], valign: middle, text: 其他 }
+    title: { type: text, role: title, text: "Directional shapes “grow” with a wipe ^^有方向的元素，用擦除让它“长”出来^^" }
+    l1: { type: text, role: label, size: 30, frame: [120, 320, 260, 80], valign: middle, text: Transport · 交通 }
+    l2: { type: text, role: label, size: 30, frame: [120, 440, 260, 80], valign: middle, text: Industry · 工业 }
+    l3: { type: text, role: label, size: 30, frame: [120, 560, 260, 80], valign: middle, text: Buildings · 建筑 }
+    l4: { type: text, role: label, size: 30, frame: [120, 680, 260, 80], valign: middle, text: Other · 其他 }
     b1: { type: shape, geom: roundRect, radius: 12, fill: accent, color: "#FFFFFF", frame: [400, 320, 1200, 80], align: right, valign: middle, padding: 16, size: 30, weight: 700, text: 92% }
     b2: { type: shape, geom: roundRect, radius: 12, fill: accent, color: "#FFFFFF", frame: [400, 440, 960, 80], align: right, valign: middle, padding: 16, size: 30, weight: 700, text: 74% }
     b3: { type: shape, geom: roundRect, radius: 12, fill: accent-soft, color: accent, frame: [400, 560, 660, 80], align: right, valign: middle, padding: 16, size: 30, weight: 700, text: 51% }

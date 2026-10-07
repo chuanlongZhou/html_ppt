@@ -5,9 +5,14 @@ order: 8
 prompts: [大数字, 一个数字, 关键指标, 数据亮点, KPI, big number]
 use_when: 一个数字就能说明问题；用 label 解释它，用 source 标明来源
 avoid_when: 需要比较多个数字（用 morph.chart-grow 或卡片）
+en:
+  title: Big number
+  prompts: [big number, one key metric, KPI, headline figure]
+  use_when: One number makes the point; explain it with label, cite it with source
+  avoid_when: Comparing several numbers (use morph.chart-grow or cards)
 demo:
   layout: center
   objects:
-    kicker: { type: text, role: kicker, text: 一个数字说明问题 }
-    n: { type: metric, value: "3.1", unit: Gt CO₂, label: 2024 年城市排放总量（示例数据）, delta: "−12% vs 2019", tone: up, align: center, size: 220 }
-    caption: { type: text, role: caption, text: 大数字 + 单位 + 一句解释；数据来源写在 source 字段 }
+    kicker: { type: text, role: kicker, text: One number tells the story · 一个数字说明问题 }
+    n: { type: metric, value: "3.1", unit: Gt CO₂, label: "Urban emissions, 2024 (sample) · 2024 年城市排放总量（示例）", delta: "−12% vs 2019", tone: up, align: center, size: 220 }
+    caption: { type: text, role: caption, text: "Number + unit + one line of context; cite in source ^^大数字 + 单位 + 一句解释；来源写在 source 字段^^" }

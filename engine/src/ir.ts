@@ -68,7 +68,7 @@ export interface IRScene {
   states: IRState[];
   file: string;
   line?: number;
-  caption?: { id: string; title: string; prompts: string[]; category: string; group: string };
+  caption?: { id: string; title: string; prompts: string[]; category: string; group: string; en?: { title: string; prompts: string[]; category: string; group: string } };
   patterns: string[];
 }
 

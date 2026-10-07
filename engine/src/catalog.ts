@@ -108,7 +108,9 @@ function indexMd(lib: ReturnType<typeof loadLibrary>): string {
     md += `| \`${cat}\` ${c.label} | ${c.desc} | ${groups.join(' · ')} |\n`;
   }
   md += '\n## 提示词速查\n\n| 提示词 | 条目 | 分类 |\n|---|---|---|\n';
-  for (const e of lib) md += `| ${e.prompts.map((p) => '「' + p + '」').join(' ')} | [\`${e.id}\`](#${anchor(e.id)}) ${e.title} | ${e.categoryLabel} · ${e.groupLabel} |\n`;
+  // 英文提示词去重后并入同一列：中英文请求都能查到
+  const allPrompts = (e: (typeof lib)[number]) => [...new Set([...e.prompts, ...(e.en?.prompts ?? [])])];
+  for (const e of lib) md += `| ${allPrompts(e).map((p) => '「' + p + '」').join(' ')} | [\`${e.id}\`](#${anchor(e.id)}) ${e.title}${e.en ? ' · ' + e.en.title : ''} | ${e.categoryLabel} · ${e.groupLabel} |\n`;
   md += '\n';
   for (const [cat, c] of Object.entries(LIB_CATEGORIES)) {
     const list = lib.filter((e) => e.category === cat);
@@ -119,8 +121,9 @@ function indexMd(lib: ReturnType<typeof loadLibrary>): string {
       if (!items.length) continue;
       md += `### ${c.label} · ${glabel}\n\n`;
       for (const e of items) {
-        md += `#### ${e.id}\n\n**${e.title}** · 文件 \`${rel(e.file)}\`\n\n- 提示词：${e.prompts.map((p) => '「' + p + '」').join(' ')}\n- 适合：${e.use_when}\n`;
+        md += `#### ${e.id}\n\n**${e.title}**${e.en ? ' · ' + e.en.title : ''} · 文件 \`${rel(e.file)}\`\n\n- 提示词：${allPrompts(e).map((p) => '「' + p + '」').join(' ')}\n- 适合：${e.use_when}\n`;
         if (e.avoid_when) md += `- 不适合：${e.avoid_when}\n`;
+        if (e.en) md += `- Use when: ${e.en.use_when}\n` + (e.en.avoid_when ? `- Avoid when: ${e.en.avoid_when}\n` : '');
         md += `- 调用：\`- { id: <scene-id>, use: ${e.id} }\`\n`;
         md += '\n```yaml\n' + stringify([{ id: e.id.split('.')[1], ...e.demo }], { lineWidth: 0 }).trim() + '\n```\n\n';
       }

@@ -5,10 +5,15 @@ order: 1
 prompts: [时间线, 路线图, 里程碑, 发展历程, 阶段计划, roadmap, timeline, 五个阶段]
 use_when: 按时间或阶段排列 3–5 个节点；每个节点一个时间、一句标题、一行说明；点击逐个出现
 avoid_when: 需要在同一画面里一步步推进进度（用 morph.timeline-progress）；超过 5 个节点（拆成两页）
+en:
+  title: Timeline / roadmap
+  prompts: [timeline, roadmap, milestones, project phases, history]
+  use_when: 3–5 nodes in time or phase order — a date, a title and one line each; nodes appear click by click
+  avoid_when: Advancing progress on one canvas (use morph.timeline-progress); more than 5 nodes (split into two slides)
 demo:
   layout: title-body
   objects:
-    title: { type: text, role: title, text: 五个阶段，一年落地 }
+    title: { type: text, role: title, text: "Five phases, live in a year ^^五个阶段，一年落地^^" }
     line: { type: shape, geom: line, from: [150, 500], to: [1770, 500], stroke: line, strokeWidth: 6 }
     n1: { type: shape, geom: ellipse, fill: accent, frame: [270, 482, 36, 36] }
     n2: { type: shape, geom: ellipse, fill: accent, frame: [606, 482, 36, 36] }
@@ -19,12 +24,12 @@ demo:
     y2: { type: text, size: 46, weight: 800, color: accent, align: center, frame: [474, 388, 300, 80], text: Q2 }
     y3: { type: text, size: 46, weight: 800, color: accent, align: center, frame: [810, 388, 300, 80], text: Q3 }
     y4: { type: text, size: 46, weight: 800, color: accent, align: center, frame: [1146, 388, 300, 80], text: Q4 }
-    y5: { type: text, size: 46, weight: 800, color: accent-2, align: center, frame: [1482, 388, 300, 80], text: 明年 }
-    d1: { type: text, align: center, size: 30, frame: [138, 548, 300, 190], text: ["# 立项", "明确目标与范围"] }
-    d2: { type: text, align: center, size: 30, frame: [474, 548, 300, 190], text: ["# 原型", "做出可演示的最小版本"] }
-    d3: { type: text, align: center, size: 30, frame: [810, 548, 300, 190], text: ["# 试点", "小范围真实使用"] }
-    d4: { type: text, align: center, size: 30, frame: [1146, 548, 300, 190], text: ["# 发布", "正式上线"] }
-    d5: { type: text, align: center, size: 30, frame: [1482, 548, 300, 190], text: ["# 推广", "扩大到全部团队"] }
+    y5: { type: text, size: 46, weight: 800, color: accent-2, align: center, frame: [1482, 388, 300, 80], text: Next year }
+    d1: { type: text, align: center, size: 30, frame: [138, 548, 300, 240], text: ["# Kickoff ^^立项^^", "Set goals and scope ^^明确目标与范围^^"] }
+    d2: { type: text, align: center, size: 30, frame: [474, 548, 300, 240], text: ["# Prototype ^^原型^^", "A minimal demo ^^做出可演示的最小版本^^"] }
+    d3: { type: text, align: center, size: 30, frame: [810, 548, 300, 240], text: ["# Pilot ^^试点^^", "Small-scale real use ^^小范围真实使用^^"] }
+    d4: { type: text, align: center, size: 30, frame: [1146, 548, 300, 240], text: ["# Launch ^^发布^^", "Go live ^^正式上线^^"] }
+    d5: { type: text, align: center, size: 30, frame: [1482, 548, 300, 240], text: ["# Roll out ^^推广^^", "Extend to all teams ^^扩大到全部团队^^"] }
   steps:
     - [{ enter: n1 }, { enter: y1 }, { enter: d1 }]
     - [{ enter: n2 }, { enter: y2 }, { enter: d2 }]

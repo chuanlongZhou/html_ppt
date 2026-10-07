@@ -5,17 +5,22 @@ order: 2
 prompts: [流程链条加说明, 左边步骤右边讲解, 四步流程逐行解释, 颜色逐渐变淡的步骤, 关键词标签高亮, chain with notes]
 use_when: 3–4 个先后相连的步骤（颜色由深到浅），每一步在右侧有对应的一段说明；左侧自动一次性出现，右侧点击逐段出现；关键词可以用 [[词|orange|green|blue]] 做成行内标签
 avoid_when: 步骤超过 5 个，或每一步的说明超过三行（拆页）
+en:
+  title: Step chain + notes
+  prompts: [chain with notes, steps on the left, notes on the right, fading steps, keyword chips]
+  use_when: 3–4 linked steps (dark to light) with one note each on the right; the chain appears at once, notes appear click by click; mark keywords as inline chips with [[word|orange|green|blue]]
+  avoid_when: More than 5 steps, or notes longer than three lines (split the slide)
 demo:
   layout: free
   objects:
-    b1: { type: shape, fill: accent, color: "#FFFFFF", size: 34, weight: bold, align: center, valign: middle, frame: [120, 150, 420, 160], text: "第一步" }
-    b2: { type: shape, fill: accent-3, color: "#FFFFFF", size: 34, weight: bold, align: center, valign: middle, frame: [120, 370, 420, 120], text: "第二步" }
-    b3: { type: shape, fill: accent-3-soft, color: accent-3, size: 34, weight: bold, align: center, valign: middle, frame: [120, 550, 420, 120], text: "第三步" }
+    b1: { type: shape, fill: accent, color: "#FFFFFF", size: 34, weight: bold, align: center, valign: middle, frame: [120, 150, 420, 160], text: "Step 1 ^^第一步^^" }
+    b2: { type: shape, fill: accent-3, color: "#FFFFFF", size: 34, weight: bold, align: center, valign: middle, frame: [120, 370, 420, 120], text: "Step 2 ^^第二步^^" }
+    b3: { type: shape, fill: accent-3-soft, color: accent-3, size: 34, weight: bold, align: center, valign: middle, frame: [120, 550, 420, 120], text: "Step 3 ^^第三步^^" }
     a1: { type: shape, geom: arrow, fill: muted, rotate: 90, frame: [300, 326, 60, 28] }
     a2: { type: shape, geom: arrow, fill: muted, rotate: 90, frame: [300, 506, 60, 28] }
-    t1: { type: text, size: 32, color: ink, lineHeight: 1.5, valign: middle, frame: [600, 150, 1200, 160], text: "解决 [[数据缺口|orange]]，以 [[低延迟|green]] 提供 [[高分辨率|blue]] 的数据" }
-    t2: { type: text, size: 32, color: ink, lineHeight: 1.5, valign: middle, frame: [600, 370, 1200, 120], text: "所有数据在项目网站**公开**，方便政策制定者和研究者使用" }
-    t3: { type: text, size: 32, color: ink, lineHeight: 1.5, valign: middle, frame: [600, 550, 1200, 120], text: "**分析**减排情景，**评估**目标" }
+    t1: { type: text, size: 32, color: ink, lineHeight: 1.5, valign: middle, frame: [600, 150, 1200, 160], text: "Close the [[data gap|orange]] with [[high-resolution|blue]] data at [[low latency|green]] ^^以低延迟提供高分辨率数据，填补数据缺口^^" }
+    t2: { type: text, size: 32, color: ink, lineHeight: 1.5, valign: middle, frame: [600, 370, 1200, 120], text: "All data is **open** on the project site ^^所有数据在项目网站公开，供政策制定者与研究者使用^^" }
+    t3: { type: text, size: 32, color: ink, lineHeight: 1.5, valign: middle, frame: [600, 550, 1200, 120], text: "**Analyze** scenarios, **assess** targets ^^分析减排情景，评估目标^^" }
   steps:
     - { enter: [b1, a1, b2, a2, b3], effect: fade, duration: 700, auto: true }
     - { enter: t1, effect: fade-up }

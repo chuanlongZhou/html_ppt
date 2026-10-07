@@ -5,10 +5,15 @@ order: 5
 prompts: [数据变化, 柱子长高, 柱状图动画, 从去年到今年, 数值增长, chart animation]
 use_when: 同一组数据在两个时间点 / 两种情景之间的变化
 avoid_when: 数据点超过 8 个（等 M2 的图表组件）
+en:
+  title: Bars that grow
+  prompts: [chart animation, bars grow, this year vs last year, values change]
+  use_when: One data set changing between two points in time or two scenarios
+  avoid_when: More than 8 data points (use the chart component)
 demo:
   layout: free
   objects:
-    title: { type: text, role: title, frame: [120, 84, 1300, 110], text: 各部门排放：2020 → 2024 }
+    title: { type: text, role: title, frame: [120, 70, 1300, 150], text: "Emissions by sector: 2020 → 2024 ^^各部门排放：2020 → 2024^^" }
     year: { type: text, frame: [1400, 70, 400, 140], size: 120, weight: 800, font: display, color: accent, align: right, lineHeight: 1, text: "2020" }
     base: { type: shape, geom: line, from: [200, 900], to: [1720, 900], stroke: line, strokeWidth: 3 }
     b1: { type: shape, geom: roundRect, radius: 10, fill: accent-soft, frame: [260, 700, 180, 200] }
@@ -21,11 +26,11 @@ demo:
     v3: { type: text, role: label, size: 30, color: ink, align: center, frame: [850, 660, 200, 50], text: "180" }
     v4: { type: text, role: label, size: 30, color: ink, align: center, frame: [1150, 520, 200, 50], text: "320" }
     v5: { type: text, role: label, size: 30, color: ink, align: center, frame: [1450, 600, 200, 50], text: "240" }
-    x1: { type: text, role: label, size: 28, align: center, frame: [250, 920, 200, 50], text: 交通 }
-    x2: { type: text, role: label, size: 28, align: center, frame: [550, 920, 200, 50], text: 工业 }
-    x3: { type: text, role: label, size: 28, align: center, frame: [850, 920, 200, 50], text: 建筑 }
-    x4: { type: text, role: label, size: 28, align: center, frame: [1150, 920, 200, 50], text: 电力 }
-    x5: { type: text, role: label, size: 28, align: center, frame: [1450, 920, 200, 50], text: 其他 }
+    x1: { type: text, role: label, size: 28, align: center, frame: [230, 915, 240, 90], text: "Transport ^^交通^^" }
+    x2: { type: text, role: label, size: 28, align: center, frame: [530, 915, 240, 90], text: "Industry ^^工业^^" }
+    x3: { type: text, role: label, size: 28, align: center, frame: [830, 915, 240, 90], text: "Buildings ^^建筑^^" }
+    x4: { type: text, role: label, size: 28, align: center, frame: [1130, 915, 240, 90], text: "Power ^^电力^^" }
+    x5: { type: text, role: label, size: 28, align: center, frame: [1430, 915, 240, 90], text: "Other ^^其他^^" }
   states:
     - {}
     - transition: { duration: 1000, stagger: 60 }

@@ -1,4 +1,5 @@
 # 主题预设：只写种子色，其余颜色由 engine/src/theme-derive.js 推导。deck.yaml 里写 `theme: default` 即可使用
 label: 清爽蓝
 desc: 默认风格：暖白底、钴蓝主色，通用不出错
+en: { label: Clean blue, desc: "The default: warm white and cobalt — safe for anything" }
 seeds: { accent: "#2F5BEA", accent2: "#EE6A2C", accent3: "#0F9F78", accent4: "#7C5CE0", bg: "#F6F5F1", ink: "#16181D" }

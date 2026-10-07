@@ -1,3 +1,4 @@
 label: 玫红
 desc: 粉白底、玫红主色，鲜明有记忆点，适合品牌与消费类
+en: { label: Rose, desc: "Blush and magenta — bold and memorable, for brands and consumer" }
 seeds: { accent: "#D6336C", accent2: "#F08C00", accent3: "#1C7ED6", accent4: "#7048E8", bg: "#FBF5F7", ink: "#261620" }
