@@ -25,6 +25,7 @@ deck.yaml
 | `stage` | [number, number] | 舞台尺寸，默认 [1920, 1080] |
 | `style` | string | engine/styles 下的风格名（默认 default） |
 | `theme` | string | 主题：engine/themes/ 下的预设名（ocean、forest …），或相对 deck 目录的主题文件（theme.yaml；可在主页「主题与页面元素」配置并下载） |
+| `captionFile` | string | 图片图注 JSON，相对 deck 目录；格式见 docs/IMAGE_CAPTIONS.md，按图片路径和 show 开关选择显示 |
 | `tokens` | object | 覆盖浅色 token，如 { accent: "#E8590C" }（优先于 theme） |
 | `tokensDark` | object | 覆盖深色 token（theme: dark 的页面） |
 | `chrome` | object | 页面元素：Logo、页眉页脚、页码、进度（优先于 theme 中的 chrome） |
@@ -201,6 +202,7 @@ deck.yaml
 | `radius` | number | 圆角 px |
 | `shadow` | boolean |  |
 | `alt` | string |  |
+| `caption` | boolean \| string | 图片图注：默认遵循 deck.captionFile；false 关闭、true 强制显示 JSON 图注、字符串改写图注但仍遵循已登记图片的 show（未登记时直接显示）；可在 State override 中覆盖 |
 | `slot` | string | 放入 layout 的哪个 slot；不写则按 role 自动选择 |
 | `frame` | [number, number, number, number] | [x, y, w, h]，舞台坐标（默认 1920×1080） |
 | `z` | integer | 层级（越大越靠前） |

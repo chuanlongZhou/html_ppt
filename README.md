@@ -33,9 +33,12 @@ npm run dev                 # 实时预览 http://localhost:5173（含效果库�
 | `npm run gallery` | 生成离线效果库浏览器 `output/_gallery/` |
 | `npm run catalog` | 重新生成 `engine/CATALOG.md` 与 `engine/library/INDEX.md` |
 | `npm run agents:sync` | 由 `agents/` 生成 `.claude/` 的 skills 与 subagent |
+| `npm test` | 运行 `engine/tests/` 下的单元测试（导航、图注） |
 | `npm run typecheck` | 引擎类型检查 |
 
-部署到 Netlify：见 [docs/DEPLOY.md](docs/DEPLOY.md) 与根目录 `netlify.toml`（默认构建并发布 `proj/CHETNA`）。
+部署到 Netlify：见 [docs/DEPLOY.md](docs/DEPLOY.md) 与根目录 `netlify.toml`（构建并发布整站：主页 + 所有演示）。
+
+图片图注：在 deck 目录放 `captions.json`，用 `deck.captionFile` 启用，见 [docs/IMAGE_CAPTIONS.md](docs/IMAGE_CAPTIONS.md)。
 
 ## 核心概念
 

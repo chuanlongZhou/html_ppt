@@ -73,6 +73,7 @@
 - 配色与每页都有的元素（页码、Logo、页脚、进度）用 `deck.theme` / `deck.chrome` 配置，不要逐页复制对象。
 - 数据用 `chart` 组件（可交互），不要用一堆 shape 拼图表；数据变化写成 State。
 - 在截图 / 照片上标注时用 `on: <图片 key>` + `box`（图片坐标 0–1），不要手算舞台坐标；放大用图片的 `zoom`。
+- 图片图注使用 deck 目录的 `captions.json` + `deck.captionFile`，用户通过每张图的 `show` 选择显示；标准见 `docs/IMAGE_CAPTIONS.md`。同图裁剪复用可用图片的 `caption` 改写或关闭，图片下方留出图注空间。
 - 每个 scene 写 `purpose`；标题写结论。
 - 新组件、新 preset 必须由真实 deck 的需求驱动；好的新设计应沉淀为效果库条目。
 - 修改架构原则前，先在 `docs/adr/` 写 ADR。

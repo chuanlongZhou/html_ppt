@@ -8,6 +8,7 @@ import { compileDeck } from '../src/normalize.ts';
 import { buildDeck } from '../src/build.ts';
 import { launch, openDeck, goTo } from '../src/qa/check.ts';
 import { serveStatic } from '../src/serve.ts';
+import { exportDeck, verifyStandalone } from '../src/export.ts';
 
 function fixture(scenes: any[]) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'html-ppt-navigation-'));
@@ -24,6 +25,51 @@ function removeFixture(dir: string) {
 function scene(id: string, extra: any = {}) {
   return { id, purpose: 'Navigation regression', layout: 'center', objects: { title: { type: 'text', role: 'title', text: id } }, ...extra };
 }
+
+test('section icons follow scene logos, keep part navigation and survive standalone export', async () => {
+  const sectors = ['traffic', 'power', 'residential', 'industry'];
+  const d = fixture([
+    scene('context', { section: 'Context' }),
+    scene('research', { section: 'Selected Research' }),
+    ...sectors.map(id => scene(id, { chrome: { logo: { src: `assets/${id}.svg`, at: 'header-left' } } })),
+    scene('platform', { section: 'Platform' }),
+  ]);
+  let browser: Awaited<ReturnType<typeof launch>> | undefined;
+  let server: Awaited<ReturnType<typeof serveStatic>>['server'] | undefined;
+  try {
+    const source = fs.readFileSync(d.file, 'utf8').replace('sections: true', 'sections: { icon: true }');
+    fs.writeFileSync(d.file, source);
+    fs.mkdirSync(path.join(d.dir, 'assets'));
+    for (const id of sectors) fs.writeFileSync(path.join(d.dir, 'assets', `${id}.svg`), '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="M2 2h20v20H2z"/></svg>');
+    assert(buildDeck(d).ok);
+    const served = await serveStatic(d.out, 0);
+    server = served.server;
+    browser = await launch();
+    const page = await browser.newPage({ viewport: { width: 1920, height: 1080 } });
+    await openDeck(page, `http://127.0.0.1:${served.port}/site/index.html?qa`);
+    for (const [i, id] of sectors.entries()) {
+      await goTo(page, i + 2, -1);
+      const tab = page.locator('section.present .ch-tab.on');
+      assert.equal(await tab.textContent(), 'Selected Research');
+      const icon = tab.locator('.ch-tab-icon');
+      assert.equal(await icon.count(), 1);
+      assert.equal(await icon.getAttribute('src'), `assets/${id}.svg`);
+      assert(await icon.evaluate((e: HTMLImageElement) => e.complete && e.naturalWidth > 0));
+      assert(await tab.evaluate(e => e.scrollWidth <= e.clientWidth));
+    }
+    await page.locator('section.present .ch-tab').nth(0).click();
+    assert.equal(await page.evaluate(() => (window as any).Reveal.getCurrentSlide().dataset.scene), 'context');
+    await page.locator('section.present .ch-tab').nth(1).click();
+    assert.equal(await page.evaluate(() => (window as any).Reveal.getCurrentSlide().dataset.scene), 'research');
+    assert.equal(await page.locator('section.present .ch-tab-icon').count(), 0);
+    await goTo(page, 6, -1);
+    assert.equal(await page.locator('section.present .ch-tab-icon').count(), 0);
+    const exported = exportDeck(d);
+    assert(exported.ok);
+    const verified = await verifyStandalone(exported.file);
+    assert(verified.ok, JSON.stringify(verified));
+  } finally { await browser?.close(); server?.close(); removeFixture(d.dir); }
+});
 
 test('independent pages, inherited parts, template detection and explicit overrides', () => {
   const d = fixture([

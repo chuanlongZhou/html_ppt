@@ -84,6 +84,8 @@ html.qa .reveal *, html.qa .reveal *::before, html.qa .reveal *::after { transit
 .reveal .ch-hasnav .ch-c { justify-content: stretch; min-width: 0; }
 .reveal .ch-nav { position: relative; display: flex; gap: 10px; width: 100%; pointer-events: auto; }
 .reveal .ch-tab { position: relative; z-index: 1; flex: 1 1 0; min-width: 0; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; transition: color .35s; }
+.reveal .ch-tab.ch-tab-with-icon { display: flex; align-items: center; justify-content: center; gap: 8px; }
+.reveal .ch-tab-icon { display: block; flex: 0 0 24px; width: 24px; height: 24px; object-fit: contain; pointer-events: none; }
 .reveal .ch-pill { position: absolute; z-index: 0; left: 0; top: 0; width: 0; height: 0; opacity: 0; pointer-events: none; transition: left .5s cubic-bezier(.45, 0, .2, 1), width .5s cubic-bezier(.45, 0, .2, 1), opacity .3s; }
 .reveal .ch-nav.ch-still .ch-pill, .reveal .ch-nav.ch-still .ch-tab { transition: none; }
 

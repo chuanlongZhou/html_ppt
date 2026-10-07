@@ -47,6 +47,7 @@
     Object.keys(cfg.chrome).forEach(function (k) { c[k] = cfg.chrome[k]; });
     if (flag) {
       var o = JSON.parse(flag);
+      if (window.__asset) o = window.__asset(o);
       Object.keys(o).forEach(function (k) { c[k] = (k === 'header' || k === 'footer') ? Object.assign({}, c[k], o[k]) : o[k]; });
     }
     return c;
@@ -111,6 +112,13 @@
       names.forEach(function (nm, i) {
         var t = el('span', 'ch-tab', nm);
         t.setAttribute('data-i', i);
+        if (c.sections.icon && nm === sec.getAttribute('data-section') && lg && lg.src) {
+          var icon = el('img', 'ch-tab-icon');
+          icon.src = lg.src;
+          icon.alt = '';
+          t.classList.add('ch-tab-with-icon');
+          t.appendChild(icon);
+        }
         nav.appendChild(t);
       });
       cells[navAt + '-center'] = [nav];

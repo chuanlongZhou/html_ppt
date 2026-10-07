@@ -32,6 +32,7 @@ output/<deck>/site/（离线可放映） · qa/report.json · qa/shots · qa/con
 | `engine/src/catalog.ts` | 生成 `engine/CATALOG.md` 与 `engine/library/INDEX.md` |
 | `engine/src/components/chart.ts` · `runtime/reveal/charts.js` | 交互图表：编译期输出数据规格，浏览器端渲染、交互、联动、State 间数据过渡（ADR-007） |
 | `engine/src/imagesize.ts` | 图片原始尺寸与 fit / zoom 几何；图片坐标标注（ADR-008） |
+| `engine/src/captions.ts` | 校验 deck 引用的图注 JSON，按图片路径与 show 开关生成普通 text IR 对象；位置、可见性与动画跟随图片。标准见 `docs/IMAGE_CAPTIONS.md` |
 | `engine/src/gallery.ts` | 效果库浏览器 `output/_gallery/`：每个条目一个迷你 deck、缩略图、条目预览页；另含主题预览 deck |
 | `engine/src/home.ts` · `engine/src/home/` | 主页（dev 的 `/` 与静态 `_gallery/index.html` 共用）：我的演示、主题与页面元素工作台、页面结构、动画与交互；`home.css` / `home.js` / `studio.js` 是真实文件 |
 | `engine/src/theme.ts` · `theme-derive.js` · `engine/themes/` | 主题：预设（种子色）与项目 `theme.yaml`；`theme-derive.js` 由种子色推导全部 token，引擎与主页共用（ADR-009） |

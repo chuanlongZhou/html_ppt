@@ -1,0 +1,248 @@
+{
+  "version": 1,
+  "language": "en",
+  "defaults": {
+    "show": false,
+    "size": 22,
+    "gap": 8,
+    "height": 60,
+    "color": "muted"
+  },
+  "images": [
+    {
+      "src": "assets/part4/s1/1.png",
+      "caption": "CHETNA-Road emission inventory workflow",
+      "show": true
+    },
+    {
+      "src": "assets/part4/s1/2.png",
+      "caption": "Road CO₂ emissions across six Indian metros",
+      "show": true
+    },
+    {
+      "src": "assets/part4/s1/3.png",
+      "caption": "Predictors of urban traffic emission differences",
+      "show": true
+    },
+    {
+      "src": "assets/part4/s1/4.png",
+      "caption": "Congestion-related CO₂ emissions per vehicle-kilometre",
+      "show": true
+    },
+    {
+      "src": "assets/part4/s1/5.png",
+      "caption": "Urban traffic regimes across income levels",
+      "show": true
+    },
+    {
+      "src": "assets/part4/s1/6.png",
+      "caption": "Traffic NOₓ concentrations across Indian cities",
+      "show": true
+    },
+    {
+      "src": "assets/part4/s1/6.1.png",
+      "caption": "From traffic emissions to household exposure",
+      "show": true
+    },
+    {
+      "src": "assets/part4/s1/7.png",
+      "caption": "Pollution and household pathways to child respiratory illness",
+      "show": true
+    },
+    {
+      "src": "assets/part4/s1/8.png",
+      "caption": "Child respiratory illness and urban vulnerability patterns",
+      "show": true
+    },
+    {
+      "src": "assets/part4/s2/1.1.png",
+      "caption": "CHETNA-Power workflow and nationwide generator-unit coverage",
+      "show": true
+    },
+    {
+      "src": "assets/part4/s2/1.2.png",
+      "caption": "State emission shares and generation trends and seasonality",
+      "show": true
+    },
+    {
+      "src": "assets/part4/s2/1.3.png",
+      "caption": "Weekly coal-power CO₂ emissions across seasons, 2018–2025",
+      "show": true
+    },
+    {
+      "src": "assets/part4/s2/1.4.png",
+      "caption": "Generator emission intensity and its modelled predictors",
+      "show": true
+    },
+    {
+      "src": "assets/part4/s2/2.1.png",
+      "caption": "Daily energy met: highest and lowest performing states",
+      "show": true
+    },
+    {
+      "src": "assets/part4/s2/3.1.png",
+      "caption": "Climate stress through demand, unit cooling and hydro availability",
+      "show": true
+    },
+    {
+      "src": "assets/part4/s2/3.2.png",
+      "caption": "Emission factors and capacity shares by generator vintage",
+      "show": true
+    },
+    {
+      "src": "assets/part4/s2/3.3.png",
+      "caption": "Monthly climate-stress event starts and seasonal patterns",
+      "show": true
+    },
+    {
+      "src": "assets/part4/s2/3.4.png",
+      "caption": "Change in stress co-occurrence, recent minus early period",
+      "show": true
+    },
+    {
+      "src": "assets/part4/s3/1.1.png",
+      "caption": "Household surveys and appliance-use patterns · fieldwork",
+      "show": true
+    },
+    {
+      "src": "assets/part4/s3/1.2.png",
+      "caption": "Household surveys and appliance-use patterns · survey areas",
+      "show": true
+    },
+    {
+      "src": "assets/part4/s3/1.3.png",
+      "caption": "Household surveys and appliance-use patterns",
+      "show": true
+    },
+    {
+      "src": "assets/part4/s3/1.4.png",
+      "caption": "Modelled relationships between household characteristics and electricity use",
+      "show": true
+    },
+    {
+      "src": "assets/part4/s4/1.png",
+      "caption": "Satellite and deep-learning workflow for brick-kiln mapping",
+      "show": true
+    },
+    {
+      "src": "assets/part4/s4/2.png",
+      "caption": "Brick-kiln distribution and technology examples in 2025",
+      "show": true
+    },
+    {
+      "src": "assets/part4/s4/3.png",
+      "caption": "Brick-kiln technology classification confusion matrix",
+      "show": true
+    },
+    {
+      "src": "assets/part4/s4/4.png",
+      "caption": "Manually labelled brick-kiln footprints",
+      "show": true
+    },
+    {
+      "src": "assets/part4/s4/5.png",
+      "caption": "Brick-kiln technology changes, 2019–2025",
+      "show": true
+    },
+    {
+      "src": "assets/part4/s4/6.png",
+      "caption": "Coal mine locations and annual production in India",
+      "show": true
+    },
+    {
+      "src": "assets/part4/s4/7.jpg",
+      "caption": "Coal fire at an open-pit mine",
+      "show": true
+    },
+    {
+      "src": "assets/part4/s4/8.png",
+      "caption": "Persistent coal fire hotspots in the Talchir cluster",
+      "show": true
+    },
+    {
+      "src": "assets/part4/s4/9.png",
+      "caption": "Maximum fire radiative power across coal mines",
+      "show": true
+    },
+    {
+      "src": "assets/part4/s2/2.0-proxies.png",
+      "caption": "Multiple proxy levels for daily electricity-demand modelling",
+      "show": true
+    },
+    {
+      "src": "assets/part4/s2/3.5.1.png",
+      "caption": "Mean capacity factor across climate-stress intensity levels",
+      "show": true
+    },
+    {
+      "src": "assets/part4/s2/3.5.2.png",
+      "caption": "Reported outage rates across climate-stress intensity levels",
+      "show": true
+    },
+    {
+      "src": "assets/part4/s2/3.6.1.png",
+      "caption": "State pattern supplied without a quantitative legend",
+      "show": true
+    },
+    {
+      "src": "assets/part4/s2/3.6.2.png",
+      "caption": "State emission intensity and generator counts by vintage",
+      "show": true
+    },
+    {
+      "src": "assets/part4/s2/3.6.3.png",
+      "caption": "State excess CO₂ on extreme stress days, upper quartile",
+      "show": true
+    },
+    {
+      "src": "assets/part4/s2/3.6-excess-labelled.png",
+      "caption": "Excess CO₂ on extreme stress days, tonnes per day",
+      "show": true
+    },
+    {
+      "src": "assets/part4/s3/2.1.1.png",
+      "caption": "Building data sources for function, height and temporal observations",
+      "show": true
+    },
+    {
+      "src": "assets/part4/s3/2.5.0.png",
+      "caption": "Reconstructing building expansion from presence and height observations",
+      "show": true
+    },
+    {
+      "src": "assets/part4/s3/2.5.1.png",
+      "caption": "Horizontal expansion results · earlier analysis through 2023",
+      "show": true
+    },
+    {
+      "src": "assets/part4/s3/2.5.2.png",
+      "caption": "Vertical expansion results · earlier analysis through 2022",
+      "show": true
+    },
+    {
+      "src": "assets/part4/s3/2.2.png",
+      "caption": "Local building communities used to aggregate contextual features",
+      "show": true
+    },
+    {
+      "src": "assets/part4/s3/2.4.1.png",
+      "caption": "Building-function classification results · pooled macro-F1 0.7443",
+      "show": true
+    },
+    {
+      "src": "assets/part4/s3/2.2.2.png",
+      "caption": "Cumulative feature-group gains in occupancy classification",
+      "show": true
+    },
+    {
+      "src": "assets/part4/s3/2.3.png",
+      "caption": "City-only and distance-weighted model accuracy by city",
+      "show": true
+    },
+    {
+      "src": "assets/part4/s2/3.6-reference.png",
+      "caption": "User-supplied climate stress, generator age and excess-CO₂ reference",
+      "show": false
+    }
+  ]
+}

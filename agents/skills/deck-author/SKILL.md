@@ -76,6 +76,12 @@ deck:
 
 ## 3. Check
 
+### 图片图注
+
+- 图片 caption 统一使用 deck 目录的 `captions.json`，在 `deck.captionFile` 引用；标准见 `docs/IMAGE_CAPTIONS.md`。
+- 每张图片写简短图注，用户通过 `images[].show` 选择显示。图注自动放在图片框下方，留出 `defaults.gap + defaults.height` 空间。
+- 同图裁剪复用时，可用图片对象或 State override 的 `caption: false` / 字符串关闭或改写，避免局部图使用不准确的完整图注。
+
 ```bash
 npm run check -- <name>
 ```

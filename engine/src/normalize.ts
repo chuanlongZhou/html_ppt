@@ -17,6 +17,7 @@ import type { IRDeck, IRScene, IRState, IRItem, IRFx, Placement } from './ir.ts'
 import { imageSize, imageGeom } from './imagesize.ts';
 import { imageFocus } from './components/media.ts';
 import { chartProblems } from './components/chart.ts';
+import { loadCaptions, appendCaptions } from './captions.ts';
 
 export interface CompileResult {
   ir?: IRDeck;
@@ -101,6 +102,7 @@ export function compileDeck(file: string): CompileResult {
     assets: new Map(),
   };
   const ctx: Ctx = { issues, style, stage, ir, ids: new Set() };
+  const captions = meta.captionFile ? loadCaptions(meta.captionFile, deckDir, issues, files, at(src, ['deck', 'captionFile'])) : undefined;
   const defaultTransition = meta.transition ?? 'fade';
   // 页面元素：主题的 chrome 为底，deck.chrome 逐项覆盖；Logo 图片按各自所在目录解析
   const chromeBase = theme?.chrome ? withLogo(theme.chrome, theme.dir) : undefined;
@@ -138,6 +140,7 @@ export function compileDeck(file: string): CompileResult {
     }
   });
 
+  appendCaptions(ir, captions, deckDir, issues);
   if (chromeCfg) finishChrome(chromeCfg, ctx, issues, src);
   return { ir: issues.errors.length ? undefined : ir, issues, files };
 }
